@@ -7,30 +7,35 @@
 </head>
 <body>
 
-<div th:fragment="navigation">
+<nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+        <a class="navbar-brand" href="#">Bartender</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div th:if="${user}">
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
 
-        <!-- Nav section for logged-in users -->
-
-        <nav class="user-nav">
-            <a href="/logout">Log Out</a>
-        </nav>
-
-    </div>
-
-    <div th:unless="${user}">
-
-        <!-- Nav section for users that aren't logged in -->
-
-        <nav>
-            <a href="/login">Log In</a> |
-            <a href="/register">Register</a>
-        </nav>
-
-    </div>
-
-</div>
-
+            </ul>
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item, navbar-text">Welcome, <span th:text="${user.username}"></span>!</li>
+                <li class="nav-item"><a class="nav-link" href="/logout">(Log Out)</a></li>
+            </ul>
+        </div>
+        </div>
+    </nav>
 </body>
 </html>
