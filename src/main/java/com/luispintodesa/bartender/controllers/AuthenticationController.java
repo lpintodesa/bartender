@@ -20,12 +20,12 @@ import javax.validation.Valid;
 @Controller
 public class AuthenticationController extends AbstractController {
 
-    @RequestMapping(value = "")
+    @RequestMapping(value = "/inventory")
     public String index() {
         return "inventory";
     }
 
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "")
     public String index(Model model) {
         model.addAttribute("title", "The Bartender App");
         return "index";
@@ -56,7 +56,7 @@ public class AuthenticationController extends AbstractController {
         userDao.save(newUser);
         setUserInSession(request.getSession(), newUser);
 
-        return "redirect:";
+        return "redirect:/inventory";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -88,13 +88,13 @@ public class AuthenticationController extends AbstractController {
 
         setUserInSession(request.getSession(), theUser);
 
-        return "redirect:";
+        return "redirect:/inventory";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
-        return "redirect:/index";
+        return "redirect:";
     }
 
 }
