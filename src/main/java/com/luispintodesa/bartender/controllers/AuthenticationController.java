@@ -34,7 +34,6 @@ public class AuthenticationController extends AbstractController {
     @RequestMapping(value = "/register")
     public String registerForm(Model model) {
         model.addAttribute(new RegisterForm());
-        model.addAttribute("title", "Register");
         return "register";
     }
 
@@ -62,7 +61,6 @@ public class AuthenticationController extends AbstractController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
         model.addAttribute(new LoginForm());
-        model.addAttribute("title", "Log In");
         return "login";
     }
 

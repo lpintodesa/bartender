@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
  */
 public class RegisterForm extends LoginForm {
 
-    @NotNull(message = "Passwords to not match")
+    @NotNull(message = "Passwords do not match")
     private String verifyPassword;
 
     @Override
