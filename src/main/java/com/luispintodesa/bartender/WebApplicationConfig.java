@@ -17,12 +17,9 @@ public class WebApplicationConfig extends WebMvcConfigurerAdapter {
     public AuthenticationInterceptor authenticationInterceptor() {
         return new AuthenticationInterceptor();
     }
-
     // Register the filter with the Spring container
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor( authenticationInterceptor()).addPathPatterns("/**").excludePathPatterns("/**/*.css","/**/*.jpg") ;
     }
-
-
 }

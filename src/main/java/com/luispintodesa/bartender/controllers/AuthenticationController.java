@@ -1,5 +1,6 @@
 package com.luispintodesa.bartender.controllers;
 
+import com.luispintodesa.bartender.models.JSONtoPOJOs;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.LoginForm;
 import com.luispintodesa.bartender.models.forms.RegisterForm;
@@ -21,7 +22,8 @@ import javax.validation.Valid;
 public class AuthenticationController extends AbstractController {
 
     @RequestMapping(value = "/inventory")
-    public String index() {
+    public String inventory(Model model) {
+        model.addAttribute("ingredients", JSONtoPOJOs.convert());
         return "inventory";
     }
 

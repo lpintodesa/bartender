@@ -6,6 +6,16 @@
 <header><nav th:replace="fragments :: navigation"></nav></header>
 <section><div class="container">
 <h6>Welcome, <span th:text="${user.username}"></span>!</h6>
+    <form method="post">
+        <label for="ingredient-choice">Choose an ingredient:</label>
+        <input list="ingredient_list" id="ingredient-choice" name="ingredient-choice" />
+        <datalist id="ingredient_list">
+            <div th:each="ingredient:${ingredients}">
+            <option th:value="${ingredient.strIngredient1}"></option>
+        </div>
+        </datalist>
+        <input type="submit" value="Add Ingredient" />
+    </form>
 </div></section>
 </body>
 </html>
