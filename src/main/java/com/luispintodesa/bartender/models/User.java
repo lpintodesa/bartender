@@ -3,8 +3,10 @@ package com.luispintodesa.bartender.models;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 
 @Entity
@@ -17,6 +19,13 @@ public class User extends AbstractEntity {
     @NotNull
     private String pwHash;
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    @ManyToMany
+    private List<Ingredient> ingredients;
+
+    public void addItem(Ingredient item){
+        ingredients.add(item);
+    }
 
     public User() {}
 
@@ -36,5 +45,11 @@ public class User extends AbstractEntity {
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);
     }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public int getId (Integer id){ return getUid();}
 
 }

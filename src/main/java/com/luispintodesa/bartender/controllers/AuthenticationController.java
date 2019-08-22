@@ -1,6 +1,5 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.JSONtoPOJOs;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.LoginForm;
 import com.luispintodesa.bartender.models.forms.RegisterForm;
@@ -14,18 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-
-/**
- * Created by LaunchCode
- */
 @Controller
 public class AuthenticationController extends AbstractController {
-
-    @RequestMapping(value = "/inventory")
-    public String inventory(Model model) {
-        model.addAttribute("ingredients", JSONtoPOJOs.convert());
-        return "inventory";
-    }
 
     @RequestMapping(value = "")
     public String index(Model model) {

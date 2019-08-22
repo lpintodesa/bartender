@@ -3,9 +3,7 @@ package com.luispintodesa.bartender.models.forms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-/**
- * Created by LaunchCode
- */
+
 public class LoginForm {
 
     @NotNull

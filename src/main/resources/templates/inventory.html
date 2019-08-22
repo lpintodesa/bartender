@@ -4,18 +4,34 @@
 </head>
 <body>
 <header><nav th:replace="fragments :: navigation"></nav></header>
-<section><div class="container">
-<h6>Welcome, <span th:text="${user.username}"></span>!</h6>
-    <form method="post">
-        <label for="ingredient-choice">Choose an ingredient:</label>
-        <input list="ingredient_list" id="ingredient-choice" name="ingredient-choice" />
-        <datalist id="ingredient_list">
-            <div th:each="ingredient:${ingredients}">
-            <option th:value="${ingredient.strIngredient1}"></option>
+<section>
+    <div class="container">
+    <div class="row">
+        <div class="col">
+            <h6>Welcome, <span th:text="${user.username}"></span>!</h6>
         </div>
-        </datalist>
-        <input type="submit" value="Add Ingredient" />
+    </div>
+    <form method="post" th:object="${inventoryForm}">
+        <div class="row justify-content-md-start">
+            <div class="col-md-auto">
+                <label th:for="ingredientName">Choose an ingredient:</label>
+            </div>
+            <div class="col-md-auto">
+                <input list="ingredient_list" th:field="*{ingredientName}" />
+                <datalist id="ingredient_list">
+                    <div th:each="ingredient:${ingredients}">
+                        <option th:value="${ingredient.strIngredient1}"></option>
+                    </div>
+                </datalist>
+                <div th:if="${error == 'true'}"><div class="invalid-feedback">Sorry, that username's taken. Try another?</div></div>
+                <div th:if="${error == 'false'}"><div class="valid-feedback">Success! You've done it.</div></div>
+            </div>
+            <div class="col-md-auto">
+                <input type="submit" value="Add Ingredient" />
+            </div>
+        </div>
     </form>
-</div></section>
+    </div>
+</section>
 </body>
 </html>

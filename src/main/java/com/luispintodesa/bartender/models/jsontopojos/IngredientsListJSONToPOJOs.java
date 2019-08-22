@@ -1,0 +1,25 @@
+package com.luispintodesa.bartender.models.jsontopojos;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.luispintodesa.bartender.models.IngredientListWrapper;
+import com.luispintodesa.bartender.models.ListIngredient;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+
+public class IngredientsListJSONToPOJOs {
+
+    public static Object convert() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            URL ingredientList = new URL("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list");
+            IngredientListWrapper listIngredients=mapper.readValue(ingredientList, IngredientListWrapper.class);
+            ArrayList<ListIngredient> ingredients=listIngredients.getDrinks();
+            return ingredients;
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    return "";
+    }
+}
