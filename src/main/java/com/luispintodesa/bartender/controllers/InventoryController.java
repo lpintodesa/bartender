@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -55,5 +56,21 @@ public class InventoryController extends AbstractController {
         model.addAttribute(new InventoryForm());
         model.addAttribute("error", "false");
         return "inventory";
+    }
+
+    @RequestMapping (value="/inventory/remove", method=RequestMethod.POST)
+        public String remove (@RequestParam int[] ingredientIDs, HttpServletRequest request){
+
+        User theUser = getUserFromSession(request.getSession());
+
+        for (int ingredientID : ingredientIDs) {
+            for (Ingredient i: theUser.getIngredients()){
+                if (i.getId()==ingredientID){
+                    theUser.getIngredients().remove(i);
+                }
+            }
+        }
+
+        return "redirect:../";
     }
 }

@@ -11,7 +11,29 @@
             <h6>Welcome, <span th:text="${user.username}"></span>!</h6>
         </div>
     </div>
-    <form method="post" th:object="${inventoryForm}">
+        <div th:if="${user.ingredients != null and !user.ingredients.empty}">
+        <form method="post" action="/inventory/remove">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Ingredient Name</th>
+                <th scope="col">Type</th>
+                <th scope="col"><input type="submit" value="Remove Ingredient(s)" /></th>
+            </tr>
+            </thead>
+                <tbody th:each="ingredient:${user.ingredients}">
+                    <tr>
+                        <td><img th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}" height="70" width="70"></td>
+                        <td th:text="${ingredient.strIngredient}"></td>
+                        <td th:text="${ingredient.strType}"></td>
+                        <td><input type="checkbox" name="ingredientIDs" th:value="${ingredient.id}" th:id="${ingredient.id}"/></td>
+                    </tr>
+                </tbody>
+        </table>
+        </form>
+        </div>
+        <form method="post" th:object="${inventoryForm}">
         <div class="row justify-content-md-start">
             <div class="col-md-auto">
                 <label th:for="ingredientName">Choose an ingredient:</label>
