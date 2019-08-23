@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand">Bartender</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./inventory">My Bar <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./whatcanimake">What can I Make?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Browse All Cocktails</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Results</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav navbar-right">
+                    <li class="nav-item, navbar-text">Welcome, <span th:text="${user.username}"></span>!</li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">(Log Out)</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<body>
+<!--/*/
+<div class="container" th:each="drink:${drinks}">
+    <div class="row">
+        <div class="card text-white bg-danger mb-0" style="max-width: 20rem;">
+            <div class="card-header" th:text="${drink.strDrink}"></div>
+            <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+        </div>
+    </div>
+</div>
+/*/-->
+<section>
+<div class="container">
+    <div class="row">
+        <div class="col" >
+            <div class="row" th:if="${one != null and !one.empty}" th:each="drink:${one}">
+                <div class="col">
+                    <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
+                        <div class="card-header" th:text="${drink.strDrink}"></div>
+                        <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col" >
+            <div class="row"th:if="${two != null and !two.empty}" th:each="drink:${two}">
+                <div class="col">
+                    <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
+                        <div class="card-header" th:text="${drink.strDrink}"></div>
+                        <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col" >
+            <div class="row" th:if="${three != null and !three.empty}" th:each="drink:${three}">
+                <div class="col">
+                    <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
+                        <div class="card-header" th:text="${drink.strDrink}"></div>
+                        <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+</body>
+</html>

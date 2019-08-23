@@ -15,15 +15,15 @@
         <form method="post" action="/inventory/remove">
         <table class="table table-hover">
             <thead>
-            <tr>
+            <tr class="table-dark">
                 <th scope="col">Image</th>
                 <th scope="col">Ingredient Name</th>
                 <th scope="col">Type</th>
                 <th scope="col"><input type="submit" value="Remove Ingredient(s)" /></th>
             </tr>
             </thead>
-                <tbody th:each="ingredient:${user.ingredients}">
-                    <tr>
+                <tbody th:each="ingredient, iterStat:${user.ingredients}">
+                    <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
                         <td><img th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}" height="70" width="70"></td>
                         <td th:text="${ingredient.strIngredient}"></td>
                         <td th:text="${ingredient.strType}"></td>

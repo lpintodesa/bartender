@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 @Controller
+@RequestMapping("inventory")
 public class InventoryController extends AbstractController {
 
     @Autowired
@@ -27,14 +31,14 @@ public class InventoryController extends AbstractController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "/inventory")
+    @RequestMapping(value = "")
     public String inventoryForm(Model model) {
         model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
         model.addAttribute(new InventoryForm());
         return "inventory";
     }
 
-    @RequestMapping(value = "/inventory", method= RequestMethod.POST)
+    @RequestMapping(value = "", method= RequestMethod.POST)
     public String inventory(Model model, @ModelAttribute InventoryForm form, HttpServletRequest request){
 
         ArrayList<ListIngredient> list = (ArrayList<ListIngredient>) IngredientsListJSONToPOJOs.convert();
@@ -58,19 +62,21 @@ public class InventoryController extends AbstractController {
         return "inventory";
     }
 
-    @RequestMapping (value="/inventory/remove", method=RequestMethod.POST)
+    @RequestMapping (value="remove", method=RequestMethod.POST)
         public String remove (@RequestParam int[] ingredientIDs, HttpServletRequest request){
 
         User theUser = getUserFromSession(request.getSession());
 
+        ListIterator<Ingredient> iter = theUser.getIngredients().listIterator();
+
         for (int ingredientID : ingredientIDs) {
-            for (Ingredient i: theUser.getIngredients()){
-                if (i.getId()==ingredientID){
-                    theUser.getIngredients().remove(i);
+            while (iter.hasNext()){
+                if (iter.next().getId()==ingredientID){
+                    iter.remove();
                 }
             }
         }
-
-        return "redirect:../";
+        userDao.save(theUser);
+        return "redirect:./";
     }
 }

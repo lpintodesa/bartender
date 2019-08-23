@@ -22,7 +22,7 @@ public class Ingredient {
     @JsonProperty("strType")
     private String strType;
 
-    @ManyToMany (mappedBy="ingredients", cascade = CascadeType.ALL)
+    @ManyToMany (mappedBy="ingredients")
     private List<User> users;
 
     public int getId() {
