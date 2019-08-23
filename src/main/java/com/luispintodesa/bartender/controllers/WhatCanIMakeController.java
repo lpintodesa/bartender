@@ -39,7 +39,8 @@ public class WhatCanIMakeController extends AbstractController {
             //model.addAttribute("error", "true");
             //return "inventory";
 
-        ArrayList<DrinkInList> drinks = (ArrayList<DrinkInList>) DrinkInListJSONtoPOJOs.convert(form.getCocktailName());
+        String cocktailName = SpaceToUnderscore.convert(form.getCocktailName());
+        ArrayList<DrinkInList> drinks = (ArrayList<DrinkInList>) DrinkInListJSONtoPOJOs.convert(cocktailName);
         ArrayList<ArrayList<DrinkInList>> lists = ArrayListDivider.divide(drinks);
         ArrayList<DrinkInList> one = lists.get(0);
         ArrayList<DrinkInList> two = lists.get(1);
