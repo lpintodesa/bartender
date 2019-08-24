@@ -1,8 +1,10 @@
-package com.luispintodesa.bartender.models;
+package com.luispintodesa.bartender.models.manipulation;
+
+import com.luispintodesa.bartender.models.DrinkInList;
 
 import java.util.ArrayList;
 
-public class ArrayListDivider {
+public class DrinkInListDivider {
 
     public static ArrayList<ArrayList<DrinkInList>> divide(ArrayList<DrinkInList> original) {
 

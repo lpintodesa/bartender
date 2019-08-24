@@ -1,6 +1,7 @@
-package com.luispintodesa.bartender.models;
+package com.luispintodesa.bartender.models.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.luispintodesa.bartender.models.DrinkInList;
 
 import java.util.ArrayList;
 

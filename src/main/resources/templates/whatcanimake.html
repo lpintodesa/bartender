@@ -32,19 +32,29 @@
 </header>
 <section>
     <div class="container">
-    <form method="post" th:object="${whatCanIMakeForm}">
-        <div class="row justify-content-md-start">
-            <div class="col-md-auto">
-                <label th:for="cocktailName">Search for a cocktail by name:</label>
+        <form method="post" th:object="${whatCanIMakeForm}">
+            <div class="row justify-content-md-start">
+                <div class="col-md-auto">
+                    <label th:for="cocktailName">Search for a cocktail by name:</label>
+                </div>
+                <div class="col-md-auto">
+                    <input type="text" th:field="*{cocktailName}" />
+                </div>
+                <div class="col-md-auto">
+                    <input type="submit" value="Search" />
+                </div>
             </div>
-            <div class="col-md-auto">
-                <input type="text" th:field="*{cocktailName}" />
+        </form>
+        <form method="post" action="/whatcanimake/surpriseme">
+            <div class="row justify-content-md-start">
+                <div class="col-md-auto">
+                    <label>Show me what I can make right now or by adding only one or two more ingredients:</label>
+                </div>
+                <div class="col-md-auto">
+                    <input type="submit" value="Show Me!" />
+                </div>
             </div>
-            <div class="col-md-auto">
-                <input type="submit" value="Search" />
-            </div>
-        </div>
-    </form>
+        </form>
     </div>
 </section>
 </body>

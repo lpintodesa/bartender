@@ -1,4 +1,4 @@
-package com.luispintodesa.bartender.models;
+package com.luispintodesa.bartender.models.manipulation;
 
 public class SpaceToUnderscore {
 

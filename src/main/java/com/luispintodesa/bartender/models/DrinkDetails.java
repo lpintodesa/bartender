@@ -12,29 +12,8 @@ public class DrinkDetails {
     @JsonProperty("strDrink")
     private String strDrink;
 
-    @JsonIgnore
-    private String strDrinkAlternate;
-
-    @JsonIgnore
-    private String strDrinkES;
-
-    @JsonIgnore
-    private String strDrinkDE;
-
-    @JsonIgnore
-    private String strDrinkFR;
-
-    @JsonIgnore
-    private String strDrinkZHHANS;
-
-    @JsonIgnore
-    private String strDrinkZHHANT;
-
     @JsonProperty("strTags")
     private String strTags;
-
-    @JsonIgnore
-    private String strVideo;
 
     @JsonProperty("strCategory")
     private String strCategory;
@@ -50,21 +29,6 @@ public class DrinkDetails {
 
     @JsonProperty("strInstructions")
     private String strInstructions;
-
-    @JsonIgnore
-    private String strInstructionsES;
-
-    @JsonIgnore
-    private String strInstructionsDE;
-
-    @JsonIgnore
-    private String strInstructionsFR;
-
-    @JsonIgnore
-    private String strInstructionsZHHANS;
-
-    @JsonIgnore
-    private String strInstructionsZHHANT;
 
     @JsonProperty("strDrinkThumb")
     private String strDrinkThumb;
@@ -159,9 +123,5 @@ public class DrinkDetails {
     @JsonProperty("strMeasure15")
     private String strMeasure15;
 
-    @JsonIgnore
-    private String strCreativeCommonsConfirmed;
-
-    @JsonIgnore
-    private String dateModified;
+    //Getters and Setters
 }

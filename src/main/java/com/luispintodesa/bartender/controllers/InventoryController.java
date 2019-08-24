@@ -6,6 +6,7 @@ import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.InventoryForm;
 import com.luispintodesa.bartender.models.jsontopojos.IngredientJSONtoPOJO;
 import com.luispintodesa.bartender.models.jsontopojos.IngredientsListJSONToPOJOs;
+import com.luispintodesa.bartender.models.manipulation.InventoryValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
 @Controller
@@ -50,6 +48,7 @@ public class InventoryController extends AbstractController {
             return "inventory";
         }
 
+        //TODO - Make sure no duplicates are allowed (maybe do this in manipulation)
         Ingredient newIngredient = (Ingredient) IngredientJSONtoPOJO.convert(form.getIngredientName());
         ingredientDao.save(newIngredient);
         User theUser = getUserFromSession(request.getSession());
