@@ -1,8 +1,11 @@
 package com.luispintodesa.bartender.models.manipulation;
 
+import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.ListIngredient;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 public class InventoryValidation {
 
@@ -13,6 +16,7 @@ public class InventoryValidation {
                 return true;
             }
         }
+
         return false;
         }
 

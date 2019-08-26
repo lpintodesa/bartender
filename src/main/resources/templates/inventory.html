@@ -10,53 +10,80 @@
 <header><nav th:replace="fragments :: navigation"></nav></header>
 <section>
     <div class="container">
-    <div class="row">
-        <div class="col">
-            <h6>Welcome, <span th:text="${user.username}"></span>!</h6>
+        <div class="row">
+            <div class="col">
+                <p>Welcome, <span th:text="${user.username}"></span>!</p>
+            </div>
         </div>
-    </div>
-        <div th:if="${user.ingredients != null and !user.ingredients.empty}">
-        <form method="post" action="/inventory/remove">
-        <table class="table table-hover">
-            <thead>
-            <tr class="table-dark">
-                <th scope="col">Image</th>
-                <th scope="col">Ingredient Name</th>
-                <th scope="col">Type</th>
-                <th scope="col"><input type="submit" value="Remove Ingredient(s)" /></th>
-            </tr>
-            </thead>
-                <tbody th:each="ingredient, iterStat:${user.ingredients}">
-                    <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
-                        <td><img th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}" height="70" width="70"></td>
-                        <td th:text="${ingredient.strIngredient}"></td>
-                        <td th:text="${ingredient.strType}"></td>
-                        <td><input type="checkbox" name="ingredientIDs" th:value="${ingredient.id}" th:id="${ingredient.id}"/></td>
-                    </tr>
-                </tbody>
-        </table>
-        </form>
+        <div class="row">
+            <div class="col">
+                <p class="text-muted">To add an ingredient to your bar, please search for it in the form below and click on "Add Ingredient".</p>
+                <p class="text-muted"> To view/remove an ingredient currently added to your bar, please check its corresponding checkbox and click on "Remove Ingredient(s)".</p>
+            </div>
         </div>
         <form method="post" th:object="${inventoryForm}">
-        <div class="row justify-content-md-start">
-            <div class="col-md-auto">
-                <label th:for="ingredientName">Choose an ingredient:</label>
-            </div>
-            <div class="col-md-auto">
-                <input list="ingredient_list" th:field="*{ingredientName}" />
-                <datalist id="ingredient_list">
-                    <div th:each="ingredient:${ingredients}">
-                        <option th:value="${ingredient.strIngredient1}"></option>
+            <div class="row justify-content-md-start">
+                <div class="col-md-auto">
+                    <label th:for="ingredientName" class="col-form-label">Choose an ingredient:</label>
+                </div>
+                <div class="col-md-auto">
+                    <div class="row">
+                        <div class="col">
+                            <input list="ingredient_list" th:field="*{ingredientName}" />
+                            <datalist id="ingredient_list">
+                                <div th:each="ingredient:${ingredients}">
+                                    <option th:value="${ingredient.strIngredient1}"></option>
+                                </div>
+                            </datalist>
+                        </div>
+                        <div class="col">
+                            <input type="submit" value="Add Ingredient" />
+                        </div>
                     </div>
-                </datalist>
-                <div th:if="${error == 'true'}"><div class="invalid-feedback">Sorry, that username's taken. Try another?</div></div>
-                <div th:if="${error == 'false'}"><div class="valid-feedback">Success! You've done it.</div></div>
+                    <div class="row">
+                        <div class="col">
+                            <div th:if="${error == 'invalid'}"><div class="invalid-feedback">Sorry, that ingredient is not available. Try again?</div></div>
+                            <div th:if="${error == 'duplicate'}"><div class="invalid-feedback">Sorry, that ingredient has already been added to your bar. Try again?</div></div>
+                            <div th:if="${error == 'false'}"><div class="valid-feedback">Success! You've done it.</div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-auto">
-                <input type="submit" value="Add Ingredient" />
+        </form>
+        <div class="row">
+            <div class="col">
+                <p><h5><span th:text="${user.username}"></span>'s Bar:</h5></p>
             </div>
         </div>
-    </form>
+        <div th:if="${user.ingredients != null and !user.ingredients.empty}" class="row">
+            <div class="col">
+                <form method="post" action="/inventory/remove">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr class="table-dark">
+                            <th scope="col">Image</th>
+                            <th scope="col">Ingredient Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col"><input type="submit" value="Remove Ingredient(s)" /></th>
+                        </tr>
+                        </thead>
+                            <tbody th:each="ingredient, iterStat:${user.ingredients}">
+                                <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
+                                    <td><img th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}" height="70" width="70"></td>
+                                    <td th:text="${ingredient.strIngredient}"></td>
+                                    <td th:text="${ingredient.strType}"></td>
+                                    <td><input type="checkbox" name="ingredientIDs" th:value="${ingredient.id}" th:id="${ingredient.id}"/></td>
+                                </tr>
+                            </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div th:if="${user.ingredients == null or user.ingredients.empty}" class="row">
+            <div class="col">
+                <p class="text-muted">There are no ingredients currently in your bar.</p>
+            </div>
+        </div>
     </div>
 </section>
 </body>

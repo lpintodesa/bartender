@@ -6,6 +6,7 @@ import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.InventoryForm;
 import com.luispintodesa.bartender.models.jsontopojos.IngredientJSONtoPOJO;
 import com.luispintodesa.bartender.models.jsontopojos.IngredientsListJSONToPOJOs;
+import com.luispintodesa.bartender.models.manipulation.InventoryDuplicateCheck;
 import com.luispintodesa.bartender.models.manipulation.InventoryValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 @Controller
@@ -41,17 +43,25 @@ public class InventoryController extends AbstractController {
 
         ArrayList<ListIngredient> list = (ArrayList<ListIngredient>) IngredientsListJSONToPOJOs.convert();
 
+        User theUser = getUserFromSession(request.getSession());
+        List <Ingredient> ingredientsInInventory = theUser.getIngredients();
+
         if (!InventoryValidation.check(form.getIngredientName(), list)){
             model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
             model.addAttribute(new InventoryForm());
-            model.addAttribute("error", "true");
+            model.addAttribute("error", "invalid");
             return "inventory";
         }
 
-        //TODO - Make sure no duplicates are allowed (maybe do this in manipulation)
+        if (InventoryDuplicateCheck.check(form.getIngredientName(), ingredientsInInventory)){
+            model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
+            model.addAttribute(new InventoryForm());
+            model.addAttribute("error", "duplicate");
+            return "inventory";
+        }
+
         Ingredient newIngredient = (Ingredient) IngredientJSONtoPOJO.convert(form.getIngredientName());
         ingredientDao.save(newIngredient);
-        User theUser = getUserFromSession(request.getSession());
         theUser.addItem(newIngredient);
         userDao.save(theUser);
 
@@ -66,9 +76,10 @@ public class InventoryController extends AbstractController {
 
         User theUser = getUserFromSession(request.getSession());
 
-        ListIterator<Ingredient> iter = theUser.getIngredients().listIterator();
-
         for (int ingredientID : ingredientIDs) {
+
+            ListIterator<Ingredient> iter = theUser.getIngredients().listIterator();
+
             while (iter.hasNext()){
                 if (iter.next().getId()==ingredientID){
                     iter.remove();

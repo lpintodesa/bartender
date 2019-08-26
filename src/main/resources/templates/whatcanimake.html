@@ -7,7 +7,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand">Bartender</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+                    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor02">
@@ -18,9 +19,6 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="./whatcanimake">What can I Make?</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Browse All Cocktails</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav navbar-right">
                     <li class="nav-item, navbar-text">Welcome, <span th:text="${user.username}"></span>!</li>
@@ -30,57 +28,64 @@
         </div>
     </nav>
 </header>
-<section>
     <div class="container">
+        <section>
         <form method="post" th:object="${whatCanIMakeForm}">
             <div class="row justify-content-md-start">
                 <div class="col-md-auto">
-                    <label th:for="cocktailName">Search for a cocktail by name:</label>
+                    <label th:for="cocktailName" class="col-form-label">Search for a cocktail by name:</label>
                 </div>
                 <div class="col-md-auto">
-                    <input type="text" th:field="*{cocktailName}" />
+                    <input type="text" th:field="*{cocktailName}"/>
                 </div>
                 <div class="col-md-auto">
-                    <input type="submit" value="Search" />
+                    <input type="submit" value="Search"/>
                 </div>
             </div>
         </form>
+        </section>
+        <section>
         <form method="post" action="/whatcanimake/surpriseme">
             <div class="row justify-content-md-start">
                 <div class="col-md-auto">
-                    <label>Show me what I can make right now or by adding only one or two more ingredients:</label>
+                    <label class="col-form-label">Show me what I can make <b>right now</b> or by adding only one or two more ingredients to my inventory:</label>
                 </div>
                 <div class="col-md-auto">
-                    <input type="submit" value="Show Me!" />
+                    <input type="submit" value="Show Me!"/>
                 </div>
             </div>
         </form>
+        </section>
     </div>
+    <section>
     <div class="container" th:if="${user.ingredients != null and !user.ingredients.empty}">
-       <div class="row">
-           <div class="col"><td>Search By Ingredient:</td></div>
-       </div>
-       <div class="row">
-           <div class="col">
-               <form method="post" action="/whatcanimake/byingredient">
-                   <table class="table table-hover">
-                       <thead>
-                       <tr class="table-dark">
-                           <th scope="col">Ingredient Name</th>
-                           <th scope="col"><input type="submit" value="Search By Ingredient(s)" /></th>
-                       </tr>
-                       </thead>
-                       <tbody th:each="ingredient, iterStat:${user.ingredients}">
-                       <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
-                           <td th:text="${ingredient.strIngredient}"></td>
-                           <td><input type="checkbox" name="strIngredients" th:value="${ingredient.strIngredient}" th:id="${ingredient.strIngredient}"/></td>
-                       </tr>
-                       </tbody>
-                   </table>
-               </form>
-           </div>
-       </div>
+        <div class="row">
+            <div class="col">
+                <label class="col-form-label">Search By Ingredient(s) In Your Inventory: <p class="text-info">(Note: if you select more than one ingredient your results will include only those drinks that contain <b>all</b> of your selected ingredients)</p></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form method="post" action="/whatcanimake/byingredient">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr class="table-dark">
+                            <th scope="col">Ingredient Name</th>
+                            <th scope="col"><input type="submit" value="Search By Ingredient(s)"/></th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="ingredient, iterStat:${user.ingredients}">
+                        <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
+                            <td th:text="${ingredient.strIngredient}"></td>
+                            <td><input type="checkbox" name="strIngredients" th:value="${ingredient.strIngredient}"
+                                       th:id="${ingredient.strIngredient}"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
     </div>
-</section>
+    </section>
 </body>
 </html>

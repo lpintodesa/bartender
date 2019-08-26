@@ -15,13 +15,10 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="./inventory">My Bar <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{inventory}">My Bar <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./whatcanimake">What can I Make?</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Browse All Cocktails</a>
+                        <a class="nav-link" th:href="@{whatcanimake}">What can I Make?</a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Results</a>
@@ -53,8 +50,8 @@
             <div class="row"th:if="${two != null and !two.empty}" th:each="drink:${two}">
                 <div class="col">
                     <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
-                        <div class="card-header" th:text="${drink.strDrink}"></div>
-                        <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+                        <a th:href="@{'drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
+                        <a th:href="@{'drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
                     </div>
                 </div>
             </div>
@@ -63,8 +60,8 @@
             <div class="row" th:if="${three != null and !three.empty}" th:each="drink:${three}">
                 <div class="col">
                     <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
-                        <div class="card-header" th:text="${drink.strDrink}"></div>
-                        <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+                        <a th:href="@{'drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
+                        <a th:href="@{'drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
                     </div>
                 </div>
             </div>
