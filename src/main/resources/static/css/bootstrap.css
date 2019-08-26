@@ -162,9 +162,9 @@ sup {
 }
 
 a {
-  color: #DF691A;
+  color: white;
   text-decoration: none;
-  background-color: transparent;
+  background-color: none;
 }
 
 a:hover {

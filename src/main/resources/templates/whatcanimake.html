@@ -56,6 +56,31 @@
             </div>
         </form>
     </div>
+    <div class="container" th:if="${user.ingredients != null and !user.ingredients.empty}">
+       <div class="row">
+           <div class="col"><td>Search By Ingredient:</td></div>
+       </div>
+       <div class="row">
+           <div class="col">
+               <form method="post" action="/whatcanimake/byingredient">
+                   <table class="table table-hover">
+                       <thead>
+                       <tr class="table-dark">
+                           <th scope="col">Ingredient Name</th>
+                           <th scope="col"><input type="submit" value="Search By Ingredient(s)" /></th>
+                       </tr>
+                       </thead>
+                       <tbody th:each="ingredient, iterStat:${user.ingredients}">
+                       <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
+                           <td th:text="${ingredient.strIngredient}"></td>
+                           <td><input type="checkbox" name="strIngredients" th:value="${ingredient.strIngredient}" th:id="${ingredient.strIngredient}"/></td>
+                       </tr>
+                       </tbody>
+                   </table>
+               </form>
+           </div>
+       </div>
+    </div>
 </section>
 </body>
 </html>

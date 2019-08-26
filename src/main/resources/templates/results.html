@@ -36,16 +36,6 @@
     </nav>
 </header>
 <body>
-<!--/*/
-<div class="container" th:each="drink:${drinks}">
-    <div class="row">
-        <div class="card text-white bg-danger mb-0" style="max-width: 20rem;">
-            <div class="card-header" th:text="${drink.strDrink}"></div>
-            <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
-        </div>
-    </div>
-</div>
-/*/-->
 <section>
 <div class="container">
     <div class="row">
@@ -53,8 +43,8 @@
             <div class="row" th:if="${one != null and !one.empty}" th:each="drink:${one}">
                 <div class="col">
                     <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
-                        <div class="card-header" th:text="${drink.strDrink}"></div>
-                        <div class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></div>
+                        <a th:href="@{'drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
+                        <a th:href="@{'drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
                     </div>
                 </div>
             </div>

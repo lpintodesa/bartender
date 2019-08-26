@@ -4,6 +4,8 @@ import com.luispintodesa.bartender.models.*;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.WhatCanIMakeForm;
 import com.luispintodesa.bartender.models.jsontopojos.DrinkInListJSONtoPOJOs;
+import com.luispintodesa.bartender.models.jsontopojos.IngredientsListJSONToPOJOs;
+import com.luispintodesa.bartender.models.jsontopojos.MultiIngredientJSONtoPOJOs;
 import com.luispintodesa.bartender.models.manipulation.DrinkForIngredientsDivider;
 import com.luispintodesa.bartender.models.manipulation.DrinkInListDivider;
 import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscore;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class WhatCanIMakeController extends AbstractController {
     @RequestMapping(value = "")
     public String inventoryForm(Model model) {
         model.addAttribute(new WhatCanIMakeForm());
+        model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
         return "whatcanimake";
     }
 
@@ -94,5 +98,31 @@ public class WhatCanIMakeController extends AbstractController {
         model.addAttribute("score2three", score2three);
 
         return "surpriseme";
+    }
+
+    @RequestMapping(value = "byingredient", method=RequestMethod.POST)
+    public String byIngredient (Model model, @ModelAttribute @RequestParam String[] strIngredients){
+
+        String search = "";
+
+        for (String i:strIngredients) {
+            if (!i.equals(strIngredients[strIngredients.length-1])) {
+                search += SpaceToUnderscore.convert(i) + ",";
+            }
+            else {
+                search += SpaceToUnderscore.convert(i);
+            }
+        }
+
+        ArrayList<DrinkInList> drinks = (ArrayList<DrinkInList>) MultiIngredientJSONtoPOJOs.convert(search);
+        ArrayList<ArrayList<DrinkInList>> lists = DrinkInListDivider.divide(drinks);
+        ArrayList<DrinkInList> one = lists.get(0);
+        ArrayList<DrinkInList> two = lists.get(1);
+        ArrayList<DrinkInList> three = lists.get(2);
+
+        model.addAttribute("one", one);
+        model.addAttribute("two", two);
+        model.addAttribute("three", three);
+        return "results";
     }
 }

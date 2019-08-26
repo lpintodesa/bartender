@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">The Bartender App</title>
+    <style>html{visibility: hidden;opacity:0;}</style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
 <header><nav th:replace="fragments :: navigation"></nav></header>
