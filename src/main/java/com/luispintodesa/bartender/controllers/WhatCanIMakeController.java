@@ -37,7 +37,7 @@ public class WhatCanIMakeController extends AbstractController {
     @RequestMapping(value = "", method= RequestMethod.POST)
     public String inventory(Model model, @ModelAttribute WhatCanIMakeForm form){
 
-       // if (!InventoryValidation.check(form.getIngredientName(), list)){
+       //if (!DrinkValidation.check(form.getIngredientName(), list)){
             //model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
             //model.addAttribute(new InventoryForm());
             //model.addAttribute("error", "true");
@@ -46,7 +46,14 @@ public class WhatCanIMakeController extends AbstractController {
         //TODO - Validation!
 
         String cocktailName = SpaceToUnderscore.convert(form.getCocktailName());
+
+
+        if (DrinkInListJSONtoPOJOs.convert(cocktailName)==null){
+            return "noresults";
+        }
+
         ArrayList<DrinkInList> drinks = (ArrayList<DrinkInList>) DrinkInListJSONtoPOJOs.convert(cocktailName);
+
         ArrayList<ArrayList<DrinkInList>> lists = DrinkInListDivider.divide(drinks);
         ArrayList<DrinkInList> one = lists.get(0);
         ArrayList<DrinkInList> two = lists.get(1);
