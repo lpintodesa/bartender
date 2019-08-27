@@ -57,14 +57,16 @@
         </div>
         <div th:if="${user.ingredients != null and !user.ingredients.empty}" class="row">
             <div class="col">
-                <form method="post" action="/inventory/remove">
+                <form method="post" th:action="@{~/inventory/remove}">
                     <table class="table table-hover">
                         <thead>
                         <tr class="table-dark">
                             <th scope="col">Image</th>
                             <th scope="col">Ingredient Name</th>
                             <th scope="col">Type</th>
-                            <th scope="col"><input type="submit" value="Remove Ingredient(s)" /></th>
+                            <th scope="col"><input type="submit" value="Remove Ingredient(s)" />
+                                <span th:if="${error == 'empty'}" class="invalid-feedback">You must select at least one ingredient to be remove.</span>
+                            </th>
                         </tr>
                         </thead>
                             <tbody th:each="ingredient, iterStat:${user.ingredients}">

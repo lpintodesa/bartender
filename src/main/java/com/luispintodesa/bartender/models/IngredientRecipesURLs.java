@@ -58,9 +58,12 @@ public class IngredientRecipesURLs {
                 }
                 for (Ingredient ingredient:theUser.getIngredients()){
 
-                    if (ingredient.getStrIngredient().equals(string)){
-                        match_counter+=1;
+                    if (ingredient.getStrIngredient()!=null && string!=null){
+                        if (ingredient.getStrIngredient().toLowerCase().equals(string.toLowerCase())){
+                            match_counter+=1;
+                        }
                     }
+
                 }
             }
             drink.setScore(ingredient_counter-match_counter);

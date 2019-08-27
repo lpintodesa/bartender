@@ -21,34 +21,28 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("whatcanimake")
+@RequestMapping("")
 public class WhatCanIMakeController extends AbstractController {
 
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "")
+    @RequestMapping(value = "whatcanimake")
     public String inventoryForm(Model model) {
         model.addAttribute(new WhatCanIMakeForm());
         model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
+        model.addAttribute("title", "What Can I Make?");
         return "whatcanimake";
     }
 
-    @RequestMapping(value = "", method= RequestMethod.POST)
+    @RequestMapping(value = "whatcanimake", method= RequestMethod.POST)
     public String inventory(Model model, @ModelAttribute WhatCanIMakeForm form){
-
-       //if (!DrinkValidation.check(form.getIngredientName(), list)){
-            //model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
-            //model.addAttribute(new InventoryForm());
-            //model.addAttribute("error", "true");
-            //return "inventory";
-
-        //TODO - Validation!
 
         String cocktailName = SpaceToUnderscore.convert(form.getCocktailName());
 
 
         if (DrinkInListJSONtoPOJOs.convert(cocktailName)==null){
+            model.addAttribute("title", "No Results");
             return "noresults";
         }
 
@@ -62,10 +56,11 @@ public class WhatCanIMakeController extends AbstractController {
         model.addAttribute("one", one);
         model.addAttribute("two", two);
         model.addAttribute("three", three);
+        model.addAttribute("title", "Search Results");
         return "results";
     }
 
-    @RequestMapping(value = "surpriseme", method=RequestMethod.POST)
+    @RequestMapping(value = "whatcanimake/surpriseme", method=RequestMethod.POST)
     public String surpriseMe (Model model, HttpServletRequest request){
 
         User theUser = getUserFromSession(request.getSession());
@@ -104,11 +99,17 @@ public class WhatCanIMakeController extends AbstractController {
         model.addAttribute("score2two", score2two);
         model.addAttribute("score2three", score2three);
 
+        model.addAttribute("title", "Search Results");
+
         return "surpriseme";
     }
 
     @RequestMapping(value = "byingredient", method=RequestMethod.POST)
-    public String byIngredient (Model model, @ModelAttribute @RequestParam String[] strIngredients){
+    public String byIngredient (Model model, @ModelAttribute @RequestParam(required=false) String[] strIngredients){
+
+        if (strIngredients==null){
+            return "redirect:/whatcanimake";
+        }
 
         String search = "";
 
@@ -130,6 +131,7 @@ public class WhatCanIMakeController extends AbstractController {
         model.addAttribute("one", one);
         model.addAttribute("two", two);
         model.addAttribute("three", three);
+        model.addAttribute("title", "Search Results");
         return "results";
     }
 }

@@ -35,6 +35,7 @@ public class InventoryController extends AbstractController {
     public String inventoryForm(Model model) {
         model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
         model.addAttribute(new InventoryForm());
+        model.addAttribute("title", "Inventory");
         return "inventory";
     }
 
@@ -50,6 +51,7 @@ public class InventoryController extends AbstractController {
             model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
             model.addAttribute(new InventoryForm());
             model.addAttribute("error", "invalid");
+            model.addAttribute("title", "Inventory");
             return "inventory";
         }
 
@@ -57,6 +59,7 @@ public class InventoryController extends AbstractController {
             model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
             model.addAttribute(new InventoryForm());
             model.addAttribute("error", "duplicate");
+            model.addAttribute("title", "Inventory");
             return "inventory";
         }
 
@@ -68,11 +71,16 @@ public class InventoryController extends AbstractController {
         model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
         model.addAttribute(new InventoryForm());
         model.addAttribute("error", "false");
+        model.addAttribute("title", "Inventory");
         return "inventory";
     }
 
     @RequestMapping (value="remove", method=RequestMethod.POST)
-        public String remove (@RequestParam int[] ingredientIDs, HttpServletRequest request){
+        public String remove (@ModelAttribute @RequestParam(required = false) int[] ingredientIDs, Model model, HttpServletRequest request){
+
+        if (ingredientIDs==null){
+            return "redirect:./";
+        }
 
         User theUser = getUserFromSession(request.getSession());
 

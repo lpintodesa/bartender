@@ -65,6 +65,7 @@ public class DrinksController extends AbstractController{
         model.addAttribute("measures",measures);
         model.addAttribute("instructions", drink.getStrInstructions());
         model.addAttribute("image",drink.getStrDrinkThumb());
+        model.addAttribute("title",drink.getStrDrink());
 
         return "details";
     }
