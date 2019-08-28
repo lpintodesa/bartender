@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 @Controller
-@RequestMapping("inventory")
-public class InventoryController extends AbstractController {
+@RequestMapping("mybar")
+public class MyBarController extends AbstractController {
 
     @Autowired
     private IngredientDao ingredientDao;
@@ -36,7 +36,7 @@ public class InventoryController extends AbstractController {
         model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
         model.addAttribute(new InventoryForm());
         model.addAttribute("title", "Inventory");
-        return "inventory";
+        return "mybar";
     }
 
     @RequestMapping(value = "", method= RequestMethod.POST)
@@ -52,7 +52,7 @@ public class InventoryController extends AbstractController {
             model.addAttribute(new InventoryForm());
             model.addAttribute("error", "invalid");
             model.addAttribute("title", "Inventory");
-            return "inventory";
+            return "mybar";
         }
 
         if (DuplicateCheckForAddIngredient.check(form.getIngredientName(), ingredientsInInventory)){
@@ -60,7 +60,7 @@ public class InventoryController extends AbstractController {
             model.addAttribute(new InventoryForm());
             model.addAttribute("error", "duplicate");
             model.addAttribute("title", "Inventory");
-            return "inventory";
+            return "mybar";
         }
 
         Ingredient newIngredient = (Ingredient) SearchIngredientByNameDeserializer.convert(form.getIngredientName());
@@ -72,7 +72,7 @@ public class InventoryController extends AbstractController {
         model.addAttribute(new InventoryForm());
         model.addAttribute("error", "false");
         model.addAttribute("title", "Inventory");
-        return "inventory";
+        return "mybar";
     }
 
     @RequestMapping (value="remove", method=RequestMethod.POST)
