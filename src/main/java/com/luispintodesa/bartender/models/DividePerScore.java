@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class DividePerScore {
 
-    public static ArrayList<ArrayList<DrinkForIngredients>> divide (ArrayList<DrinkForIngredients> undivided){
+    public static ArrayList<ArrayList<DrinkDetails>> divide (ArrayList<DrinkDetails> undivided){
 
-        ArrayList<DrinkForIngredients> score0 = new ArrayList<DrinkForIngredients>();
-        ArrayList<DrinkForIngredients> score1 = new ArrayList<DrinkForIngredients>();
-        ArrayList<DrinkForIngredients> score2 = new ArrayList<DrinkForIngredients>();
+        ArrayList<DrinkDetails> score0 = new ArrayList<DrinkDetails>();
+        ArrayList<DrinkDetails> score1 = new ArrayList<DrinkDetails>();
+        ArrayList<DrinkDetails> score2 = new ArrayList<DrinkDetails>();
         //ArrayList<DrinkForIngredients> score3plus = new ArrayList<DrinkForIngredients>();
-        ArrayList<ArrayList<DrinkForIngredients>> scoreList = new ArrayList<ArrayList<DrinkForIngredients>>();
+        ArrayList<ArrayList<DrinkDetails>> scoreList = new ArrayList<ArrayList<DrinkDetails>>();
 
-        for (DrinkForIngredients drink:undivided){
+        for (DrinkDetails drink:undivided){
             if (drink.getScore()==0){
                 score0.add(drink);
             } else if (drink.getScore()==1){

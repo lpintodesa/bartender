@@ -2,12 +2,9 @@ package com.luispintodesa.bartender.models.jsontopojos;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.luispintodesa.bartender.models.DrinkInList;
-import com.luispintodesa.bartender.models.wrappers.DrinkInListWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.luispintodesa.bartender.models.DrinkDetails;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import com.luispintodesa.bartender.models.wrappers.DrinkDetailsWrapper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,9 +27,11 @@ public class MultiIngredientJSONtoPOJOs {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
             URL drinkList = new URL("https://www.thecocktaildb.com/api/json/v2/"+key+"/filter.php?i="+ name);
-            DrinkInListWrapper drinkInListWrapper=mapper.readValue(drinkList, DrinkInListWrapper.class);
-            ArrayList<DrinkInList> drinks=drinkInListWrapper.getDrinks();
+            DrinkDetailsWrapper drinkDetailsWrapper=mapper.readValue(drinkList, DrinkDetailsWrapper.class);
+            ArrayList<DrinkDetails> drinks=drinkDetailsWrapper.getDrinks();
+
             return drinks;
+
         } catch (IOException e){
             e.printStackTrace();
         }

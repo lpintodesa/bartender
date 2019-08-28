@@ -1,21 +1,21 @@
 package com.luispintodesa.bartender.models.manipulation;
 
-import com.luispintodesa.bartender.models.DrinkInList;
+import com.luispintodesa.bartender.models.DrinkDetails;
 
 import java.util.ArrayList;
 
-public class DrinkInListDivider {
+public class DrinkListDivider {
 
-    public static ArrayList<ArrayList<DrinkInList>> divide(ArrayList<DrinkInList> original) {
+    public static ArrayList<ArrayList<DrinkDetails>> divide(ArrayList<DrinkDetails> original) {
 
-        ArrayList<DrinkInList> one = new ArrayList<DrinkInList>();
-        ArrayList<DrinkInList> two = new ArrayList<DrinkInList>();
-        ArrayList<DrinkInList> three = new ArrayList<DrinkInList>();
+        ArrayList<DrinkDetails> one = new ArrayList<DrinkDetails>();
+        ArrayList<DrinkDetails> two = new ArrayList<DrinkDetails>();
+        ArrayList<DrinkDetails> three = new ArrayList<DrinkDetails>();
 
-        ArrayList<ArrayList<DrinkInList>> lists = new ArrayList<ArrayList<DrinkInList>>();
+        ArrayList<ArrayList<DrinkDetails>> lists = new ArrayList<ArrayList<DrinkDetails>>();
 
         int counter = 0;
-        for (DrinkInList i : original) {
+        for (DrinkDetails i : original) {
             if (counter < 3) {
                 counter += 1;
             } else {

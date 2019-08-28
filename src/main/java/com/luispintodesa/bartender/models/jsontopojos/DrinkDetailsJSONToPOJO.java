@@ -3,9 +3,7 @@ package com.luispintodesa.bartender.models.jsontopojos;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luispintodesa.bartender.models.DrinkDetails;
-import com.luispintodesa.bartender.models.DrinkForIngredients;
 import com.luispintodesa.bartender.models.wrappers.DrinkDetailsWrapper;
-import com.luispintodesa.bartender.models.wrappers.DrinkForIngredientsWrapper;
 
 import java.io.IOException;
 import java.net.URL;

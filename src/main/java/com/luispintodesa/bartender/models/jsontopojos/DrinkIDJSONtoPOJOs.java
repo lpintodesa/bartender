@@ -2,10 +2,8 @@ package com.luispintodesa.bartender.models.jsontopojos;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.luispintodesa.bartender.models.DrinkID;
-import com.luispintodesa.bartender.models.DrinkInList;
-import com.luispintodesa.bartender.models.wrappers.DrinkIDWrapper;
-import com.luispintodesa.bartender.models.wrappers.DrinkInListWrapper;
+import com.luispintodesa.bartender.models.DrinkDetails;
+import com.luispintodesa.bartender.models.wrappers.DrinkDetailsWrapper;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,12 +18,12 @@ public class DrinkIDJSONtoPOJOs {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
             URL drinkIDs = new URL (url);
-            DrinkIDWrapper drinkIDWrapper = mapper.readValue(drinkIDs, DrinkIDWrapper.class);
-            ArrayList<DrinkID> drinks = drinkIDWrapper.getDrinks();
+            DrinkDetailsWrapper drinkDetailsWrapper = mapper.readValue(drinkIDs, DrinkDetailsWrapper.class);
+            ArrayList<DrinkDetails> drinks = drinkDetailsWrapper.getDrinks();
 
             ArrayList<Integer> ids = new ArrayList<Integer>();
 
-            for (DrinkID drink : drinks) {
+            for (DrinkDetails drink : drinks) {
                 ids.add(drink.getIdDrink());
             }
 

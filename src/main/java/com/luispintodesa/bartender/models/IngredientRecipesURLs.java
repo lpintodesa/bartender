@@ -1,8 +1,9 @@
 package com.luispintodesa.bartender.models;
 
-import com.luispintodesa.bartender.models.jsontopojos.DrinkForIngredientsJSONtoPOJOs;
+import com.luispintodesa.bartender.models.jsontopojos.DrinkDetailsJSONToPOJO;
 import com.luispintodesa.bartender.models.jsontopojos.DrinkIDJSONtoPOJOs;
 import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscore;
+import com.luispintodesa.bartender.models.DrinkDetails;
 
 import java.util.ArrayList;
 
@@ -31,19 +32,19 @@ public class IngredientRecipesURLs {
         return ids;
     }
 
-    public static ArrayList<DrinkForIngredients> idsToDrinks (ArrayList<Integer> ids){
-        ArrayList<DrinkForIngredients> drinks = new ArrayList<DrinkForIngredients>();
+    public static ArrayList<DrinkDetails> idsToDrinks (ArrayList<Integer> ids){
+        ArrayList<DrinkDetails> drinks = new ArrayList<DrinkDetails>();
 
         for (Integer i:ids){
 
-            drinks.add((DrinkForIngredients)DrinkForIngredientsJSONtoPOJOs.convert(i));
+            drinks.add((DrinkDetails) DrinkDetailsJSONToPOJO.convert(i));
         }
         return drinks;
     }
 
-    public static void setMatchCounter (ArrayList<DrinkForIngredients> drinks, User theUser){
+    public static void setMatchCounter (ArrayList<DrinkDetails> drinks, User theUser){
 
-        for (DrinkForIngredients drink:drinks){
+        for (DrinkDetails drink:drinks){
             int ingredient_counter = 0;
             int match_counter = 0;
 

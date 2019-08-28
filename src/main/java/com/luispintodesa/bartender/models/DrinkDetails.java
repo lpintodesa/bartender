@@ -12,19 +12,19 @@ public class DrinkDetails {
     @JsonProperty("strDrink")
     private String strDrink;
 
-    @JsonProperty("strTags")
+    @JsonIgnore
     private String strTags;
 
-    @JsonProperty("strCategory")
+    @JsonIgnore
     private String strCategory;
 
-    @JsonProperty("strIBA")
+    @JsonIgnore
     private String strIBA;
 
-    @JsonProperty("strAlcoholic")
+    @JsonIgnore
     private String strAlcoholic;
 
-    @JsonProperty("strGlass")
+    @JsonIgnore
     private String strGlass;
 
     @JsonProperty("strInstructions")
@@ -122,6 +122,8 @@ public class DrinkDetails {
 
     @JsonProperty("strMeasure15")
     private String strMeasure15;
+
+    private int score;
 
     //Getters and Setters
 
@@ -436,6 +438,14 @@ public class DrinkDetails {
 
     public void setStrMeasure15(String strMeasure15) {
         this.strMeasure15 = strMeasure15;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     //Constructors
