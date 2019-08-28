@@ -71,7 +71,7 @@
                         <thead>
                         <tr class="table-dark">
                             <th scope="col">Ingredient Name</th>
-                            <th scope="col"><input type="submit" value="Search By Ingredient(s)"/></th>
+                            <th scope="col">Select Ingredient(s):</th>
                         </tr>
                         </thead>
                         <tbody th:each="ingredient, iterStat:${user.ingredients}">
@@ -82,6 +82,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    <input type="submit" value="Search By Ingredient(s)"/>
                 </form>
             </div>
         </div>
