@@ -3,7 +3,7 @@ package com.luispintodesa.bartender.controllers;
 import com.luispintodesa.bartender.models.*;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.dao.UserDao;
-import com.luispintodesa.bartender.models.forms.InventoryForm;
+import com.luispintodesa.bartender.models.forms.MyBarForm;
 import com.luispintodesa.bartender.models.deserializers.SearchIngredientByNameDeserializer;
 import com.luispintodesa.bartender.models.deserializers.ListAllIngredientsDeserializer;
 import com.luispintodesa.bartender.models.manipulation.DuplicateCheckForAddIngredient;
@@ -32,34 +32,34 @@ public class MyBarController extends AbstractController {
     private UserDao userDao;
 
     @RequestMapping(value = "")
-    public String inventoryForm(Model model) {
+    public String myBarForm(Model model) {
         model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
-        model.addAttribute(new InventoryForm());
-        model.addAttribute("title", "Inventory");
+        model.addAttribute(new MyBarForm());
+        model.addAttribute("title", "My Bar");
         return "mybar";
     }
 
     @RequestMapping(value = "", method= RequestMethod.POST)
-    public String inventory(Model model, @ModelAttribute InventoryForm form, HttpServletRequest request){
+    public String myBar(Model model, @ModelAttribute MyBarForm form, HttpServletRequest request){
 
         ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) ListAllIngredientsDeserializer.convert();
 
         User theUser = getUserFromSession(request.getSession());
-        List <Ingredient> ingredientsInInventory = theUser.getIngredients();
+        List <Ingredient> ingredientsInMyBar = theUser.getIngredients();
 
         if (!ValidationForAddIngredient.check(form.getIngredientName(), list)){
             model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
-            model.addAttribute(new InventoryForm());
+            model.addAttribute(new MyBarForm());
             model.addAttribute("error", "invalid");
-            model.addAttribute("title", "Inventory");
+            model.addAttribute("title", "My Bar");
             return "mybar";
         }
 
-        if (DuplicateCheckForAddIngredient.check(form.getIngredientName(), ingredientsInInventory)){
+        if (DuplicateCheckForAddIngredient.check(form.getIngredientName(), ingredientsInMyBar)){
             model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
-            model.addAttribute(new InventoryForm());
+            model.addAttribute(new MyBarForm());
             model.addAttribute("error", "duplicate");
-            model.addAttribute("title", "Inventory");
+            model.addAttribute("title", "My Bar");
             return "mybar";
         }
 
@@ -69,9 +69,9 @@ public class MyBarController extends AbstractController {
         userDao.save(theUser);
 
         model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
-        model.addAttribute(new InventoryForm());
+        model.addAttribute(new MyBarForm());
         model.addAttribute("error", "false");
-        model.addAttribute("title", "Inventory");
+        model.addAttribute("title", "My Bar");
         return "mybar";
     }
 

@@ -29,7 +29,7 @@ public class WhatCanIMakeController extends AbstractController {
     private UserDao userDao;
 
     @RequestMapping(value = "whatcanimake")
-    public String inventoryForm(Model model) {
+    public String myBarForm(Model model) {
         model.addAttribute(new WhatCanIMakeForm());
         model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
         model.addAttribute("title", "What Can I Make?");
@@ -37,7 +37,7 @@ public class WhatCanIMakeController extends AbstractController {
     }
 
     @RequestMapping(value = "whatcanimake", method= RequestMethod.POST)
-    public String inventory(Model model, @ModelAttribute WhatCanIMakeForm form){
+    public String myBar(Model model, @ModelAttribute WhatCanIMakeForm form){
 
         String cocktailName = SpaceToUnderscore.convert(form.getCocktailName());
 

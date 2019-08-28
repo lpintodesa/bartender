@@ -2,12 +2,12 @@ package com.luispintodesa.bartender.models.forms;
 
 import javax.validation.constraints.NotNull;
 
-public class InventoryForm {
+public class MyBarForm {
 
     @NotNull
     private String ingredientName;
 
-    public InventoryForm(){}
+    public MyBarForm(){}
 
     public String getIngredientName() {
         return ingredientName;
