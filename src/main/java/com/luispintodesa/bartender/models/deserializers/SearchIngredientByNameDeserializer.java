@@ -1,4 +1,4 @@
-package com.luispintodesa.bartender.models.jsontopojos;
+package com.luispintodesa.bartender.models.deserializers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class IngredientJSONtoPOJO {
+public class SearchIngredientByNameDeserializer {
 
     public static Object convert(String name) {
 

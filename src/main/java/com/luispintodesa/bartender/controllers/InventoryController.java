@@ -4,10 +4,10 @@ import com.luispintodesa.bartender.models.*;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.InventoryForm;
-import com.luispintodesa.bartender.models.jsontopojos.IngredientJSONtoPOJO;
-import com.luispintodesa.bartender.models.jsontopojos.IngredientsListJSONToPOJOs;
-import com.luispintodesa.bartender.models.manipulation.InventoryDuplicateCheck;
-import com.luispintodesa.bartender.models.manipulation.InventoryValidation;
+import com.luispintodesa.bartender.models.deserializers.SearchIngredientByNameDeserializer;
+import com.luispintodesa.bartender.models.deserializers.ListAllIngredientsDeserializer;
+import com.luispintodesa.bartender.models.manipulation.DuplicateCheckForAddIngredient;
+import com.luispintodesa.bartender.models.manipulation.ValidationForAddIngredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +33,7 @@ public class InventoryController extends AbstractController {
 
     @RequestMapping(value = "")
     public String inventoryForm(Model model) {
-        model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
+        model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
         model.addAttribute(new InventoryForm());
         model.addAttribute("title", "Inventory");
         return "inventory";
@@ -42,33 +42,33 @@ public class InventoryController extends AbstractController {
     @RequestMapping(value = "", method= RequestMethod.POST)
     public String inventory(Model model, @ModelAttribute InventoryForm form, HttpServletRequest request){
 
-        ArrayList<ListIngredient> list = (ArrayList<ListIngredient>) IngredientsListJSONToPOJOs.convert();
+        ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) ListAllIngredientsDeserializer.convert();
 
         User theUser = getUserFromSession(request.getSession());
         List <Ingredient> ingredientsInInventory = theUser.getIngredients();
 
-        if (!InventoryValidation.check(form.getIngredientName(), list)){
-            model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
+        if (!ValidationForAddIngredient.check(form.getIngredientName(), list)){
+            model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
             model.addAttribute(new InventoryForm());
             model.addAttribute("error", "invalid");
             model.addAttribute("title", "Inventory");
             return "inventory";
         }
 
-        if (InventoryDuplicateCheck.check(form.getIngredientName(), ingredientsInInventory)){
-            model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
+        if (DuplicateCheckForAddIngredient.check(form.getIngredientName(), ingredientsInInventory)){
+            model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
             model.addAttribute(new InventoryForm());
             model.addAttribute("error", "duplicate");
             model.addAttribute("title", "Inventory");
             return "inventory";
         }
 
-        Ingredient newIngredient = (Ingredient) IngredientJSONtoPOJO.convert(form.getIngredientName());
+        Ingredient newIngredient = (Ingredient) SearchIngredientByNameDeserializer.convert(form.getIngredientName());
         ingredientDao.save(newIngredient);
         theUser.addItem(newIngredient);
         userDao.save(theUser);
 
-        model.addAttribute("ingredients", IngredientsListJSONToPOJOs.convert());
+        model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
         model.addAttribute(new InventoryForm());
         model.addAttribute("error", "false");
         model.addAttribute("title", "Inventory");

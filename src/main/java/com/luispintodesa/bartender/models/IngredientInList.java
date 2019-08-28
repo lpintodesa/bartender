@@ -3,16 +3,16 @@ package com.luispintodesa.bartender.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-public class ListIngredient {
+public class IngredientInList {
 
     @JsonProperty("strIngredient1")
     private String strIngredient1;
 
-    public ListIngredient(String strIngredient1) {
+    public IngredientInList(String strIngredient1) {
         this.strIngredient1 = strIngredient1;
     }
 
-    public ListIngredient(){
+    public IngredientInList(){
 
     }
 

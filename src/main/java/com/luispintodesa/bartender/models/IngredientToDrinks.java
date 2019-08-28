@@ -1,13 +1,12 @@
 package com.luispintodesa.bartender.models;
 
-import com.luispintodesa.bartender.models.jsontopojos.DrinkDetailsJSONToPOJO;
-import com.luispintodesa.bartender.models.jsontopojos.DrinkIDJSONtoPOJOs;
+import com.luispintodesa.bartender.models.deserializers.SearchDrinkByIdDeserializer;
+import com.luispintodesa.bartender.models.deserializers.SearchDrinkBySingleIngredientDeserializer;
 import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscore;
-import com.luispintodesa.bartender.models.DrinkDetails;
 
 import java.util.ArrayList;
 
-public class IngredientRecipesURLs {
+public class IngredientToDrinks {
 
     public static ArrayList<String> ingredient_search(User theUser){
         ArrayList<String> urls = new ArrayList<String>();
@@ -22,7 +21,7 @@ public class IngredientRecipesURLs {
         ArrayList<Integer> ids = new ArrayList<Integer>();
 
         for (String i: urls){
-            ArrayList<Integer> ids1 = (ArrayList<Integer>) DrinkIDJSONtoPOJOs.convert(i);
+            ArrayList<Integer> ids1 = (ArrayList<Integer>) SearchDrinkBySingleIngredientDeserializer.convert(i);
             for (Integer id: ids1){
                 if (!ids.contains(id)){
                     ids.add(id);
@@ -32,19 +31,19 @@ public class IngredientRecipesURLs {
         return ids;
     }
 
-    public static ArrayList<DrinkDetails> idsToDrinks (ArrayList<Integer> ids){
-        ArrayList<DrinkDetails> drinks = new ArrayList<DrinkDetails>();
+    public static ArrayList<Drink> idsToDrinks (ArrayList<Integer> ids){
+        ArrayList<Drink> drinks = new ArrayList<Drink>();
 
         for (Integer i:ids){
 
-            drinks.add((DrinkDetails) DrinkDetailsJSONToPOJO.convert(i));
+            drinks.add((Drink) SearchDrinkByIdDeserializer.convert(i));
         }
         return drinks;
     }
 
-    public static void setMatchCounter (ArrayList<DrinkDetails> drinks, User theUser){
+    public static void setMatchCounter (ArrayList<Drink> drinks, User theUser){
 
-        for (DrinkDetails drink:drinks){
+        for (Drink drink:drinks){
             int ingredient_counter = 0;
             int match_counter = 0;
 

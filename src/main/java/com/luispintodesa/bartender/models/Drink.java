@@ -3,7 +3,7 @@ package com.luispintodesa.bartender.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DrinkDetails {
+public class Drink {
 
 
     @JsonProperty("idDrink")
@@ -451,6 +451,6 @@ public class DrinkDetails {
     //Constructors
 
 
-    public DrinkDetails() {
+    public Drink() {
     }
 }

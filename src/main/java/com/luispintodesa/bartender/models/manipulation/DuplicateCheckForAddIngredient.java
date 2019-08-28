@@ -4,7 +4,7 @@ import com.luispintodesa.bartender.models.Ingredient;
 
 import java.util.List;
 
-public class InventoryDuplicateCheck {
+public class DuplicateCheckForAddIngredient {
 
     public static boolean check (String input, List<Ingredient> list) {
 
