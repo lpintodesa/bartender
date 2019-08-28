@@ -19,7 +19,7 @@ public class Ingredient {
     @JsonIgnore
     private String strDescription;
 
-    @JsonIgnore
+    @JsonProperty("strType")
     private String strType;
 
     @ManyToMany (mappedBy="ingredients")
