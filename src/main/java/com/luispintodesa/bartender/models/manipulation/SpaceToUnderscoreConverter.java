@@ -1,6 +1,6 @@
 package com.luispintodesa.bartender.models.manipulation;
 
-public class SpaceToUnderscore {
+public class SpaceToUnderscoreConverter {
 
     public static String convert(String string){
         String processedName="";

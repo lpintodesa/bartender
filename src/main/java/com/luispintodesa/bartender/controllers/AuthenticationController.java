@@ -18,14 +18,14 @@ public class AuthenticationController extends AbstractController {
 
     @RequestMapping(value = "")
     public String index(Model model) {
-        model.addAttribute("title", "The Bartender App");
+        model.addAttribute("title", "The E-Bartender");
         return "index";
     }
 
     @RequestMapping(value = "/register")
     public String registerForm(Model model) {
         model.addAttribute(new RegisterForm());
-        model.addAttribute("title", "Bartender - Registration");
+        model.addAttribute("title", "Registration");
         return "register";
     }
 
@@ -53,7 +53,7 @@ public class AuthenticationController extends AbstractController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
         model.addAttribute(new LoginForm());
-        model.addAttribute("title", "Bartender - Log In");
+        model.addAttribute("title", "Log In");
         return "login";
     }
 
@@ -61,7 +61,7 @@ public class AuthenticationController extends AbstractController {
     public String login(Model model, @ModelAttribute @Valid LoginForm form, Errors errors, HttpServletRequest request) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Bartender - Log In");
+            model.addAttribute("title", "Log In");
             return "login";
         }
 
@@ -70,13 +70,13 @@ public class AuthenticationController extends AbstractController {
 
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            model.addAttribute("title", "Bartender - Log In");
+            model.addAttribute("title", "Log In");
             return "login";
         }
 
         if (!theUser.isMatchingPassword(password)) {
             errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Bartender - Log In");
+            model.addAttribute("title", "Log In");
             return "login";
         }
 

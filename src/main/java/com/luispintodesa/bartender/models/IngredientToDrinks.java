@@ -1,8 +1,6 @@
 package com.luispintodesa.bartender.models;
 
-import com.luispintodesa.bartender.models.deserializers.SearchDrinkByIdDeserializer;
-import com.luispintodesa.bartender.models.deserializers.SearchDrinkBySingleIngredientDeserializer;
-import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscore;
+import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
 
 import java.util.ArrayList;
 
@@ -12,7 +10,7 @@ public class IngredientToDrinks {
         ArrayList<String> urls = new ArrayList<String>();
 
         for (Ingredient i:theUser.getIngredients()){
-            urls.add("https://www.thecocktaildb.com/api/json/v1/1/filter.php?i="+ SpaceToUnderscore.convert(i.getStrIngredient()));
+            urls.add("https://www.thecocktaildb.com/api/json/v1/1/filter.php?i="+ SpaceToUnderscoreConverter.convert(i.getStrIngredient()));
         }
         return urls;
     }
@@ -21,7 +19,7 @@ public class IngredientToDrinks {
         ArrayList<Integer> ids = new ArrayList<Integer>();
 
         for (String i: urls){
-            ArrayList<Integer> ids1 = (ArrayList<Integer>) SearchDrinkBySingleIngredientDeserializer.convert(i);
+            ArrayList<Integer> ids1 = (ArrayList<Integer>) Deserializer.searchDrinkBySingleIngredient(i);
             for (Integer id: ids1){
                 if (!ids.contains(id)){
                     ids.add(id);
@@ -36,7 +34,7 @@ public class IngredientToDrinks {
 
         for (Integer i:ids){
 
-            drinks.add((Drink) SearchDrinkByIdDeserializer.convert(i));
+            drinks.add((Drink) Deserializer.searchDrinkById(i));
         }
         return drinks;
     }

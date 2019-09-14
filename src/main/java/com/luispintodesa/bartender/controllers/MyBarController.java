@@ -1,13 +1,13 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.*;
+import com.luispintodesa.bartender.models.Deserializer;
+import com.luispintodesa.bartender.models.Ingredient;
+import com.luispintodesa.bartender.models.IngredientInList;
+import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.MyBarForm;
-import com.luispintodesa.bartender.models.deserializers.SearchIngredientByNameDeserializer;
-import com.luispintodesa.bartender.models.deserializers.ListAllIngredientsDeserializer;
-import com.luispintodesa.bartender.models.manipulation.DuplicateCheckForAddIngredient;
-import com.luispintodesa.bartender.models.manipulation.ValidationForAddIngredient;
+import com.luispintodesa.bartender.models.manipulation.DuplicateChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +33,7 @@ public class MyBarController extends AbstractController {
 
     @RequestMapping(value = "")
     public String myBarForm(Model model) {
-        model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
+        model.addAttribute("ingredients", Deserializer.listAllIngredients());
         model.addAttribute(new MyBarForm());
         model.addAttribute("title", "My Bar");
         return "mybar";
@@ -42,33 +42,33 @@ public class MyBarController extends AbstractController {
     @RequestMapping(value = "", method= RequestMethod.POST)
     public String myBar(Model model, @ModelAttribute MyBarForm form, HttpServletRequest request){
 
-        ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) ListAllIngredientsDeserializer.convert();
+        ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) Deserializer.listAllIngredients();
 
         User theUser = getUserFromSession(request.getSession());
         List <Ingredient> ingredientsInMyBar = theUser.getIngredients();
 
-        if (!ValidationForAddIngredient.check(form.getIngredientName(), list)){
-            model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
+        if (!DuplicateChecker.checkIngredientInList(form.getIngredientName(), list)){
+            model.addAttribute("ingredients", Deserializer.listAllIngredients());
             model.addAttribute(new MyBarForm());
             model.addAttribute("error", "invalid");
             model.addAttribute("title", "My Bar");
             return "mybar";
         }
 
-        if (DuplicateCheckForAddIngredient.check(form.getIngredientName(), ingredientsInMyBar)){
-            model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
+        if (DuplicateChecker.checkIngredient(form.getIngredientName(), ingredientsInMyBar)){
+            model.addAttribute("ingredients", Deserializer.listAllIngredients());
             model.addAttribute(new MyBarForm());
             model.addAttribute("error", "duplicate");
             model.addAttribute("title", "My Bar");
             return "mybar";
         }
 
-        Ingredient newIngredient = (Ingredient) SearchIngredientByNameDeserializer.convert(form.getIngredientName());
+        Ingredient newIngredient = (Ingredient) Deserializer.searchIngredientByName(form.getIngredientName());
         ingredientDao.save(newIngredient);
         theUser.addItem(newIngredient);
         userDao.save(theUser);
 
-        model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
+        model.addAttribute("ingredients", Deserializer.listAllIngredients());
         model.addAttribute(new MyBarForm());
         model.addAttribute("error", "false");
         model.addAttribute("title", "My Bar");

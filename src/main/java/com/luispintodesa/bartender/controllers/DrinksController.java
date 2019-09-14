@@ -2,7 +2,7 @@ package com.luispintodesa.bartender.controllers;
 
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.User;
-import com.luispintodesa.bartender.models.deserializers.SearchDrinkByIdDeserializer;
+import com.luispintodesa.bartender.models.Deserializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +19,7 @@ public class DrinksController extends AbstractController{
     @RequestMapping(value="{idDrink}", method= RequestMethod.GET)
     public String displayDrink (@PathVariable int idDrink, Model model, HttpServletRequest request){
 
-        Drink drink = (Drink) SearchDrinkByIdDeserializer.convert(idDrink);
+        Drink drink = (Drink) Deserializer.searchDrinkById(idDrink);
 
         User theUser = getUserFromSession(request.getSession());
 

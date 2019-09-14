@@ -1,15 +1,13 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.*;
+import com.luispintodesa.bartender.models.Deserializer;
+import com.luispintodesa.bartender.models.Drink;
+import com.luispintodesa.bartender.models.IngredientToDrinks;
+import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.WhatCanIMakeForm;
-import com.luispintodesa.bartender.models.deserializers.SearchDrinkByNameDeserializer;
-import com.luispintodesa.bartender.models.deserializers.ListAllIngredientsDeserializer;
-import com.luispintodesa.bartender.models.deserializers.SearchDrinkByMultipleIngredientsDeserializer;
-import com.luispintodesa.bartender.models.manipulation.DivideDrinksByScore;
 import com.luispintodesa.bartender.models.manipulation.DrinkListDivider;
-import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscore;
-import com.luispintodesa.bartender.models.Drink;
+import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +29,7 @@ public class WhatCanIMakeController extends AbstractController {
     @RequestMapping(value = "whatcanimake")
     public String myBarForm(Model model) {
         model.addAttribute(new WhatCanIMakeForm());
-        model.addAttribute("ingredients", ListAllIngredientsDeserializer.convert());
+        model.addAttribute("ingredients", Deserializer.listAllIngredients());
         model.addAttribute("title", "What Can I Make?");
         return "whatcanimake";
     }
@@ -39,17 +37,17 @@ public class WhatCanIMakeController extends AbstractController {
     @RequestMapping(value = "whatcanimake", method= RequestMethod.POST)
     public String myBar(Model model, @ModelAttribute WhatCanIMakeForm form){
 
-        String cocktailName = SpaceToUnderscore.convert(form.getCocktailName());
+        String cocktailName = SpaceToUnderscoreConverter.convert(form.getCocktailName());
 
 
-        if (SearchDrinkByNameDeserializer.convert(cocktailName)==null){
+        if (Deserializer.searchDrinkByName(cocktailName)==null){
             model.addAttribute("title", "No Results");
             return "noresults";
         }
 
-        ArrayList<Drink> drinks = (ArrayList<Drink>) SearchDrinkByNameDeserializer.convert(cocktailName);
+        ArrayList<Drink> drinks = (ArrayList<Drink>) Deserializer.searchDrinkByName(cocktailName);
 
-        ArrayList<ArrayList<Drink>> lists = DrinkListDivider.divide(drinks);
+        ArrayList<ArrayList<Drink>> lists = DrinkListDivider.divideInThree(drinks);
         ArrayList<Drink> one = lists.get(0);
         ArrayList<Drink> two = lists.get(1);
         ArrayList<Drink> three = lists.get(2);
@@ -70,11 +68,11 @@ public class WhatCanIMakeController extends AbstractController {
 
         IngredientToDrinks.setMatchCounter(drinks, theUser);
 
-        ArrayList<ArrayList<Drink>> scoreList = DivideDrinksByScore.divide(drinks);
+        ArrayList<ArrayList<Drink>> scoreList = DrinkListDivider.divideByScore(drinks);
 
-        ArrayList<ArrayList<Drink>> score0 = DrinkListDivider.divide(scoreList.get(0));
-        ArrayList<ArrayList<Drink>> score1 = DrinkListDivider.divide(scoreList.get(1));
-        ArrayList<ArrayList<Drink>> score2 = DrinkListDivider.divide(scoreList.get(2));
+        ArrayList<ArrayList<Drink>> score0 = DrinkListDivider.divideInThree(scoreList.get(0));
+        ArrayList<ArrayList<Drink>> score1 = DrinkListDivider.divideInThree(scoreList.get(1));
+        ArrayList<ArrayList<Drink>> score2 = DrinkListDivider.divideInThree(scoreList.get(2));
 
         ArrayList<Drink> score0one = score0.get(0);
         ArrayList<Drink> score0two = score0.get(1);
@@ -116,20 +114,20 @@ public class WhatCanIMakeController extends AbstractController {
 
         for (String i:strIngredients) {
             if (!i.equals(strIngredients[strIngredients.length-1])) {
-                search += SpaceToUnderscore.convert(i) + ",";
+                search += SpaceToUnderscoreConverter.convert(i) + ",";
             }
             else {
-                search += SpaceToUnderscore.convert(i);
+                search += SpaceToUnderscoreConverter.convert(i);
             }
         }
 
-        if (SearchDrinkByMultipleIngredientsDeserializer.convert(search)==""){
+        if (Deserializer.searchDrinkByMultipleIngredients(search)==""){
             model.addAttribute("title", "No Results");
             return "noresults";
         }
 
-        ArrayList<Drink> drinks = (ArrayList<Drink>) SearchDrinkByMultipleIngredientsDeserializer.convert(search);
-        ArrayList<ArrayList<Drink>> lists = DrinkListDivider.divide(drinks);
+        ArrayList<Drink> drinks = (ArrayList<Drink>) Deserializer.searchDrinkByMultipleIngredients(search);
+        ArrayList<ArrayList<Drink>> lists = DrinkListDivider.divideInThree(drinks);
         ArrayList<Drink> one = lists.get(0);
         ArrayList<Drink> two = lists.get(1);
         ArrayList<Drink> three = lists.get(2);
