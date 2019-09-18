@@ -22,8 +22,10 @@ public class DuplicateChecker {
     public static boolean checkIngredientInList (String input, ArrayList<IngredientInList> list) {
 
         for (IngredientInList i : list) {
-            if (i.getStrIngredient1().toLowerCase().equals(input.toLowerCase())) {
-                return true;
+            if (i.getStrIngredient1()!=null){
+                if (i.getStrIngredient1().toLowerCase().equals(input.toLowerCase())) {
+                    return true;
+                }
             }
         }
 
