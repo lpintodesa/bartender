@@ -53,16 +53,18 @@ public class IngredientToDrinks {
             for (String string:strIngredients){
                 if (string!=null && !string.equals("")){
                     ingredient_counter+=1;
-                }
-                for (Ingredient ingredient:theUser.getIngredients()){
 
-                    if (ingredient.getStrIngredient()!=null && string!=null){
-                        if (ingredient.getStrIngredient().toLowerCase().equals(string.toLowerCase())){
-                            match_counter+=1;
+                    for (Ingredient ingredient:theUser.getIngredients()){
+
+                        if (ingredient.getStrIngredient()!=null){
+                            if (ingredient.getStrIngredient().toLowerCase().equals(string.toLowerCase())){
+                                match_counter+=1;
+                            }
                         }
-                    }
 
+                    }
                 }
+
             }
             drink.setScore(ingredient_counter-match_counter);
         }
