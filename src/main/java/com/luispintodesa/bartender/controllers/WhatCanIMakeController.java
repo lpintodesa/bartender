@@ -64,9 +64,11 @@ public class WhatCanIMakeController extends AbstractController {
 
         User theUser = getUserFromSession(request.getSession());
 
-        ArrayList<Drink> drinks = IngredientToDrinks.idsToDrinks(IngredientToDrinks.addDrinkIDsToList(IngredientToDrinks.ingredient_search(theUser)));
+        //ArrayList<Drink> drinks = IngredientToDrinks.idsToDrinks(IngredientToDrinks.addDrinkIDsToList(IngredientToDrinks.ingredient_search(theUser)));
 
-        IngredientToDrinks.setMatchCounter(drinks, theUser);
+        //IngredientToDrinks.setMatchCounter(drinks, theUser);
+
+        ArrayList<Drink> drinks = IngredientToDrinks.convert(theUser);
 
         ArrayList<ArrayList<Drink>> scoreList = DrinkListDivider.divideByScore(drinks);
 
