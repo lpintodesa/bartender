@@ -10,17 +10,7 @@ public class DrinkWrapper {
     @JsonProperty("drinks")
     private ArrayList<Drink> drinks;
 
-    private ArrayList<Integer> ids;
-
     //Getters and Setters
-
-    public void setIds(ArrayList <Drink> drinks){
-        for (Drink drink : drinks) {
-            ids.add(drink.getIdDrink());
-        }
-    }
-
-    public ArrayList<Integer> getIds() {return ids;}
 
     public ArrayList<Drink> getDrinks() {
         return drinks;
