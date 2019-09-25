@@ -27,9 +27,9 @@
                         <div class="col">
                             <input list="ingredient_list" th:field="*{ingredientName}" />
                             <datalist id="ingredient_list">
-                                <div th:each="ingredient:${ingredients}">
-                                    <option th:value="${ingredient.strIngredient1}"></option>
-                                </div>
+                                <!--[if lte IE 9]><select data-datalist="ingredient_list"><![endif]-->
+                                <option th:each="ingredient:${ingredients}" th:value="${ingredient.strIngredient1}"></option>
+                                <!--[if lte IE 9]></select><![endif]-->
                             </datalist>
                         </div>
                         <div class="col">
@@ -84,5 +84,6 @@
         </div>
     </div>
 </section>
+<script th:src="@{/js/datalist.polyfill.min.js}"></script>
 </body>
 </html>
