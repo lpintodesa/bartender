@@ -74,6 +74,10 @@ public class WhatCanIMakeController extends AbstractController {
         ArrayList<ArrayList<Drink>> score1 = DrinkListDivider.divideInThree(scoreList.get(1));
         ArrayList<ArrayList<Drink>> score2 = DrinkListDivider.divideInThree(scoreList.get(2));
 
+        if (scoreList.get(0).isEmpty()&& scoreList.get(1).isEmpty()&&scoreList.get(2).isEmpty()){
+            model.addAttribute("title", "No Results");
+            return "noresults";
+        }
         ArrayList<Drink> score0one = score0.get(0);
         ArrayList<Drink> score0two = score0.get(1);
         ArrayList<Drink> score0three = score0.get(2);

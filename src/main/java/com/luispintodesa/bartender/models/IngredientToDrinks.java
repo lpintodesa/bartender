@@ -15,16 +15,17 @@ public class IngredientToDrinks {
         return urls;
     }
 
-    public static ArrayList<Integer> addDrinkIDsToList (ArrayList<String> urls){
+    public static ArrayList<Integer> addDrinkIDsToList (ArrayList<String> urls) {
         ArrayList<Integer> ids = new ArrayList<Integer>();
 
-        for (String i: urls){
+        for (String i : urls) {
             ArrayList<Integer> ids1 = (ArrayList<Integer>) Deserializer.searchDrinkBySingleIngredient(i);
-            for (Integer id: ids1){
-                if (!ids.contains(id)){
-                    ids.add(id);
+                for (Integer id : ids1) {
+                    if (!ids.contains(id)) {
+                        ids.add(id);
+                    }
                 }
-            }
+
         }
         return ids;
     }

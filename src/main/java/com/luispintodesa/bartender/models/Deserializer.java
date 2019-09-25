@@ -96,6 +96,8 @@ public class Deserializer {
 
     public static Object searchDrinkBySingleIngredient(String url) {
 
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -103,17 +105,14 @@ public class Deserializer {
             DrinkWrapper drinkWrapper = mapper.readValue(drinkIDs, DrinkWrapper.class);
             ArrayList<Drink> drinks = drinkWrapper.getDrinks();
 
-            ArrayList<Integer> ids = new ArrayList<Integer>();
-
             for (Drink drink : drinks) {
                 ids.add(drink.getIdDrink());
             }
 
-            return ids;
         } catch (IOException e) {
-            e.printStackTrace();
+            ids.clear();
         }
-        return "";
+        return ids;
     }
 
     public static Object searchIngredientByName(String name) {
