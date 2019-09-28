@@ -6,46 +6,6 @@ import java.util.ArrayList;
 
 public class IngredientToDrinks {
 
-    public static ArrayList<Drink> convert (User theUser) {
-
-        ArrayList<Integer> ids = new ArrayList<Integer>();
-        ArrayList<Drink> drinks = new ArrayList<Drink>();
-
-        for (Ingredient i : theUser.getIngredients()) {
-            String url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=" + SpaceToUnderscoreConverter.convert(i.getStrIngredient());
-            ArrayList<Integer> ids1 = (ArrayList<Integer>) Deserializer.searchDrinkBySingleIngredient(url);
-            for (Integer id : ids1) {
-                if (!ids.contains(id)) {
-                    ids.add(id);
-                    Drink drink = (Drink) Deserializer.searchDrinkById(id);
-                    int ingredient_counter = 0;
-                    int match_counter = 0;
-
-                    String[] strIngredients = {drink.getStrIngredient1(), drink.getStrIngredient2(), drink.getStrIngredient3(), drink.getStrIngredient4(),
-                            drink.getStrIngredient5(), drink.getStrIngredient6(), drink.getStrIngredient7(), drink.getStrIngredient8(), drink.getStrIngredient9(),
-                            drink.getStrIngredient10(), drink.getStrIngredient11(), drink.getStrIngredient12(), drink.getStrIngredient13(),
-                            drink.getStrIngredient14(), drink.getStrIngredient15()};
-
-                    for (String string : strIngredients) {
-                        if (string != null && !string.equals("")) {
-                            ingredient_counter += 1;
-
-                            for (Ingredient ingredient : theUser.getIngredients()) {
-
-                                if (ingredient.getStrIngredient() != null && ingredient.getStrIngredient().toLowerCase().equals(string.toLowerCase())) {
-                                    match_counter += 1;
-                                }
-                            }
-                        }
-                    }
-                    drink.setScore(ingredient_counter - match_counter);
-                    drinks.add(drink);
-                }
-            }
-        }
-        return drinks;
-    }
-
     public static ArrayList<String> ingredient_search(User theUser){
         ArrayList<String> urls = new ArrayList<String>();
 
