@@ -3,6 +3,7 @@ package com.luispintodesa.bartender.models;
 import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class IngredientToDrinks {
 
@@ -42,31 +43,28 @@ public class IngredientToDrinks {
     public static void setMatchCounter (ArrayList<Drink> drinks, User theUser){
 
         for (Drink drink:drinks){
-            int ingredient_counter = 0;
             int match_counter = 0;
+
+            HashSet<String> strIngredientsHashSet = new HashSet<>();
 
             String[] strIngredients = {drink.getStrIngredient1(), drink.getStrIngredient2(),drink.getStrIngredient3(),drink.getStrIngredient4(),
                     drink.getStrIngredient5(),drink.getStrIngredient6(),drink.getStrIngredient7(),drink.getStrIngredient8(),drink.getStrIngredient9(),
                     drink.getStrIngredient10(),drink.getStrIngredient11(),drink.getStrIngredient12(),drink.getStrIngredient13(),
                     drink.getStrIngredient14(),drink.getStrIngredient15()};
 
-            for (String string:strIngredients){
-                if (string!=null && !string.equals("")){
-                    ingredient_counter+=1;
-
-                    for (Ingredient ingredient:theUser.getIngredients()){
-
-                        if (ingredient.getStrIngredient()!=null){
-                            if (ingredient.getStrIngredient().toLowerCase().equals(string.toLowerCase())){
-                                match_counter+=1;
-                            }
-                        }
-
-                    }
+            for (String string:strIngredients) {
+                if (string != null && !string.equals("")) {
+                    strIngredientsHashSet.add(string.toLowerCase());
                 }
-
             }
-            drink.setScore(ingredient_counter-match_counter);
+            
+            for (Ingredient ingredient:theUser.getIngredients()){
+                if (ingredient.getStrIngredient()!=null && strIngredientsHashSet.contains(ingredient.getStrIngredient().toLowerCase())){
+                            match_counter+=1;
+                }
+            }
+
+            drink.setScore(strIngredientsHashSet.size()-match_counter);
         }
     }
 }
