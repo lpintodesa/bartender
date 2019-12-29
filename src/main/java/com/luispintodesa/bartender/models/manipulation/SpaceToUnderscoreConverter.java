@@ -3,15 +3,19 @@ package com.luispintodesa.bartender.models.manipulation;
 public class SpaceToUnderscoreConverter {
 
     public static String convert(String string){
-        String processedName="";
+
+        StringBuilder processedName = new StringBuilder();
 
         for (char c: string.toCharArray()){
             if (Character.isWhitespace(c)){
-                processedName+="_";
+                processedName.append("_");
             } else {
-                processedName+=c;
+                processedName.append(c);
             }
         }
-        return processedName;
+        return processedName.toString();
+    }
+
+    private SpaceToUnderscoreConverter() {
     }
 }

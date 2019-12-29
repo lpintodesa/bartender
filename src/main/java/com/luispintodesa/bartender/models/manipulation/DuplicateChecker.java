@@ -3,7 +3,6 @@ package com.luispintodesa.bartender.models.manipulation;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.IngredientInList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DuplicateChecker {
@@ -11,7 +10,7 @@ public class DuplicateChecker {
     public static boolean checkIngredient (String input, List<Ingredient> list) {
 
         for (Ingredient i : list) {
-            if (i.getStrIngredient().toLowerCase().equals(input.toLowerCase())) {
+            if (i.getStrIngredient().equalsIgnoreCase(input)) {
                 return true;
             }
         }
@@ -19,18 +18,17 @@ public class DuplicateChecker {
         return false;
     }
 
-    public static boolean checkIngredientInList (String input, ArrayList<IngredientInList> list) {
+    public static boolean checkIngredientInList (String input, List<IngredientInList> list) {
 
         for (IngredientInList i : list) {
-            if (i.getStrIngredient1()!=null){
-                if (i.getStrIngredient1().toLowerCase().equals(input.toLowerCase())) {
+            if (i.getStrIngredient1()!=null && i.getStrIngredient1().equalsIgnoreCase(input)) {
                     return true;
-                }
             }
         }
-
         return false;
     }
 
+    private DuplicateChecker() {
+    }
 }
 

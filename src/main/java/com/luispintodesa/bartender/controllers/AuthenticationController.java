@@ -6,41 +6,44 @@ import com.luispintodesa.bartender.models.forms.RegisterForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import static com.luispintodesa.bartender.models.Constants.REGISTER;
+import static com.luispintodesa.bartender.models.Constants.TITLE;
+import static com.luispintodesa.bartender.models.Constants.LOGIN_TEMPLATE;
+import static com.luispintodesa.bartender.models.Constants.LOGIN_TITLE;
+
 @Controller
 public class AuthenticationController extends AbstractController {
 
-    @RequestMapping(value = "")
+    @GetMapping(value = "")
     public String index(Model model) {
-        model.addAttribute("title", "The E-Bartender");
+        model.addAttribute(TITLE, "The E-Bartender");
         return "index";
     }
 
-    @RequestMapping(value = "/register")
+    @GetMapping(value = "/register")
     public String registerForm(Model model) {
         model.addAttribute(new RegisterForm());
-        model.addAttribute("title", "Registration");
-        return "register";
+        model.addAttribute(TITLE, "Registration");
+        return REGISTER;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping(value = "/register")
     public String register(@ModelAttribute @Valid RegisterForm form, Errors errors, HttpServletRequest request) {
 
         if (errors.hasErrors()) {
-            return "register";
+            return REGISTER;
         }
 
         User existingUser = userDao.findByUsername(form.getUsername());
 
         if (existingUser != null) {
             errors.rejectValue("username", "username.alreadyexists", "A user with that username already exists");
-            return "register";
+            return REGISTER;
         }
 
         User newUser = new User(form.getUsername(), form.getPassword());
@@ -50,19 +53,19 @@ public class AuthenticationController extends AbstractController {
         return "redirect:/mybar";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping(value = "/login")
     public String login(Model model) {
         model.addAttribute(new LoginForm());
-        model.addAttribute("title", "Log In");
-        return "login";
+        model.addAttribute(TITLE, LOGIN_TITLE);
+        return LOGIN_TEMPLATE;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public String login(Model model, @ModelAttribute @Valid LoginForm form, Errors errors, HttpServletRequest request) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Log In");
-            return "login";
+            model.addAttribute(TITLE, LOGIN_TITLE);
+            return LOGIN_TEMPLATE;
         }
 
         User theUser = userDao.findByUsername(form.getUsername());
@@ -70,14 +73,14 @@ public class AuthenticationController extends AbstractController {
 
         if (theUser == null) {
             errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            model.addAttribute("title", "Log In");
-            return "login";
+            model.addAttribute(TITLE, LOGIN_TITLE);
+            return LOGIN_TEMPLATE;
         }
 
         if (!theUser.isMatchingPassword(password)) {
             errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
-            return "login";
+            model.addAttribute(TITLE, LOGIN_TITLE);
+            return LOGIN_TEMPLATE;
         }
 
         setUserInSession(request.getSession(), theUser);
@@ -85,7 +88,7 @@ public class AuthenticationController extends AbstractController {
         return "redirect:/mybar";
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping(value = "/logout")
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
         return "redirect:";

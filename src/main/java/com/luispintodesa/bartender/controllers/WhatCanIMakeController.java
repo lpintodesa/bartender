@@ -11,13 +11,13 @@ import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverte
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.luispintodesa.bartender.models.Constants.*;
 
 @Controller
 @RequestMapping("")
@@ -26,69 +26,69 @@ public class WhatCanIMakeController extends AbstractController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "whatcanimake")
+    @GetMapping(value = "whatcanimake")
     public String myBarForm(Model model) {
         model.addAttribute(new WhatCanIMakeForm());
         model.addAttribute("ingredients", Deserializer.listAllIngredients());
-        model.addAttribute("title", "What Can I Make?");
+        model.addAttribute(TITLE, "What Can I Make?");
         return "whatcanimake";
     }
 
-    @RequestMapping(value = "whatcanimake", method= RequestMethod.POST)
+    @PostMapping(value = "whatcanimake")
     public String myBar(Model model, @ModelAttribute WhatCanIMakeForm form){
 
         String cocktailName = SpaceToUnderscoreConverter.convert(form.getCocktailName());
 
 
         if (Deserializer.searchDrinkByName(cocktailName)==null){
-            model.addAttribute("title", "No Results");
-            return "noresults";
+            model.addAttribute(TITLE, NO_RESULTS);
+            return NO_RESULTS_TEMPLATE;
         }
 
-        ArrayList<Drink> drinks = (ArrayList<Drink>) Deserializer.searchDrinkByName(cocktailName);
+        List<Drink> drinks = (ArrayList<Drink>) Deserializer.searchDrinkByName(cocktailName);
 
-        ArrayList<ArrayList<Drink>> lists = DrinkListDivider.divideInThree(drinks);
-        ArrayList<Drink> one = lists.get(0);
-        ArrayList<Drink> two = lists.get(1);
-        ArrayList<Drink> three = lists.get(2);
+        List<List<Drink>> lists = DrinkListDivider.divideInThree(drinks);
+        List<Drink> one = lists.get(0);
+        List<Drink> two = lists.get(1);
+        List<Drink> three = lists.get(2);
 
         model.addAttribute("one", one);
         model.addAttribute("two", two);
         model.addAttribute("three", three);
-        model.addAttribute("title", "Search Results");
+        model.addAttribute(TITLE, SEARCH_RESULTS);
         return "results";
     }
 
-    @RequestMapping(value = "whatcanimake/surpriseme", method=RequestMethod.POST)
+    @PostMapping(value = "whatcanimake/surpriseme")
     public String surpriseMe (Model model, HttpServletRequest request){
 
         User theUser = getUserFromSession(request.getSession());
 
-        ArrayList<Drink> drinks = IngredientToDrinks.idsToDrinks(IngredientToDrinks.addDrinkIDsToList(IngredientToDrinks.ingredient_search(theUser)));
+        List<Drink> drinks = IngredientToDrinks.idsToDrinks(IngredientToDrinks.addDrinkIDsToList(IngredientToDrinks.ingredientSearch(theUser)));
 
         IngredientToDrinks.setMatchCounter(drinks, theUser);
 
-        ArrayList<ArrayList<Drink>> scoreList = DrinkListDivider.divideByScore(drinks);
+        List<List<Drink>> scoreList = DrinkListDivider.divideByScore(drinks);
 
-        ArrayList<ArrayList<Drink>> score0 = DrinkListDivider.divideInThree(scoreList.get(0));
-        ArrayList<ArrayList<Drink>> score1 = DrinkListDivider.divideInThree(scoreList.get(1));
-        ArrayList<ArrayList<Drink>> score2 = DrinkListDivider.divideInThree(scoreList.get(2));
+        List<List<Drink>> score0 = DrinkListDivider.divideInThree(scoreList.get(0));
+        List<List<Drink>> score1 = DrinkListDivider.divideInThree(scoreList.get(1));
+        List<List<Drink>> score2 = DrinkListDivider.divideInThree(scoreList.get(2));
 
         if (scoreList.get(0).isEmpty()&& scoreList.get(1).isEmpty()&&scoreList.get(2).isEmpty()){
-            model.addAttribute("title", "No Results");
-            return "noresults";
+            model.addAttribute(TITLE, NO_RESULTS);
+            return NO_RESULTS_TEMPLATE;
         }
-        ArrayList<Drink> score0one = score0.get(0);
-        ArrayList<Drink> score0two = score0.get(1);
-        ArrayList<Drink> score0three = score0.get(2);
+        List<Drink> score0one = score0.get(0);
+        List<Drink> score0two = score0.get(1);
+        List<Drink> score0three = score0.get(2);
 
-        ArrayList<Drink> score1one = score1.get(0);
-        ArrayList<Drink> score1two = score1.get(1);
-        ArrayList<Drink> score1three = score1.get(2);
+        List<Drink> score1one = score1.get(0);
+        List<Drink> score1two = score1.get(1);
+        List<Drink> score1three = score1.get(2);
 
-        ArrayList<Drink> score2one = score2.get(0);
-        ArrayList<Drink> score2two = score2.get(1);
-        ArrayList<Drink> score2three = score2.get(2);
+        List<Drink> score2one = score2.get(0);
+        List<Drink> score2two = score2.get(1);
+        List<Drink> score2three = score2.get(2);
 
         model.addAttribute("score0one", score0one);
         model.addAttribute("score0two", score0two);
@@ -102,44 +102,44 @@ public class WhatCanIMakeController extends AbstractController {
         model.addAttribute("score2two", score2two);
         model.addAttribute("score2three", score2three);
 
-        model.addAttribute("title", "Search Results");
+        model.addAttribute(TITLE, SEARCH_RESULTS);
 
         return "surpriseme";
     }
 
-    @RequestMapping(value = "byingredient", method=RequestMethod.POST)
+    @PostMapping(value = "byingredient")
     public String byIngredient (Model model, @ModelAttribute @RequestParam(required=false) String[] strIngredients){
 
         if (strIngredients==null){
             return "redirect:/whatcanimake";
         }
 
-        String search = "";
+        StringBuilder search = new StringBuilder();
 
         for (String i:strIngredients) {
             if (!i.equals(strIngredients[strIngredients.length-1])) {
-                search += SpaceToUnderscoreConverter.convert(i) + ",";
+                search.append(SpaceToUnderscoreConverter.convert(i) + ",");
             }
             else {
-                search += SpaceToUnderscoreConverter.convert(i);
+                search.append(SpaceToUnderscoreConverter.convert(i));
             }
         }
 
-        if (Deserializer.searchDrinkByMultipleIngredients(search)==""){
-            model.addAttribute("title", "No Results");
-            return "noresults";
+        if (Deserializer.searchDrinkByMultipleIngredients(search.toString())==""){
+            model.addAttribute(TITLE, NO_RESULTS);
+            return NO_RESULTS_TEMPLATE;
         }
 
-        ArrayList<Drink> drinks = (ArrayList<Drink>) Deserializer.searchDrinkByMultipleIngredients(search);
-        ArrayList<ArrayList<Drink>> lists = DrinkListDivider.divideInThree(drinks);
-        ArrayList<Drink> one = lists.get(0);
-        ArrayList<Drink> two = lists.get(1);
-        ArrayList<Drink> three = lists.get(2);
+        List<Drink> drinks = (ArrayList<Drink>) Deserializer.searchDrinkByMultipleIngredients(search.toString());
+        List<List<Drink>> lists = DrinkListDivider.divideInThree(drinks);
+        List<Drink> one = lists.get(0);
+        List<Drink> two = lists.get(1);
+        List<Drink> three = lists.get(2);
 
         model.addAttribute("one", one);
         model.addAttribute("two", two);
         model.addAttribute("three", three);
-        model.addAttribute("title", "Search Results");
-        return "results";
+        model.addAttribute(TITLE, SEARCH_RESULTS);
+        return RESULTS_TEMPLATE;
     }
 }

@@ -21,15 +21,15 @@ public abstract class AbstractController {
     * to all classes extending AbstractController
     * */
 
-    public static final String userSessionKey = "user_id";
+    public static final String USER_SESSION_KEY = "user_id";
 
     protected User getUserFromSession(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute(userSessionKey);
+        Integer userId = (Integer) session.getAttribute(USER_SESSION_KEY);
         return userId == null ? null : userDao.findById(userId).orElse(null);
     }
 
     protected void setUserInSession(HttpSession session, User user) {
-        session.setAttribute(userSessionKey, user.getUid());
+        session.setAttribute(USER_SESSION_KEY, user.getUid());
     }
 
     @ModelAttribute("user")

@@ -3,16 +3,17 @@ package com.luispintodesa.bartender.models.manipulation;
 import com.luispintodesa.bartender.models.Drink;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DrinkListDivider {
 
-    public static ArrayList<ArrayList<Drink>> divideInThree(ArrayList<Drink> original) {
+    public static List<List<Drink>> divideInThree(List<Drink> original) {
 
-        ArrayList<Drink> one = new ArrayList<Drink>();
-        ArrayList<Drink> two = new ArrayList<Drink>();
-        ArrayList<Drink> three = new ArrayList<Drink>();
+        List<Drink> one = new ArrayList<>();
+        List<Drink> two = new ArrayList<>();
+        List<Drink> three = new ArrayList<>();
 
-        ArrayList<ArrayList<Drink>> lists = new ArrayList<ArrayList<Drink>>();
+        List<List<Drink>> lists = new ArrayList<>();
 
         int counter = 0;
         for (Drink i : original) {
@@ -37,12 +38,12 @@ public class DrinkListDivider {
         return lists;
     }
 
-    public static ArrayList<ArrayList<Drink>> divideByScore (ArrayList<Drink> undivided){
+    public static List<List<Drink>> divideByScore (List<Drink> undivided){
 
-        ArrayList<Drink> score0 = new ArrayList<Drink>();
-        ArrayList<Drink> score1 = new ArrayList<Drink>();
-        ArrayList<Drink> score2 = new ArrayList<Drink>();
-        ArrayList<ArrayList<Drink>> scoreList = new ArrayList<ArrayList<Drink>>();
+        List<Drink> score0 = new ArrayList<>();
+        List<Drink> score1 = new ArrayList<>();
+        List<Drink> score2 = new ArrayList<>();
+        List<List<Drink>> scoreList = new ArrayList<>();
 
         for (Drink drink:undivided){
             if (drink.getScore()==0){
@@ -58,5 +59,8 @@ public class DrinkListDivider {
         scoreList.add(score2);
 
         return scoreList;
+    }
+
+    private DrinkListDivider() {
     }
 }

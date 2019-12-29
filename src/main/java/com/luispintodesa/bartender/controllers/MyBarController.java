@@ -11,18 +11,17 @@ import com.luispintodesa.bartender.models.manipulation.DuplicateChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import static com.luispintodesa.bartender.models.Constants.*;
+
 @Controller
-@RequestMapping("mybar")
+@RequestMapping(MY_BAR_TEMPLATE)
 public class MyBarController extends AbstractController {
 
     @Autowired
@@ -31,15 +30,15 @@ public class MyBarController extends AbstractController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "")
+    @GetMapping(value = "")
     public String myBarForm(Model model) {
-        model.addAttribute("ingredients", Deserializer.listAllIngredients());
+        model.addAttribute(INGREDIENTS, Deserializer.listAllIngredients());
         model.addAttribute(new MyBarForm());
-        model.addAttribute("title", "My Bar");
-        return "mybar";
+        model.addAttribute(TITLE, MY_BAR);
+        return MY_BAR_TEMPLATE;
     }
 
-    @RequestMapping(value = "", method= RequestMethod.POST)
+    @PostMapping(value = "")
     public String myBar(Model model, @ModelAttribute MyBarForm form, HttpServletRequest request){
 
         ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) Deserializer.listAllIngredients();
@@ -48,19 +47,19 @@ public class MyBarController extends AbstractController {
         List <Ingredient> ingredientsInMyBar = theUser.getIngredients();
 
         if (!DuplicateChecker.checkIngredientInList(form.getIngredientName(), list)){
-            model.addAttribute("ingredients", Deserializer.listAllIngredients());
+            model.addAttribute(INGREDIENTS, Deserializer.listAllIngredients());
             model.addAttribute(new MyBarForm());
-            model.addAttribute("error", "invalid");
-            model.addAttribute("title", "My Bar");
-            return "mybar";
+            model.addAttribute(ERROR, "invalid");
+            model.addAttribute(TITLE, MY_BAR);
+            return MY_BAR_TEMPLATE;
         }
 
         if (DuplicateChecker.checkIngredient(form.getIngredientName(), ingredientsInMyBar)){
-            model.addAttribute("ingredients", Deserializer.listAllIngredients());
+            model.addAttribute(INGREDIENTS, Deserializer.listAllIngredients());
             model.addAttribute(new MyBarForm());
-            model.addAttribute("error", "duplicate");
-            model.addAttribute("title", "My Bar");
-            return "mybar";
+            model.addAttribute(ERROR, "duplicate");
+            model.addAttribute(TITLE, MY_BAR);
+            return MY_BAR_TEMPLATE;
         }
 
         Ingredient newIngredient = (Ingredient) Deserializer.searchIngredientByName(form.getIngredientName());
@@ -70,12 +69,12 @@ public class MyBarController extends AbstractController {
 
         model.addAttribute("ingredients", Deserializer.listAllIngredients());
         model.addAttribute(new MyBarForm());
-        model.addAttribute("error", "false");
-        model.addAttribute("title", "My Bar");
-        return "mybar";
+        model.addAttribute(ERROR, "false");
+        model.addAttribute(TITLE, MY_BAR);
+        return MY_BAR_TEMPLATE;
     }
 
-    @RequestMapping (value="remove", method=RequestMethod.POST)
+    @PostMapping (value="remove")
         public String remove (@ModelAttribute @RequestParam(required = false) int[] ingredientIDs, Model model, HttpServletRequest request){
 
         if (ingredientIDs==null){

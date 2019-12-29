@@ -3,20 +3,20 @@ package com.luispintodesa.bartender.models.wrappers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.luispintodesa.bartender.models.Drink;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class DrinkWrapper {
 
     @JsonProperty("drinks")
-    private ArrayList<Drink> drinks;
+    private List<Drink> drinks;
 
     //Getters and Setters
 
-    public ArrayList<Drink> getDrinks() {
+    public List<Drink> getDrinks() {
         return drinks;
     }
 
-    public void setDrinks(ArrayList<Drink> drinks) {
+    public void setDrinks(List<Drink> drinks) {
         this.drinks = drinks;
     }
 
@@ -25,7 +25,7 @@ public class DrinkWrapper {
     public DrinkWrapper() {
     }
 
-    public DrinkWrapper(ArrayList<Drink> drinks) {
+    public DrinkWrapper(List<Drink> drinks) {
         this.drinks = drinks;
     }
 }

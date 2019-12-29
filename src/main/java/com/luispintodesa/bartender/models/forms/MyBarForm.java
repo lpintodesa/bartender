@@ -7,8 +7,6 @@ public class MyBarForm {
     @NotNull
     private String ingredientName;
 
-    public MyBarForm(){}
-
     public String getIngredientName() {
         return ingredientName;
     }

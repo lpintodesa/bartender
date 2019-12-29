@@ -448,9 +448,4 @@ public class Drink {
         this.score = score;
     }
 
-    //Constructors
-
-
-    public Drink() {
-    }
 }

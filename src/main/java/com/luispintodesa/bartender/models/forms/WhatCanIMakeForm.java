@@ -9,8 +9,6 @@ public class WhatCanIMakeForm {
     @NotNull
     private String cocktailName;
 
-    public WhatCanIMakeForm(){}
-
     public String getCocktailName() {
         return cocktailName;
     }

@@ -3,27 +3,27 @@ package com.luispintodesa.bartender.models.wrappers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.luispintodesa.bartender.models.IngredientInList;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class IngredientInListWrapper {
 
     @JsonProperty("drinks")
 
-    private ArrayList<IngredientInList> drinks;
+    private List<IngredientInList> drinks;
 
     //Getter and Setter
 
-    public ArrayList<IngredientInList> getDrinks() {
+    public List<IngredientInList> getDrinks() {
         return drinks;
     }
 
-    public void setDrinks(ArrayList<IngredientInList> drinks) {
+    public void setDrinks(List<IngredientInList> drinks) {
         this.drinks = drinks;
     }
 
     //Constructors
 
-    public IngredientInListWrapper(ArrayList<IngredientInList> drinks) {
+    public IngredientInListWrapper(List<IngredientInList> drinks) {
         this.drinks = drinks;
     }
 

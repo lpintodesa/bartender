@@ -29,7 +29,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         // Require sign-in for auth pages
         if ( !nonAuthPages.contains(request.getRequestURI()) ) {
 
-            Integer userId = (Integer) request.getSession().getAttribute(AbstractController.userSessionKey);
+            Integer userId = (Integer) request.getSession().getAttribute(AbstractController.USER_SESSION_KEY);
 
             if (userId != null) {
                 User user = userDao.findById(userId).orElse(null);

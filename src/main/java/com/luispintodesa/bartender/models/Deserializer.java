@@ -14,15 +14,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Deserializer {
+
+    private Deserializer() {
+    }
+
+    private static final String URL_FIRST_HALF="https://www.thecocktaildb.com/api/json/v2/";
     
-    private static String getKey(){
-        try {
-            File file = new ClassPathResource("API_Key.txt").getFile();
+    public static String getKey() {
+
+
+        try {File file = new ClassPathResource("API_Key.txt").getFile();
             BufferedReader line = new BufferedReader(new FileReader(file));
-            String key = line .readLine();
-            return key;
+            return line.readLine();
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -33,10 +39,9 @@ public class Deserializer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            URL ingredientList = new URL("https://www.thecocktaildb.com/api/json/v2/"+getKey()+"/list.php?i=list");
+            URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/list.php?i=list");
             IngredientInListWrapper listIngredients=mapper.readValue(ingredientList, IngredientInListWrapper.class);
-            ArrayList<IngredientInList> ingredients=listIngredients.getDrinks();
-            return ingredients;
+            return listIngredients.getDrinks();
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -51,11 +56,10 @@ public class Deserializer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            URL drinkList = new URL("https://www.thecocktaildb.com/api/json/v2/"+getKey()+"/lookup.php?i=" + strId);
+            URL drinkList = new URL(URL_FIRST_HALF+getKey()+"/lookup.php?i=" + strId);
             DrinkWrapper drinkWrapper = mapper.readValue(drinkList, DrinkWrapper.class);
-            ArrayList<Drink> drinks = drinkWrapper.getDrinks();
-            Drink drink = drinks.get(0);
-            return drink;
+            List<Drink> drinks = drinkWrapper.getDrinks();
+            return drinks.get(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,11 +71,10 @@ public class Deserializer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            URL drinkList = new URL("https://www.thecocktaildb.com/api/json/v2/"+getKey()+"/filter.php?i="+ name);
+            URL drinkList = new URL(URL_FIRST_HALF+getKey()+"/filter.php?i="+ name);
             DrinkWrapper drinkWrapper =mapper.readValue(drinkList, DrinkWrapper.class);
-            ArrayList<Drink> drinks= drinkWrapper.getDrinks();
 
-            return drinks;
+            return drinkWrapper.getDrinks();
 
         } catch (IOException e){
             e.printStackTrace();
@@ -84,10 +87,9 @@ public class Deserializer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            URL drinkList = new URL("https://www.thecocktaildb.com/api/json/v2/"+getKey()+"/search.php?s="+ name);
+            URL drinkList = new URL(URL_FIRST_HALF+getKey()+"/search.php?s="+ name);
             DrinkWrapper drinkWrapper =mapper.readValue(drinkList, DrinkWrapper.class);
-            ArrayList<Drink> drinks= drinkWrapper.getDrinks();
-            return drinks;
+            return drinkWrapper.getDrinks();
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -96,14 +98,14 @@ public class Deserializer {
 
     public static Object searchDrinkBySingleIngredient(String url) {
 
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+        ArrayList<Integer> ids = new ArrayList<>();
 
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL drinkIDs = new URL (url);
             DrinkWrapper drinkWrapper = mapper.readValue(drinkIDs, DrinkWrapper.class);
-            ArrayList<Drink> drinks = drinkWrapper.getDrinks();
+            List<Drink> drinks = drinkWrapper.getDrinks();
 
             for (Drink drink : drinks) {
                 ids.add(drink.getIdDrink());
@@ -120,11 +122,10 @@ public class Deserializer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            URL ingredientList = new URL("https://www.thecocktaildb.com/api/json/v2/"+getKey()+"/search.php?i="+ SpaceToUnderscoreConverter.convert((name)));
+            URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/search.php?i="+ SpaceToUnderscoreConverter.convert((name)));
             IngredientWrapper ingredientWrapper=mapper.readValue(ingredientList, IngredientWrapper.class);
-            ArrayList<Ingredient> ingredients=ingredientWrapper.getIngredient();
-            Ingredient ingredient = ingredients.get(0);
-            return ingredient;
+            List<Ingredient> ingredients=ingredientWrapper.getIngredient();
+            return ingredients.get(0);
         } catch (IOException e){
             e.printStackTrace();
         }

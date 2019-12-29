@@ -4,23 +4,27 @@ import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverte
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class IngredientToDrinks {
 
-    public static ArrayList<String> ingredient_search(User theUser){
-        ArrayList<String> urls = new ArrayList<String>();
+    private IngredientToDrinks() {
+    }
+
+    public static List<String> ingredientSearch(User theUser){
+        List<String> urls = new ArrayList<>();
 
         for (Ingredient i:theUser.getIngredients()){
-            urls.add("https://www.thecocktaildb.com/api/json/v1/1/filter.php?i="+ SpaceToUnderscoreConverter.convert(i.getStrIngredient()));
+            urls.add("https://www.thecocktaildb.com/api/json/v2/" + Deserializer.getKey()+"/filter.php?i="+ SpaceToUnderscoreConverter.convert(i.getStrIngredient()));
         }
         return urls;
     }
 
-    public static ArrayList<Integer> addDrinkIDsToList (ArrayList<String> urls){
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+    public static List<Integer> addDrinkIDsToList (List<String> urls){
+        List<Integer> ids = new ArrayList<>();
 
         for (String i: urls){
-            ArrayList<Integer> ids1 = (ArrayList<Integer>) Deserializer.searchDrinkBySingleIngredient(i);
+            List<Integer> ids1 = (List<Integer>) Deserializer.searchDrinkBySingleIngredient(i);
             for (Integer id: ids1){
                 if (!ids.contains(id)){
                     ids.add(id);
@@ -30,8 +34,8 @@ public class IngredientToDrinks {
         return ids;
     }
 
-    public static ArrayList<Drink> idsToDrinks (ArrayList<Integer> ids){
-        ArrayList<Drink> drinks = new ArrayList<Drink>();
+    public static List<Drink> idsToDrinks (List<Integer> ids){
+        List<Drink> drinks = new ArrayList<>();
 
         for (Integer i:ids){
 
@@ -40,10 +44,10 @@ public class IngredientToDrinks {
         return drinks;
     }
 
-    public static void setMatchCounter (ArrayList<Drink> drinks, User theUser){
+    public static void setMatchCounter (List<Drink> drinks, User theUser){
 
         for (Drink drink:drinks){
-            int match_counter = 0;
+            int matchCounter = 0;
 
             HashSet<String> strIngredientsHashSet = new HashSet<>();
 
@@ -60,11 +64,11 @@ public class IngredientToDrinks {
             
             for (Ingredient ingredient:theUser.getIngredients()){
                 if (ingredient.getStrIngredient()!=null && strIngredientsHashSet.contains(ingredient.getStrIngredient().toLowerCase())){
-                            match_counter+=1;
+                            matchCounter+=1;
                 }
             }
 
-            drink.setScore(strIngredientsHashSet.size()-match_counter);
+            drink.setScore(strIngredientsHashSet.size()-matchCounter);
         }
     }
 }
