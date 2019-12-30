@@ -23,11 +23,20 @@ public class Deserializer {
 
     private static final String URL_FIRST_HALF="https://www.thecocktaildb.com/api/json/v2/";
     
+    public static Object getAPIFile (){
+
+        try {
+            return new ClassPathResource("API_Key.txt").getFile();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String getKey() {
 
 
-        try {File file = new ClassPathResource("API_Key.txt").getFile();
-            BufferedReader line = new BufferedReader(new FileReader(file));
+        try (BufferedReader line = new BufferedReader(new FileReader((File)getAPIFile()));){
             return line.readLine();
         } catch (IOException e){
             e.printStackTrace();
