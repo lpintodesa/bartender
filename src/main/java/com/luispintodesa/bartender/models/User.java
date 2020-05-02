@@ -50,6 +50,4 @@ public class User extends AbstractEntity {
         return ingredients;
     }
 
-    public int getId (Integer id){ return getUid();}
-
 }
