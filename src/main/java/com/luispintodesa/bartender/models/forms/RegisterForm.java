@@ -2,9 +2,6 @@ package com.luispintodesa.bartender.models.forms;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by LaunchCode
- */
 public class RegisterForm extends LoginForm {
 
     @NotNull(message = "Passwords do not match")
