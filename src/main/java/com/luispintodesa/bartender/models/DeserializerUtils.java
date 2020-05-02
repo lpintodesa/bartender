@@ -1,11 +1,9 @@
 package com.luispintodesa.bartender.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
-import com.luispintodesa.bartender.models.wrappers.DrinkWrapper;
-import com.luispintodesa.bartender.models.wrappers.IngredientInListWrapper;
-import com.luispintodesa.bartender.models.wrappers.IngredientWrapper;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
@@ -18,8 +16,13 @@ import java.util.List;
 
 public class Deserializer {
 
-    private Deserializer() {
-    }
+    //TODO: Explore using ObjectReader.
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    // TODO: Unwrap root using UNWRAP_ROOT_VALUE annotation to improve performance, elegance and dispense with superfluous wrapper classes.
+    static {
+        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        MAPPER.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);}
 
     private static final String URL_FIRST_HALF="https://www.thecocktaildb.com/api/json/v2/";
     
@@ -35,7 +38,6 @@ public class Deserializer {
 
     public static String getKey() {
 
-
         try (BufferedReader line = new BufferedReader(new FileReader((File)getAPIFile()));){
             return line.readLine();
         } catch (IOException e){
@@ -46,11 +48,9 @@ public class Deserializer {
 
     public static Object listAllIngredients() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/list.php?i=list");
-            IngredientInListWrapper listIngredients=mapper.readValue(ingredientList, IngredientInListWrapper.class);
-            return listIngredients.getDrinks();
+            List<IngredientInList> listIngredients= MAPPER.readValue(ingredientList, new TypeReference<List<IngredientInList>>(){});
+            return listIngredients;
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -59,15 +59,11 @@ public class Deserializer {
 
     public static Object searchDrinkById(Integer id) {
 
-        int intId = (int) id;
-        String strId = String.valueOf(intId);
+        String strId = String.valueOf(id);
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL drinkList = new URL(URL_FIRST_HALF+getKey()+"/lookup.php?i=" + strId);
-            DrinkWrapper drinkWrapper = mapper.readValue(drinkList, DrinkWrapper.class);
-            List<Drink> drinks = drinkWrapper.getDrinks();
+            List<Drink> drinks = MAPPER.readValue(drinkList, new TypeReference<List<Drink>>(){});
             return drinks.get(0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,12 +74,9 @@ public class Deserializer {
     public static Object searchDrinkByMultipleIngredients(String name) {
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL drinkList = new URL(URL_FIRST_HALF+getKey()+"/filter.php?i="+ name);
-            DrinkWrapper drinkWrapper =mapper.readValue(drinkList, DrinkWrapper.class);
-
-            return drinkWrapper.getDrinks();
+            List<Drink> drinks = MAPPER.readValue(drinkList, new TypeReference<List<Drink>>(){});
+            return drinks;
 
         } catch (IOException e){
             e.printStackTrace();
@@ -94,11 +87,9 @@ public class Deserializer {
     public static Object searchDrinkByName(String name) {
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL drinkList = new URL(URL_FIRST_HALF+getKey()+"/search.php?s="+ name);
-            DrinkWrapper drinkWrapper =mapper.readValue(drinkList, DrinkWrapper.class);
-            return drinkWrapper.getDrinks();
+            List<Drink> drinks = MAPPER.readValue(drinkList, new TypeReference<List<Drink>>(){});
+            return drinks;
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -107,33 +98,23 @@ public class Deserializer {
 
     public static Object searchDrinkBySingleIngredient(String url) {
 
-        ArrayList<Integer> ids = new ArrayList<>();
+        List<Drink> drinks = new ArrayList<>();
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL drinkIDs = new URL (url);
-            DrinkWrapper drinkWrapper = mapper.readValue(drinkIDs, DrinkWrapper.class);
-            List<Drink> drinks = drinkWrapper.getDrinks();
-
-            for (Drink drink : drinks) {
-                ids.add(drink.getIdDrink());
-            }
+            drinks = MAPPER.readValue(drinkIDs, new TypeReference<List<Drink>>(){});
 
         } catch (IOException e) {
-            ids.clear();
+            drinks.clear();
         }
-        return ids;
+        return drinks;
     }
 
     public static Object searchIngredientByName(String name) {
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/search.php?i="+ SpaceToUnderscoreConverter.convert((name)));
-            IngredientWrapper ingredientWrapper=mapper.readValue(ingredientList, IngredientWrapper.class);
-            List<Ingredient> ingredients=ingredientWrapper.getIngredient();
+            List<Ingredient> ingredients=MAPPER.readValue(ingredientList, new TypeReference<List<Ingredient>>(){});
             return ingredients.get(0);
         } catch (IOException e){
             e.printStackTrace();
