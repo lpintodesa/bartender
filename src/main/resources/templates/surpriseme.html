@@ -10,12 +10,14 @@
 <body>
 <section>
     <div class="container">
-        <div class="row" th:if="${score0one!=null and !score0one.empty}">
-            <div class="col"><p> Here are the drinks you can make right now:</p></div>
+        <div class="row">
+            <div class="col" th:if="${score==0}"><p> Here are the drinks you can make right now:</p></div>
+            <div class="col" th:if="${score==1}"><p> Here are the drinks you can make with one more ingredient:</p></div>
+            <div class="col" th:if="${score==2}"><p> Here are the drinks you can make with two more ingredients:</p></div>
         </div>
-        <div class="row" th:if="${score0one!=null and !score0one.empty}">
+        <div class="row">
             <div class="col">
-                <div class="row" th:each="drink:${score0one}">
+                <div class="row" th:each="drink:${firstColumn}">
                     <div class="col">
                         <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
                             <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
@@ -25,7 +27,7 @@
                 </div>
             </div>
             <div class="col" >
-                <div class="row"th:if="${score0two != null and !score0two.empty}" th:each="drink:${score0two}">
+                <div class="row"th:if="${secondColumn != null and !secondColumn.empty}" th:each="drink:${secondColumn}">
                     <div class="col">
                         <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
                             <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
@@ -35,77 +37,7 @@
                 </div>
             </div>
             <div class="col" >
-                <div class="row" th:if="${score0three != null and !score0three.empty}" th:each="drink:${score0three}">
-                    <div class="col">
-                        <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" th:if="${score1one!=null and !score1one.empty}">
-            <div class="col"><p> Here are the drinks you can make with one more ingredient:</p></div>
-        </div>
-        <div class="row" th:if="${score1one!=null and !score1one.empty}">
-            <div class="col">
-                <div class="row" th:each="drink:${score1one}">
-                    <div class="col">
-                        <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col" >
-                <div class="row"th:if="${score1two != null and !score1two.empty}" th:each="drink:${score1two}">
-                    <div class="col">
-                        <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col" >
-                <div class="row" th:if="${score1three != null and !score1three.empty}" th:each="drink:${score1three}">
-                    <div class="col">
-                        <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" th:if="${score2one!=null and !score2one.empty}">
-            <div class="col"><p> Here are the drinks you can make with two more ingredients:</p></div>
-        </div>
-        <div class="row" th:if="${score2one!=null and !score2one.empty}">
-            <div class="col">
-                <div class="row" th:each="drink:${score2one}">
-                    <div class="col">
-                        <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col" >
-                <div class="row"th:if="${score2two != null and !score2two.empty}" th:each="drink:${score2two}">
-                    <div class="col">
-                        <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                            <a th:href="@{'../../drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col" >
-                <div class="row" th:if="${score2three != null and !score2three.empty}" th:each="drink:${score2three}">
+                <div class="row" th:if="${thirdColumn != null and !thirdColumn.empty}" th:each="drink:${thirdColumn}">
                     <div class="col">
                         <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
                             <a th:href="@{'../../drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
