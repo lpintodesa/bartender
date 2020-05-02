@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class IngredientToDrinks {
+public class IngredientToDrinksUtils {
 
     public static List<Drink> userIngredientsToDrinks(User theUser, int intendedScore){
         List<Integer> ids = new ArrayList<>();
@@ -20,12 +20,12 @@ public class IngredientToDrinks {
         }
 
         for (Ingredient ingredient:theUser.getIngredients()){
-            List<Drink> singleIngredientDrinks = (List<Drink>)Deserializer.searchDrinkBySingleIngredient(makeSearchDrinkBySingleIngredientURL(ingredient));
+            List<Drink> singleIngredientDrinks = DeserializerUtils.searchDrinks(makeSearchDrinkBySingleIngredientURL(ingredient));
             for (Drink drink: singleIngredientDrinks){
                 int id = drink.getIdDrink();
                 if (!ids.contains(id)) {
                     ids.add(id);
-                    Drink drinkById = (Drink) Deserializer.searchDrinkById(id);
+                    Drink drinkById = (Drink) DeserializerUtils.searchDrinkById(id);
                     int score = setMatchCounter(drinkById, strUserIngredientHashSet);
                     if (score == intendedScore) {
                         drinks.add(drinkById);
@@ -37,7 +37,7 @@ public class IngredientToDrinks {
     }
 
     public static String makeSearchDrinkBySingleIngredientURL (Ingredient ingredient){
-        return "https://www.thecocktaildb.com/api/json/v2/" + Deserializer.getKey()+"/filter.php?i="+ SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient());
+        return "https://www.thecocktaildb.com/api/json/v2/" + DeserializerUtils.getKey()+"/filter.php?i="+ SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient());
     }
 
     public static Integer setMatchCounter (Drink drink, Set<String> userIngredientsSet){
@@ -55,4 +55,7 @@ public class IngredientToDrinks {
 
         return strDrinkIngredientsHashSet.size();
         }
+
+    private IngredientToDrinksUtils() {
+    }
 }
