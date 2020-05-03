@@ -2,40 +2,32 @@ package com.luispintodesa.bartender.models.manipulation;
 
 import com.luispintodesa.bartender.models.Drink;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DrinkListDivider {
 
     public static List<List<Drink>> divideInThree(List<Drink> original) {
 
-        List<Drink> one = new ArrayList<>();
-        List<Drink> two = new ArrayList<>();
-        List<Drink> three = new ArrayList<>();
+        List<Drink> one;
+        List<Drink> two;
+        List<Drink> three;
 
-        List<List<Drink>> lists = new ArrayList<>();
+        double sizeDividedByThree = original.size()/3.0;
 
-        int counter = 0;
-        for (Drink i : original) {
-            if (counter < 3) {
-                counter += 1;
-            } else {
-                counter = 1;
-            }
-            if (counter == 1) {
-                one.add(i);
-            } else if (counter == 2) {
-                two.add(i);
-            } else {
-                three.add(i);
-            }
+        int sizeDividedByThreeRounded = (int) Math.round(sizeDividedByThree);
+
+        if (sizeDividedByThreeRounded<sizeDividedByThree){
+            one = original.subList(0,sizeDividedByThreeRounded+1);
+            two = original.subList(sizeDividedByThreeRounded+1, 2*sizeDividedByThreeRounded+1);
+            three = original.subList(2*sizeDividedByThreeRounded+1,original.size());
+        } else {
+            one = original.subList(0,sizeDividedByThreeRounded);
+            two = original.subList(sizeDividedByThreeRounded, 2*sizeDividedByThreeRounded);
+            three = original.subList(2*sizeDividedByThreeRounded,original.size());
         }
 
-        lists.add(one);
-        lists.add(two);
-        lists.add(three);
-
-        return lists;
+        return Arrays.asList(one,two,three);
     }
 
     private DrinkListDivider() {
