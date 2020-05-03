@@ -25,7 +25,7 @@ public class IngredientToDrinksUtils {
                 int id = drink.getIdDrink();
                 if (!ids.contains(id)) {
                     ids.add(id);
-                    Drink drinkById = (Drink) DeserializerUtils.searchDrinkById(id);
+                    Drink drinkById = DeserializerUtils.searchDrinkById(id);
                     int score = setMatchCounter(drinkById, strUserIngredientHashSet);
                     if (score == intendedScore) {
                         drinks.add(drinkById);
