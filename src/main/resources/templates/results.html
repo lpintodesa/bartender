@@ -5,44 +5,69 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
-<header><nav th:replace="fragments :: navigationResults"></nav>
+<header>
+    <nav th:replace="fragments :: navigationResults"></nav>
 </header>
 <body>
 <section>
-<div class="container">
-    <div class="row">
-        <div class="col" >
-            <div class="row" th:if="${one != null and !one.empty}" th:each="drink:${one}">
-                <div class="col">
-                    <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
-                        <a th:href="@{'drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                        <a th:href="@{'drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="row" th:each="drink:${one}"
+                     th:if="${one != null and !one.empty}">
+                    <div class="col">
+                        <div class="card text-white bg-primary mb-5"
+                             style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'drinks/'+${drink.idDrink}}"
+                               th:text="${drink.strDrink}"
+                               th:value="${drink.idDrink}"></a>
+                            <a class="card-body"
+                               th:href="@{'drinks/'+${drink.idDrink}}"><img
+                                    style="width: 100%; display: block;"
+                                    th:src="${drink.strDrinkThumb}"></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col" >
-            <div class="row"th:if="${two != null and !two.empty}" th:each="drink:${two}">
-                <div class="col">
-                    <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
-                        <a th:href="@{'drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                        <a th:href="@{'drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
+            <div class="col">
+                <div class="row" th:each="drink:${two}"
+                     th:if="${two != null and !two.empty}">
+                    <div class="col">
+                        <div class="card text-white bg-info mb-5"
+                             style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'drinks/'+${drink.idDrink}}"
+                               th:text="${drink.strDrink}"
+                               th:value="${drink.idDrink}"></a>
+                            <a class="card-body"
+                               th:href="@{'drinks/'+${drink.idDrink}}"><img
+                                    style="width: 100%; display: block;"
+                                    th:src="${drink.strDrinkThumb}"></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col" >
-            <div class="row" th:if="${three != null and !three.empty}" th:each="drink:${three}">
-                <div class="col">
-                    <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
-                        <a th:href="@{'drinks/'+${drink.idDrink}}" th:text="${drink.strDrink}" th:value="${drink.idDrink}" class="card-header"></a>
-                        <a th:href="@{'drinks/'+${drink.idDrink}}" class="card-body"><img th:src="${drink.strDrinkThumb}" style="width: 100%; display: block;"></a>
+            <div class="col">
+                <div class="row" th:each="drink:${three}"
+                     th:if="${three != null and !three.empty}">
+                    <div class="col">
+                        <div class="card text-white bg-danger mb-5"
+                             style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'drinks/'+${drink.idDrink}}"
+                               th:text="${drink.strDrink}"
+                               th:value="${drink.idDrink}"></a>
+                            <a class="card-body"
+                               th:href="@{'drinks/'+${drink.idDrink}}"><img
+                                    style="width: 100%; display: block;"
+                                    th:src="${drink.strDrinkThumb}"></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </section>
 </body>
 </html>

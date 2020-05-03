@@ -7,29 +7,28 @@ import java.util.List;
 
 public class DrinkListDivider {
 
-    public static List<List<Drink>> divideInThree(List<Drink> original) {
+  private DrinkListDivider() {}
 
-        List<Drink> one;
-        List<Drink> two;
-        List<Drink> three;
+  public static List<List<Drink>> divideInThree(List<Drink> original) {
 
-        double sizeDividedByThree = original.size()/3.0;
+    List<Drink> one;
+    List<Drink> two;
+    List<Drink> three;
 
-        int sizeDividedByThreeRounded = (int) Math.round(sizeDividedByThree);
+    double sizeDividedByThree = original.size() / 3.0;
 
-        if (sizeDividedByThreeRounded<sizeDividedByThree){
-            one = original.subList(0,sizeDividedByThreeRounded+1);
-            two = original.subList(sizeDividedByThreeRounded+1, 2*sizeDividedByThreeRounded+1);
-            three = original.subList(2*sizeDividedByThreeRounded+1,original.size());
-        } else {
-            one = original.subList(0,sizeDividedByThreeRounded);
-            two = original.subList(sizeDividedByThreeRounded, 2*sizeDividedByThreeRounded);
-            three = original.subList(2*sizeDividedByThreeRounded,original.size());
-        }
+    int sizeDividedByThreeRounded = (int) Math.round(sizeDividedByThree);
 
-        return Arrays.asList(one,two,three);
+    if (sizeDividedByThreeRounded < sizeDividedByThree) {
+      one = original.subList(0, sizeDividedByThreeRounded + 1);
+      two = original.subList(sizeDividedByThreeRounded + 1, 2 * sizeDividedByThreeRounded + 1);
+      three = original.subList(2 * sizeDividedByThreeRounded + 1, original.size());
+    } else {
+      one = original.subList(0, sizeDividedByThreeRounded);
+      two = original.subList(sizeDividedByThreeRounded, 2 * sizeDividedByThreeRounded);
+      three = original.subList(2 * sizeDividedByThreeRounded, original.size());
     }
 
-    private DrinkListDivider() {
-    }
+    return Arrays.asList(one, two, three);
+  }
 }

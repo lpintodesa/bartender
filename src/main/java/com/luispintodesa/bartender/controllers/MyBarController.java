@@ -31,73 +31,76 @@ import static com.luispintodesa.bartender.models.Constants.TITLE;
 @RequestMapping(MY_BAR_TEMPLATE)
 public class MyBarController extends AbstractController {
 
-    @Autowired
-    private IngredientDao ingredientDao;
+  @Autowired private IngredientDao ingredientDao;
 
-    @GetMapping(value = "")
-    public String myBarForm(Model model) {
-        model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
-        model.addAttribute(new MyBarForm());
-        model.addAttribute(TITLE, MY_BAR);
-        return MY_BAR_TEMPLATE;
+  @GetMapping(value = "")
+  public String myBarForm(Model model) {
+    model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
+    model.addAttribute(new MyBarForm());
+    model.addAttribute(TITLE, MY_BAR);
+    return MY_BAR_TEMPLATE;
+  }
+
+  @PostMapping(value = "")
+  public String myBar(Model model, @ModelAttribute MyBarForm form, HttpServletRequest request) {
+
+    ArrayList<IngredientInList> list =
+        (ArrayList<IngredientInList>) DeserializerUtils.listAllIngredients();
+
+    User theUser = getUserFromSession(request.getSession());
+    List<Ingredient> ingredientsInMyBar = theUser.getIngredients();
+
+    if (!DuplicateChecker.checkIngredientInList(form.getIngredientName(), list)) {
+      model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
+      model.addAttribute(new MyBarForm());
+      model.addAttribute(ERROR, "invalid");
+      model.addAttribute(TITLE, MY_BAR);
+      return MY_BAR_TEMPLATE;
     }
 
-    @PostMapping(value = "")
-    public String myBar(Model model, @ModelAttribute MyBarForm form, HttpServletRequest request){
-
-        ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) DeserializerUtils.listAllIngredients();
-
-        User theUser = getUserFromSession(request.getSession());
-        List <Ingredient> ingredientsInMyBar = theUser.getIngredients();
-
-        if (!DuplicateChecker.checkIngredientInList(form.getIngredientName(), list)){
-            model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
-            model.addAttribute(new MyBarForm());
-            model.addAttribute(ERROR, "invalid");
-            model.addAttribute(TITLE, MY_BAR);
-            return MY_BAR_TEMPLATE;
-        }
-
-        if (DuplicateChecker.checkIngredient(form.getIngredientName(), ingredientsInMyBar)){
-            model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
-            model.addAttribute(new MyBarForm());
-            model.addAttribute(ERROR, "duplicate");
-            model.addAttribute(TITLE, MY_BAR);
-            return MY_BAR_TEMPLATE;
-        }
-
-        Ingredient newIngredient = (Ingredient) DeserializerUtils.searchIngredientByName(form.getIngredientName());
-        ingredientDao.save(newIngredient);
-        theUser.addItem(newIngredient);
-        userDao.save(theUser);
-
-        model.addAttribute("ingredients", DeserializerUtils.listAllIngredients());
-        model.addAttribute(new MyBarForm());
-        model.addAttribute(ERROR, "false");
-        model.addAttribute(TITLE, MY_BAR);
-        return MY_BAR_TEMPLATE;
+    if (DuplicateChecker.checkIngredient(form.getIngredientName(), ingredientsInMyBar)) {
+      model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
+      model.addAttribute(new MyBarForm());
+      model.addAttribute(ERROR, "duplicate");
+      model.addAttribute(TITLE, MY_BAR);
+      return MY_BAR_TEMPLATE;
     }
 
-    @PostMapping (value="remove")
-        public String remove (@ModelAttribute @RequestParam(required = false) int[] ingredientIDs, Model model, HttpServletRequest request){
+    Ingredient newIngredient = DeserializerUtils.searchIngredientByName(form.getIngredientName());
+    ingredientDao.save(newIngredient);
+    theUser.addItem(newIngredient);
+    userDao.save(theUser);
 
-        if (ingredientIDs==null){
-            return "redirect:./";
-        }
+    model.addAttribute("ingredients", DeserializerUtils.listAllIngredients());
+    model.addAttribute(new MyBarForm());
+    model.addAttribute(ERROR, "false");
+    model.addAttribute(TITLE, MY_BAR);
+    return MY_BAR_TEMPLATE;
+  }
 
-        User theUser = getUserFromSession(request.getSession());
+  @PostMapping(value = "remove")
+  public String remove(
+      @ModelAttribute @RequestParam(required = false) int[] ingredientIDs,
+      Model model,
+      HttpServletRequest request) {
 
-        for (int ingredientID : ingredientIDs) {
-
-            ListIterator<Ingredient> iter = theUser.getIngredients().listIterator();
-
-            while (iter.hasNext()){
-                if (iter.next().getId()==ingredientID){
-                    iter.remove();
-                }
-            }
-        }
-        userDao.save(theUser);
-        return "redirect:./";
+    if (ingredientIDs == null) {
+      return "redirect:./";
     }
+
+    User theUser = getUserFromSession(request.getSession());
+
+    for (int ingredientID : ingredientIDs) {
+
+      ListIterator<Ingredient> iter = theUser.getIngredients().listIterator();
+
+      while (iter.hasNext()) {
+        if (iter.next().getId() == ingredientID) {
+          iter.remove();
+        }
+      }
+    }
+    userDao.save(theUser);
+    return "redirect:./";
+  }
 }

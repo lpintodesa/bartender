@@ -2,11 +2,10 @@ package com.luispintodesa.bartender.models.manipulation;
 
 public class SpaceToUnderscoreConverter {
 
-    public static String convert(String string){
+  private SpaceToUnderscoreConverter() {}
 
-        return string.replaceAll("\\s", "_");
-    }
+  public static String convert(String string) {
 
-    private SpaceToUnderscoreConverter() {
-    }
+    return string.replaceAll("\\s", "_");
+  }
 }

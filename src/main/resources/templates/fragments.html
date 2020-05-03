@@ -3,58 +3,76 @@
 <head th:fragment="head">
     <meta charset="UTF-8"/>
     <title th:text="${title}">The E-Bartender</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <style>html{visibility: hidden;opacity:0;}</style>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/datalist.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/datalist.css}" type="text/css"/>
 </head>
 <body>
-    <nav th:fragment="navigationMyBar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand">E-Bartender</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="@{~/mybar}">My Bar <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/whatcanimake}">What can I Make?</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav navbar-right">
-                    <li class="nav-item, navbar-text">Welcome, <span th:text="${user.username}"></span>!</li>
-                    <li class="nav-item"><a class="nav-link" href="/logout">(Log Out)</a></li>
-                </ul>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+     th:fragment="navigationMyBar">
+    <div class="container">
+        <a class="navbar-brand">E-Bartender</a>
+        <button aria-controls="navbarColor02" aria-expanded="false"
+                aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarColor01" data-toggle="collapse"
+                type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{~/mybar}">My Bar <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{~/whatcanimake}">What can I
+                        Make?</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item, navbar-text">Welcome, <span
+                        th:text="${user.username}"></span>!
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/logout">(Log
+                    Out)</a></li>
+            </ul>
         </div>
-    </nav>
-    <nav th:fragment="navigationResults" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand">E-Bartender</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor02">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/mybar}">My Bar <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/whatcanimake}">What can I Make?</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Results</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav navbar-right">
-                    <li class="nav-item, navbar-text">Welcome, <span th:text="${user.username}"></span>!</li>
-                    <li class="nav-item"><a class="nav-link" href="/logout">(Log Out)</a></li>
-                </ul>
-            </div>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+     th:fragment="navigationResults">
+    <div class="container">
+        <a class="navbar-brand">E-Bartender</a>
+        <button aria-controls="navbarColor02" aria-expanded="false"
+                aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarColor02" data-toggle="collapse"
+                type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{~/mybar}">My Bar <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{~/whatcanimake}">What can I
+                        Make?</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Results</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item, navbar-text">Welcome, <span
+                        th:text="${user.username}"></span>!
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/logout">(Log
+                    Out)</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 </body>
 </html>

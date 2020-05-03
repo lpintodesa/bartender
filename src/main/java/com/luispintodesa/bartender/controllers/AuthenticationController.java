@@ -6,92 +6,99 @@ import com.luispintodesa.bartender.models.forms.RegisterForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static com.luispintodesa.bartender.models.Constants.REGISTER;
-import static com.luispintodesa.bartender.models.Constants.TITLE;
 import static com.luispintodesa.bartender.models.Constants.LOGIN_TEMPLATE;
 import static com.luispintodesa.bartender.models.Constants.LOGIN_TITLE;
+import static com.luispintodesa.bartender.models.Constants.REGISTER;
+import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
 public class AuthenticationController extends AbstractController {
 
-    @GetMapping(value = "")
-    public String index(Model model) {
-        model.addAttribute(TITLE, "The E-Bartender");
-        return "index";
+  @GetMapping(value = "")
+  public String index(Model model) {
+    model.addAttribute(TITLE, "The E-Bartender");
+    return "index";
+  }
+
+  @GetMapping(value = "/register")
+  public String registerForm(Model model) {
+    model.addAttribute(new RegisterForm());
+    model.addAttribute(TITLE, "Registration");
+    return REGISTER;
+  }
+
+  @PostMapping(value = "/register")
+  public String register(
+      @ModelAttribute @Valid RegisterForm form, Errors errors, HttpServletRequest request) {
+
+    if (errors.hasErrors()) {
+      return REGISTER;
     }
 
-    @GetMapping(value = "/register")
-    public String registerForm(Model model) {
-        model.addAttribute(new RegisterForm());
-        model.addAttribute(TITLE, "Registration");
-        return REGISTER;
+    User existingUser = userDao.findByUsername(form.getUsername());
+
+    if (existingUser != null) {
+      errors.rejectValue(
+          "username", "username.alreadyexists", "A user with that username already exists");
+      return REGISTER;
     }
 
-    @PostMapping(value = "/register")
-    public String register(@ModelAttribute @Valid RegisterForm form, Errors errors, HttpServletRequest request) {
+    User newUser = new User(form.getUsername(), form.getPassword());
+    userDao.save(newUser);
+    setUserInSession(request.getSession(), newUser);
 
-        if (errors.hasErrors()) {
-            return REGISTER;
-        }
+    return "redirect:/mybar";
+  }
 
-        User existingUser = userDao.findByUsername(form.getUsername());
+  @GetMapping(value = "/login")
+  public String login(Model model) {
+    model.addAttribute(new LoginForm());
+    model.addAttribute(TITLE, LOGIN_TITLE);
+    return LOGIN_TEMPLATE;
+  }
 
-        if (existingUser != null) {
-            errors.rejectValue("username", "username.alreadyexists", "A user with that username already exists");
-            return REGISTER;
-        }
+  @PostMapping(value = "/login")
+  public String login(
+      Model model,
+      @ModelAttribute @Valid LoginForm form,
+      Errors errors,
+      HttpServletRequest request) {
 
-        User newUser = new User(form.getUsername(), form.getPassword());
-        userDao.save(newUser);
-        setUserInSession(request.getSession(), newUser);
-
-        return "redirect:/mybar";
+    if (errors.hasErrors()) {
+      model.addAttribute(TITLE, LOGIN_TITLE);
+      return LOGIN_TEMPLATE;
     }
 
-    @GetMapping(value = "/login")
-    public String login(Model model) {
-        model.addAttribute(new LoginForm());
-        model.addAttribute(TITLE, LOGIN_TITLE);
-        return LOGIN_TEMPLATE;
+    User theUser = userDao.findByUsername(form.getUsername());
+    String password = form.getPassword();
+
+    if (theUser == null) {
+      errors.rejectValue("username", "user.invalid", "The given username does not exist");
+      model.addAttribute(TITLE, LOGIN_TITLE);
+      return LOGIN_TEMPLATE;
     }
 
-    @PostMapping(value = "/login")
-    public String login(Model model, @ModelAttribute @Valid LoginForm form, Errors errors, HttpServletRequest request) {
-
-        if (errors.hasErrors()) {
-            model.addAttribute(TITLE, LOGIN_TITLE);
-            return LOGIN_TEMPLATE;
-        }
-
-        User theUser = userDao.findByUsername(form.getUsername());
-        String password = form.getPassword();
-
-        if (theUser == null) {
-            errors.rejectValue("username", "user.invalid", "The given username does not exist");
-            model.addAttribute(TITLE, LOGIN_TITLE);
-            return LOGIN_TEMPLATE;
-        }
-
-        if (!theUser.isMatchingPassword(password)) {
-            errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute(TITLE, LOGIN_TITLE);
-            return LOGIN_TEMPLATE;
-        }
-
-        setUserInSession(request.getSession(), theUser);
-
-        return "redirect:/mybar";
+    if (!theUser.isMatchingPassword(password)) {
+      errors.rejectValue("password", "password.invalid", "Invalid password");
+      model.addAttribute(TITLE, LOGIN_TITLE);
+      return LOGIN_TEMPLATE;
     }
 
-    @GetMapping(value = "/logout")
-    public String logout(HttpServletRequest request){
-        request.getSession().invalidate();
-        return "redirect:";
-    }
+    setUserInSession(request.getSession(), theUser);
 
+    return "redirect:/mybar";
+  }
+
+  @GetMapping(value = "/logout")
+  public String logout(HttpServletRequest request) {
+    request.getSession().invalidate();
+    return "redirect:";
+  }
 }

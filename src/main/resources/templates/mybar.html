@@ -3,7 +3,9 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
-<header><nav th:replace="fragments :: navigationMyBar"></nav></header>
+<header>
+    <nav th:replace="fragments :: navigationMyBar"></nav>
+</header>
 <section>
     <div class="container">
         <div class="row">
@@ -13,34 +15,57 @@
         </div>
         <div class="row">
             <div class="col">
-                <p class="text-muted">To add an ingredient to your bar, please search for it in the form below and click on "Add Ingredient".</p>
-                <p class="text-muted"> To remove one or more ingredients currently in your bar, please check their corresponding checkboxes and click on "Remove Ingredient(s)".</p>
+                <p class="text-muted">To add an ingredient to your bar, please
+                    search for it in the form below and click
+                    on "Add Ingredient".</p>
+                <p class="text-muted"> To remove one or more ingredients
+                    currently in your bar, please check their
+                    corresponding checkboxes and click on "Remove
+                    Ingredient(s)".</p>
             </div>
         </div>
         <form method="post" th:object="${myBarForm}">
             <div class="row justify-content-md-start">
                 <div class="col-md-auto">
-                    <label th:for="ingredientName" class="col-form-label">Choose an ingredient:</label>
+                    <label class="col-form-label" th:for="ingredientName">Choose
+                        an ingredient:</label>
                 </div>
                 <div class="col-md-auto">
                     <div class="row">
                         <div class="col">
-                            <input list="ingredient_list" th:field="*{ingredientName}" />
+                            <input list="ingredient_list"
+                                   th:field="*{ingredientName}"/>
                             <datalist id="ingredient_list">
-                                <!--[if lte IE 9]><select data-datalist="ingredient_list"><![endif]-->
-                                <option th:each="ingredient:${ingredients}" th:value="${ingredient.strIngredient1}"></option>
+                                <!--[if lte IE 9]><select
+                                    data-datalist="ingredient_list"><![endif]-->
+                                <option th:each="ingredient:${ingredients}"
+                                        th:value="${ingredient.strIngredient1}"></option>
                                 <!--[if lte IE 9]></select><![endif]-->
                             </datalist>
                         </div>
                         <div class="col">
-                            <input type="submit" value="Add Ingredient" />
+                            <input type="submit" value="Add Ingredient"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div th:if="${error == 'invalid'}"><div class="invalid-feedback">Sorry, that ingredient is not available. Try again?</div></div>
-                            <div th:if="${error == 'duplicate'}"><div class="invalid-feedback">Sorry, that ingredient has already been added to your bar. Try again?</div></div>
-                            <div th:if="${error == 'false'}"><div class="valid-feedback">Success! You've done it.</div></div>
+                            <div th:if="${error == 'invalid'}">
+                                <div class="invalid-feedback">Sorry, that
+                                    ingredient is not available. Try again?
+                                </div>
+                            </div>
+                            <div th:if="${error == 'duplicate'}">
+                                <div class="invalid-feedback">Sorry, that
+                                    ingredient has already been added to your
+                                    bar.
+                                    Try again?
+                                </div>
+                            </div>
+                            <div th:if="${error == 'false'}">
+                                <div class="valid-feedback">Success! You've done
+                                    it.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +76,8 @@
                 <p><h5><span th:text="${user.username}"></span>'s Bar:</h5></p>
             </div>
         </div>
-        <div th:if="${user.ingredients != null and !user.ingredients.empty}" class="row">
+        <div class="row"
+             th:if="${user.ingredients != null and !user.ingredients.empty}">
             <div class="col">
                 <form method="post" th:action="@{~/mybar/remove}">
                     <table class="table table-hover">
@@ -60,26 +86,36 @@
                             <th scope="col">Image</th>
                             <th scope="col">Ingredient Name</th>
                             <th scope="col">Type</th>
-                            <th scope="col"><input type="submit" value="Remove Ingredient(s)" />
-                                <span th:if="${error == 'empty'}" class="invalid-feedback">You must select at least one ingredient to be remove.</span>
+                            <th scope="col"><input type="submit"
+                                                   value="Remove Ingredient(s)"/>
+                                <span class="invalid-feedback"
+                                      th:if="${error == 'empty'}">You must select at least one ingredient to be remove.</span>
                             </th>
                         </tr>
                         </thead>
-                            <tbody th:each="ingredient, iterStat:${user.ingredients}">
-                                <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
-                                    <td><img th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}" height="70" width="70"></td>
-                                    <td th:text="${ingredient.strIngredient}"></td>
-                                    <td th:text="${ingredient.strType}"></td>
-                                    <td><input type="checkbox" name="ingredientIDs" th:value="${ingredient.id}" th:id="${ingredient.id}"/></td>
-                                </tr>
-                            </tbody>
+                        <tbody th:each="ingredient, iterStat:${user.ingredients}">
+                        <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
+                            <td><img
+                                    height="70"
+                                    th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}"
+                                    width="70"></td>
+                            <td th:text="${ingredient.strIngredient}"></td>
+                            <td th:text="${ingredient.strType}"></td>
+                            <td><input name="ingredientIDs"
+                                       th:id="${ingredient.id}"
+                                       th:value="${ingredient.id}"
+                                       type="checkbox"/></td>
+                        </tr>
+                        </tbody>
                     </table>
                 </form>
             </div>
         </div>
-        <div th:if="${user.ingredients == null or user.ingredients.empty}" class="row">
+        <div class="row"
+             th:if="${user.ingredients == null or user.ingredients.empty}">
             <div class="col">
-                <p class="text-muted">There are no ingredients currently in your bar.</p>
+                <p class="text-muted">There are no ingredients currently in your
+                    bar.</p>
             </div>
         </div>
     </div>

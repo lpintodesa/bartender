@@ -7,93 +7,115 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand">E-Bartender</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
-                    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <button aria-controls="navbarColor02" aria-expanded="false"
+                    aria-label="Toggle navigation" class="navbar-toggler"
+                    data-target="#navbarColor02" data-toggle="collapse"
+                    type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/mybar}">My Bar <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{~/mybar}">My Bar <span
+                                class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" th:href="@{~/whatcanimake}">What can I Make?</a>
+                        <a class="nav-link" th:href="@{~/whatcanimake}">What can
+                            I Make?</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-right">
-                    <li class="nav-item, navbar-text">Welcome, <span th:text="${user.username}"></span>!</li>
-                    <li class="nav-item"><a class="nav-link" href="/logout">(Log Out)</a></li>
+                    <li class="nav-item, navbar-text">Welcome, <span
+                            th:text="${user.username}"></span>!
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">(Log
+                        Out)</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-    <div class="container">
-        <section>
+<div class="container">
+    <section>
         <form method="post" th:object="${whatCanIMakeForm}">
             <div class="row justify-content-md-start">
                 <div class="col-md-auto">
-                    <label th:for="cocktailName" class="col-form-label">Search for a cocktail by name:</label>
+                    <label class="col-form-label" th:for="cocktailName">Search
+                        for a cocktail by name:</label>
                 </div>
                 <div class="col-md-auto">
-                    <input type="text" th:field="*{cocktailName}"/>
+                    <input th:field="*{cocktailName}" type="text"/>
                 </div>
                 <div class="col-md-auto">
                     <input type="submit" value="Search"/>
                 </div>
             </div>
         </form>
-        </section>
-        <section>
-        <form method="post" action="/whatcanimake/surpriseme">
+    </section>
+    <section>
+        <form action="/whatcanimake/surpriseme" method="post">
             <div class="row justify-content-md-start">
                 <div class="col-md-auto">
-                    <label class="col-form-label">Show me what I can make with the ingredients I have in my bar <b>right now</b>: </label>
+                    <label class="col-form-label">Show me what I can make with
+                        the ingredients I have in my bar <b>right
+                            now</b>: </label>
                 </div>
                 <div class="col-md-auto">
-                    <input type="hidden" name="numberOfMissingIngredients" th:value="0">
+                    <input name="numberOfMissingIngredients" th:value="0"
+                           type="hidden">
                     <input type="submit" value="Show Me!"/>
                 </div>
             </div>
         </form>
-        </section>
-        <section>
-            <form method="post" action="/whatcanimake/surpriseme">
-                <div class="row justify-content-md-start">
-                    <div class="col-md-auto">
-                        <label class="col-form-label">Show me what I can make by adding only <b>one more ingredient</b> to my bar:</label>
-                    </div>
-                    <div class="col-md-auto">
-                        <input type="hidden" name="numberOfMissingIngredients" th:value="1">
-                        <input type="submit" value="Show Me!"/>
-                    </div>
-                </div>
-            </form>
-        </section>
-        <section>
-            <form method="post" action="/whatcanimake/surpriseme">
-                <div class="row justify-content-md-start">
-                    <div class="col-md-auto">
-                        <label class="col-form-label">Show me what I can make by adding only <b>two more ingredients</b> to my bar:</label>
-                    </div>
-                    <div class="col-md-auto">
-                        <input type="hidden" name="numberOfMissingIngredients" th:value="2">
-                        <input type="submit" value="Show Me!"/>
-                    </div>
-                </div>
-            </form>
-        </section>
-    </div>
+    </section>
     <section>
-    <div class="container" th:if="${user.ingredients != null and !user.ingredients.empty}">
+        <form action="/whatcanimake/surpriseme" method="post">
+            <div class="row justify-content-md-start">
+                <div class="col-md-auto">
+                    <label class="col-form-label">Show me what I can make by
+                        adding only <b>one more ingredient</b> to
+                        my bar:</label>
+                </div>
+                <div class="col-md-auto">
+                    <input name="numberOfMissingIngredients" th:value="1"
+                           type="hidden">
+                    <input type="submit" value="Show Me!"/>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section>
+        <form action="/whatcanimake/surpriseme" method="post">
+            <div class="row justify-content-md-start">
+                <div class="col-md-auto">
+                    <label class="col-form-label">Show me what I can make by
+                        adding only <b>two more ingredients</b> to
+                        my bar:</label>
+                </div>
+                <div class="col-md-auto">
+                    <input name="numberOfMissingIngredients" th:value="2"
+                           type="hidden">
+                    <input type="submit" value="Show Me!"/>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+<section>
+    <div class="container"
+         th:if="${user.ingredients != null and !user.ingredients.empty}">
         <div class="row">
             <div class="col">
-                <label class="col-form-label">Search By Ingredient(s) In Your Bar: <p class="text-info">(Note: if you select more than one ingredient your results will include only those drinks that contain <b>all</b> of your selected ingredients)</p></label>
+                <label class="col-form-label">Search By Ingredient(s) In Your
+                    Bar: <p class="text-info">(Note: if you
+                        select more than one ingredient your results will
+                        include only those drinks that contain <b>all</b>
+                        of your selected ingredients)</p></label>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <form method="post" action="/byingredient">
+                <form action="/byingredient" method="post">
                     <table class="table table-hover">
                         <thead>
                         <tr class="table-dark">
@@ -104,16 +126,19 @@
                         <tbody th:each="ingredient, iterStat:${user.ingredients}">
                         <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
                             <td th:text="${ingredient.strIngredient}"></td>
-                            <td><input type="checkbox" name="strIngredients" th:value="${ingredient.strIngredient}"
-                                       th:id="${ingredient.strIngredient}"/></td>
+                            <td><input name="strIngredients"
+                                       th:id="${ingredient.strIngredient}"
+                                       th:value="${ingredient.strIngredient}"
+                                       type="checkbox"/></td>
                         </tr>
                         </tbody>
                     </table>
-                    <input type="submit" value="Search By Ingredient(s)" class="mb-5"/>
+                    <input class="mb-5" type="submit"
+                           value="Search By Ingredient(s)"/>
                 </form>
             </div>
         </div>
     </div>
-    </section>
+</section>
 </body>
 </html>

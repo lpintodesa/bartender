@@ -7,12 +7,9 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private int uid;
+  @Id @GeneratedValue private int uid;
 
-    public int getUid() {
-        return this.uid;
-    }
-
+  public int getUid() {
+    return this.uid;
+  }
 }

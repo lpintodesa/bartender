@@ -17,96 +17,115 @@ import java.util.List;
 
 public class DeserializerUtils {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    static {
-        MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+
+  static {
+    MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  }
+
+  private static final ObjectReader DRINK_READER =
+      MAPPER.readerFor(new TypeReference<List<Drink>>() {}).withRootName("drinks");
+  private static final ObjectReader INGREDIENT_READER =
+      MAPPER.readerFor(new TypeReference<List<Ingredient>>() {}).withRootName("ingredients");
+  private static final ObjectReader INGREDIENT_IN_LIST_READER =
+      MAPPER.readerFor(new TypeReference<List<IngredientInList>>() {}).withRootName("drinks");
+  private static final String URL_FIRST_HALF = "https://www.thecocktaildb.com/api/json/v2/";
+  private static final String URL_SEGMENT_LIST = "/list.php?i=list";
+  private static final String URL_SEGMENT_SEARCH_DRINK_BY_NAME = "/search.php?s=";
+  private static final String URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME = "/search.php?i=";
+  private static final String URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS = "/filter.php?i=";
+  private static final String URL_SEGMENT_SEARCH_DRINK_BY_ID = "/lookup.php?i=";
+  private static final String API_KEY_FILE = "API_Key.txt";
+
+  private DeserializerUtils() {}
+
+  public static Object getAPIFile() {
+
+    try {
+      return new ClassPathResource(API_KEY_FILE).getFile();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    private static final ObjectReader DRINK_READER = MAPPER.readerFor(new TypeReference<List<Drink>>() {}).withRootName("drinks");
-    private static final ObjectReader INGREDIENT_READER = MAPPER.readerFor(new TypeReference<List<Ingredient>>() {}).withRootName("ingredients");
-    private static final ObjectReader INGREDIENT_IN_LIST_READER = MAPPER.readerFor(new TypeReference<List<IngredientInList>>() {}).withRootName("drinks");
+    return "";
+  }
 
-    private static final String URL_FIRST_HALF="https://www.thecocktaildb.com/api/json/v2/";
-    
-    public static Object getAPIFile (){
+  public static String getKey() {
 
-        try {
-            return new ClassPathResource("API_Key.txt").getFile();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return "";
+    try (BufferedReader line = new BufferedReader(new FileReader((File) getAPIFile()))) {
+      return line.readLine();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+    return "";
+  }
 
-    public static String getKey() {
+  public static List<IngredientInList> listAllIngredients() {
 
-        try (BufferedReader line = new BufferedReader(new FileReader((File)getAPIFile()));){
-            return line.readLine();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return "";
+    List<IngredientInList> allIngredients = new ArrayList<>();
+
+    try {
+      URL ingredientList = new URL(URL_FIRST_HALF + getKey() + URL_SEGMENT_LIST);
+      allIngredients = INGREDIENT_IN_LIST_READER.readValue(ingredientList);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+    return allIngredients;
+  }
 
-    public static List<IngredientInList> listAllIngredients() {
+  public static Drink searchDrinkById(Integer id) {
 
-        List<IngredientInList> allIngredients = new ArrayList<>();
+    return searchDrinks(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_ID + id).get(0);
+  }
 
-        try {
-            URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/list.php?i=list");
-            allIngredients=INGREDIENT_IN_LIST_READER.readValue(ingredientList);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return allIngredients;
+  public static List<Drink> searchDrinkByMultipleIngredients(String ingredientNames) {
+
+    return searchDrinks(
+        URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS + ingredientNames);
+  }
+
+  public static List<Drink> searchDrinkByName(String name) {
+
+    return searchDrinks(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_NAME + name);
+  }
+
+  public static List<Drink> searchDrinkBySingleIngredient(Ingredient ingredient) {
+    return searchDrinks(
+        URL_FIRST_HALF
+            + getKey()
+            + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
+            + SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient()));
+  }
+
+  public static List<Drink> searchDrinks(String url) {
+
+    List<Drink> drinks = new ArrayList<>();
+
+    try {
+      URL drinkSearchURL = new URL(url);
+      drinks = DRINK_READER.readValue(drinkSearchURL);
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+    return drinks;
+  }
 
-    public static Drink searchDrinkById(Integer id) {
+  public static Ingredient searchIngredientByName(String name) {
 
-        return searchDrinks(URL_FIRST_HALF+getKey()+"/lookup.php?i="+id).get(0);
+    List<Ingredient> ingredients = new ArrayList<>();
+
+    try {
+      URL ingredientList =
+          new URL(
+              URL_FIRST_HALF
+                  + getKey()
+                  + URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME
+                  + SpaceToUnderscoreConverter.convert((name)));
+      ingredients = INGREDIENT_READER.readValue(ingredientList);
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-    public static List<Drink> searchDrinkByMultipleIngredients(String ingredientNames) {
-
-        return searchDrinks(URL_FIRST_HALF+getKey()+"/filter.php?i="+ ingredientNames);
-    }
-
-    public static List<Drink> searchDrinkByName(String name) {
-
-        return searchDrinks(URL_FIRST_HALF+getKey()+"/search.php?s="+ name);
-    }
-
-    public static List<Drink> searchDrinkBySingleIngredient(Ingredient ingredient){
-        return searchDrinks(URL_FIRST_HALF+getKey()+"/filter.php?i="+ SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient()));
-    }
-
-    public static List<Drink> searchDrinks(String url) {
-
-        List<Drink> drinks = new ArrayList<>();
-
-        try {
-            URL drinkSearchURL = new URL (url);
-            drinks = DRINK_READER.readValue(drinkSearchURL);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return drinks;
-    }
-
-    public static Ingredient searchIngredientByName(String name) {
-
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        try {
-            URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/search.php?i="+ SpaceToUnderscoreConverter.convert((name)));
-            ingredients= INGREDIENT_READER.readValue(ingredientList);
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return ingredients.get(0);
-    }
-
-    private DeserializerUtils() {
-    }
+    return ingredients.get(0);
+  }
 }

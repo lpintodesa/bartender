@@ -10,45 +10,45 @@ import java.util.List;
 @Entity
 public class Ingredient {
 
-    @JsonProperty("idIngredient")
-    @Id
-    private int id;
+  @JsonProperty("idIngredient")
+  @Id
+  private int id;
 
-    @JsonProperty("strIngredient")
-    private String strIngredient;
+  @JsonProperty("strIngredient")
+  private String strIngredient;
 
-    @JsonProperty("strType")
-    private String strType;
+  @JsonProperty("strType")
+  private String strType;
 
-    @ManyToMany (mappedBy="ingredients")
-    private List<User> users;
+  @ManyToMany(mappedBy = "ingredients")
+  private List<User> users;
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public String getStrIngredient() {
-        return strIngredient;
-    }
+  public String getStrIngredient() {
+    return strIngredient;
+  }
 
-    public void setStrIngredient(String strIngredient) {
-        this.strIngredient = strIngredient;
-    }
+  public void setStrIngredient(String strIngredient) {
+    this.strIngredient = strIngredient;
+  }
 
-    public String getStrType() {
-        return strType;
-    }
+  public String getStrType() {
+    return strType;
+  }
 
-    public void setStrType(String strType) {
-        this.strType = strType;
-    }
+  public void setStrType(String strType) {
+    this.strType = strType;
+  }
 
-    @Override
-    public String toString(){
-        return getStrIngredient();
-    }
+  @Override
+  public String toString() {
+    return getStrIngredient();
+  }
 }

@@ -7,28 +7,26 @@ import java.util.List;
 
 public class DuplicateChecker {
 
-    public static boolean checkIngredient (String input, List<Ingredient> list) {
+  private DuplicateChecker() {}
 
-        for (Ingredient i : list) {
-            if (i.getStrIngredient().equalsIgnoreCase(input)) {
-                return true;
-            }
-        }
+  public static boolean checkIngredient(String input, List<Ingredient> list) {
 
-        return false;
+    for (Ingredient i : list) {
+      if (i.getStrIngredient().equalsIgnoreCase(input)) {
+        return true;
+      }
     }
 
-    public static boolean checkIngredientInList (String input, List<IngredientInList> list) {
+    return false;
+  }
 
-        for (IngredientInList i : list) {
-            if (i.getStrIngredient1()!=null && i.getStrIngredient1().equalsIgnoreCase(input)) {
-                    return true;
-            }
-        }
-        return false;
-    }
+  public static boolean checkIngredientInList(String input, List<IngredientInList> list) {
 
-    private DuplicateChecker() {
+    for (IngredientInList i : list) {
+      if (i.getStrIngredient1() != null && i.getStrIngredient1().equalsIgnoreCase(input)) {
+        return true;
+      }
     }
+    return false;
+  }
 }
-

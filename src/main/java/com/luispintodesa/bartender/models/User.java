@@ -8,46 +8,42 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
-
 @Entity
 public class User extends AbstractEntity {
 
-    @NotNull
-    @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9_-]{4,11}", message = "Invalid username")
-    private String username;
+  private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    @NotNull
-    private String pwHash;
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+  @NotNull
+  @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9_-]{4,11}", message = "Invalid username")
+  private String username;
 
-    @ManyToMany
-    private List<Ingredient> ingredients;
+  @NotNull private String pwHash;
+  @ManyToMany private List<Ingredient> ingredients;
 
-    public void addItem(Ingredient item){
-        ingredients.add(item);
-    }
+  public User() {}
 
-    public User() {}
+  public User(String username, String password) {
+    this.username = username;
+    this.pwHash = hashPassword(password);
+  }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.pwHash = hashPassword(password);
-    }
+  private static String hashPassword(String password) {
+    return encoder.encode(password);
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public void addItem(Ingredient item) {
+    ingredients.add(item);
+  }
 
-    private static String hashPassword(String password) {
-        return encoder.encode(password);
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public boolean isMatchingPassword(String password) {
-        return encoder.matches(password, pwHash);
-    }
+  public boolean isMatchingPassword(String password) {
+    return encoder.matches(password, pwHash);
+  }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
+  public List<Ingredient> getIngredients() {
+    return ingredients;
+  }
 }

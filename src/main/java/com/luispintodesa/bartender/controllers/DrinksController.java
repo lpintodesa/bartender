@@ -13,56 +13,56 @@ import java.util.ArrayList;
 
 @Controller
 @RequestMapping("drinks")
-public class DrinksController extends AbstractController{
+public class DrinksController extends AbstractController {
 
-    @GetMapping(value="{idDrink}")
-    public String displayDrink (@PathVariable int idDrink, Model model, HttpServletRequest request){
+  @GetMapping(value = "{idDrink}")
+  public String displayDrink(@PathVariable int idDrink, Model model, HttpServletRequest request) {
 
-        Drink drink = (Drink) DeserializerUtils.searchDrinkById(idDrink);
+    Drink drink = DeserializerUtils.searchDrinkById(idDrink);
 
-        ArrayList<String> ingredients = new ArrayList<>();
+    ArrayList<String> ingredients = new ArrayList<>();
 
-        ingredients.add(drink.getStrIngredient1());
-        ingredients.add(drink.getStrIngredient2());
-        ingredients.add(drink.getStrIngredient3());
-        ingredients.add(drink.getStrIngredient4());
-        ingredients.add(drink.getStrIngredient5());
-        ingredients.add(drink.getStrIngredient6());
-        ingredients.add(drink.getStrIngredient7());
-        ingredients.add(drink.getStrIngredient8());
-        ingredients.add(drink.getStrIngredient9());
-        ingredients.add(drink.getStrIngredient10());
-        ingredients.add(drink.getStrIngredient11());
-        ingredients.add(drink.getStrIngredient12());
-        ingredients.add(drink.getStrIngredient13());
-        ingredients.add(drink.getStrIngredient14());
-        ingredients.add(drink.getStrIngredient15());
+    ingredients.add(drink.getStrIngredient1());
+    ingredients.add(drink.getStrIngredient2());
+    ingredients.add(drink.getStrIngredient3());
+    ingredients.add(drink.getStrIngredient4());
+    ingredients.add(drink.getStrIngredient5());
+    ingredients.add(drink.getStrIngredient6());
+    ingredients.add(drink.getStrIngredient7());
+    ingredients.add(drink.getStrIngredient8());
+    ingredients.add(drink.getStrIngredient9());
+    ingredients.add(drink.getStrIngredient10());
+    ingredients.add(drink.getStrIngredient11());
+    ingredients.add(drink.getStrIngredient12());
+    ingredients.add(drink.getStrIngredient13());
+    ingredients.add(drink.getStrIngredient14());
+    ingredients.add(drink.getStrIngredient15());
 
-        ArrayList<String> measures = new ArrayList<>();
+    ArrayList<String> measures = new ArrayList<>();
 
-        measures.add(drink.getStrMeasure1());
-        measures.add(drink.getStrMeasure2());
-        measures.add(drink.getStrMeasure3());
-        measures.add(drink.getStrMeasure4());
-        measures.add(drink.getStrMeasure5());
-        measures.add(drink.getStrMeasure6());
-        measures.add(drink.getStrMeasure7());
-        measures.add(drink.getStrMeasure8());
-        measures.add(drink.getStrMeasure9());
-        measures.add(drink.getStrMeasure10());
-        measures.add(drink.getStrMeasure11());
-        measures.add(drink.getStrMeasure12());
-        measures.add(drink.getStrMeasure13());
-        measures.add(drink.getStrMeasure14());
-        measures.add(drink.getStrMeasure15());
+    measures.add(drink.getStrMeasure1());
+    measures.add(drink.getStrMeasure2());
+    measures.add(drink.getStrMeasure3());
+    measures.add(drink.getStrMeasure4());
+    measures.add(drink.getStrMeasure5());
+    measures.add(drink.getStrMeasure6());
+    measures.add(drink.getStrMeasure7());
+    measures.add(drink.getStrMeasure8());
+    measures.add(drink.getStrMeasure9());
+    measures.add(drink.getStrMeasure10());
+    measures.add(drink.getStrMeasure11());
+    measures.add(drink.getStrMeasure12());
+    measures.add(drink.getStrMeasure13());
+    measures.add(drink.getStrMeasure14());
+    measures.add(drink.getStrMeasure15());
 
-        model.addAttribute("name", drink.getStrDrink());
-        model.addAttribute("ingredients", ingredients);
-        model.addAttribute("measures",measures);
-        model.addAttribute("instructions", drink.getStrInstructions());
-        model.addAttribute("image",drink.getStrDrinkThumb());
-        model.addAttribute("title",drink.getStrDrink());
+    model.addAttribute("name", drink.getStrDrink());
+    model.addAttribute("ingredients", ingredients);
+    model.addAttribute("measures", measures);
+    model.addAttribute("instructions", drink.getStrInstructions());
+    model.addAttribute("image", drink.getStrDrinkThumb());
+    model.addAttribute("title", drink.getStrDrink());
 
-        return "details";
-    }
+    return "details";
+  }
 }

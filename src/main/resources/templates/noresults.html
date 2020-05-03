@@ -5,10 +5,13 @@
 <head th:replace="fragments :: head">
 </head>
 <body>
-<header><nav th:replace="fragments :: navigationResults"></nav></header>
+<header>
+    <nav th:replace="fragments :: navigationResults"></nav>
+</header>
 <section>
     <div class="container">
-        <p class="text-danger"> Your search yielded no results. Please try again.</p>
+        <p class="text-danger"> Your search yielded no results. Please try
+            again.</p>
     </div>
 </section>
 </body>
