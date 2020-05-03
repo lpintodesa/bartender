@@ -1,24 +1,31 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.Deserializer;
+import com.luispintodesa.bartender.models.DeserializerUtils;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.IngredientInList;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
-import com.luispintodesa.bartender.models.dao.UserDao;
 import com.luispintodesa.bartender.models.forms.MyBarForm;
 import com.luispintodesa.bartender.models.manipulation.DuplicateChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import static com.luispintodesa.bartender.models.Constants.*;
+import static com.luispintodesa.bartender.models.Constants.ERROR;
+import static com.luispintodesa.bartender.models.Constants.INGREDIENTS;
+import static com.luispintodesa.bartender.models.Constants.MY_BAR;
+import static com.luispintodesa.bartender.models.Constants.MY_BAR_TEMPLATE;
+import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
 @RequestMapping(MY_BAR_TEMPLATE)
@@ -27,12 +34,9 @@ public class MyBarController extends AbstractController {
     @Autowired
     private IngredientDao ingredientDao;
 
-    @Autowired
-    private UserDao userDao;
-
     @GetMapping(value = "")
     public String myBarForm(Model model) {
-        model.addAttribute(INGREDIENTS, Deserializer.listAllIngredients());
+        model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
         model.addAttribute(new MyBarForm());
         model.addAttribute(TITLE, MY_BAR);
         return MY_BAR_TEMPLATE;
@@ -41,13 +45,13 @@ public class MyBarController extends AbstractController {
     @PostMapping(value = "")
     public String myBar(Model model, @ModelAttribute MyBarForm form, HttpServletRequest request){
 
-        ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) Deserializer.listAllIngredients();
+        ArrayList<IngredientInList> list = (ArrayList<IngredientInList>) DeserializerUtils.listAllIngredients();
 
         User theUser = getUserFromSession(request.getSession());
         List <Ingredient> ingredientsInMyBar = theUser.getIngredients();
 
         if (!DuplicateChecker.checkIngredientInList(form.getIngredientName(), list)){
-            model.addAttribute(INGREDIENTS, Deserializer.listAllIngredients());
+            model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
             model.addAttribute(new MyBarForm());
             model.addAttribute(ERROR, "invalid");
             model.addAttribute(TITLE, MY_BAR);
@@ -55,19 +59,19 @@ public class MyBarController extends AbstractController {
         }
 
         if (DuplicateChecker.checkIngredient(form.getIngredientName(), ingredientsInMyBar)){
-            model.addAttribute(INGREDIENTS, Deserializer.listAllIngredients());
+            model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
             model.addAttribute(new MyBarForm());
             model.addAttribute(ERROR, "duplicate");
             model.addAttribute(TITLE, MY_BAR);
             return MY_BAR_TEMPLATE;
         }
 
-        Ingredient newIngredient = (Ingredient) Deserializer.searchIngredientByName(form.getIngredientName());
+        Ingredient newIngredient = (Ingredient) DeserializerUtils.searchIngredientByName(form.getIngredientName());
         ingredientDao.save(newIngredient);
         theUser.addItem(newIngredient);
         userDao.save(theUser);
 
-        model.addAttribute("ingredients", Deserializer.listAllIngredients());
+        model.addAttribute("ingredients", DeserializerUtils.listAllIngredients());
         model.addAttribute(new MyBarForm());
         model.addAttribute(ERROR, "false");
         model.addAttribute(TITLE, MY_BAR);
