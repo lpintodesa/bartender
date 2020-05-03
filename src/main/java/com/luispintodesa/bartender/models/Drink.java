@@ -1,6 +1,5 @@
 package com.luispintodesa.bartender.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,21 +11,6 @@ public class Drink {
 
     @JsonProperty("strDrink")
     private String strDrink;
-
-    @JsonIgnore
-    private String strTags;
-
-    @JsonIgnore
-    private String strCategory;
-
-    @JsonIgnore
-    private String strIBA;
-
-    @JsonIgnore
-    private String strAlcoholic;
-
-    @JsonIgnore
-    private String strGlass;
 
     @JsonProperty("strInstructions")
     private String strInstructions;
@@ -124,10 +108,7 @@ public class Drink {
     @JsonProperty("strMeasure15")
     private String strMeasure15;
 
-    private int score;
-
     //Getters and Setters
-
 
     public int getIdDrink() {
         return idDrink;
@@ -143,46 +124,6 @@ public class Drink {
 
     public void setStrDrink(String strDrink) {
         this.strDrink = strDrink;
-    }
-
-    public String getStrTags() {
-        return strTags;
-    }
-
-    public void setStrTags(String strTags) {
-        this.strTags = strTags;
-    }
-
-    public String getStrCategory() {
-        return strCategory;
-    }
-
-    public void setStrCategory(String strCategory) {
-        this.strCategory = strCategory;
-    }
-
-    public String getStrIBA() {
-        return strIBA;
-    }
-
-    public void setStrIBA(String strIBA) {
-        this.strIBA = strIBA;
-    }
-
-    public String getStrAlcoholic() {
-        return strAlcoholic;
-    }
-
-    public void setStrAlcoholic(String strAlcoholic) {
-        this.strAlcoholic = strAlcoholic;
-    }
-
-    public String getStrGlass() {
-        return strGlass;
-    }
-
-    public void setStrGlass(String strGlass) {
-        this.strGlass = strGlass;
     }
 
     public String getStrInstructions() {
@@ -439,14 +380,6 @@ public class Drink {
 
     public void setStrMeasure15(String strMeasure15) {
         this.strMeasure15 = strMeasure15;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
 }

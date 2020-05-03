@@ -38,29 +38,6 @@ public class DrinkListDivider {
         return lists;
     }
 
-    public static List<List<Drink>> divideByScore (List<Drink> undivided){
-
-        List<Drink> score0 = new ArrayList<>();
-        List<Drink> score1 = new ArrayList<>();
-        List<Drink> score2 = new ArrayList<>();
-        List<List<Drink>> scoreList = new ArrayList<>();
-
-        for (Drink drink:undivided){
-            if (drink.getScore()==0){
-                score0.add(drink);
-            } else if (drink.getScore()==1){
-                score1.add(drink);
-            } else if (drink.getScore()==2){
-                score2.add(drink);
-            }
-        }
-        scoreList.add(score0);
-        scoreList.add(score1);
-        scoreList.add(score2);
-
-        return scoreList;
-    }
-
     private DrinkListDivider() {
     }
 }
