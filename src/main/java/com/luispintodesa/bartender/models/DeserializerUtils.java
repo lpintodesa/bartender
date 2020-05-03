@@ -1,11 +1,10 @@
 package com.luispintodesa.bartender.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
-import com.luispintodesa.bartender.models.wrappers.DrinkWrapper;
-import com.luispintodesa.bartender.models.wrappers.IngredientInListWrapper;
-import com.luispintodesa.bartender.models.wrappers.IngredientWrapper;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
@@ -18,13 +17,13 @@ import java.util.List;
 
 public class DeserializerUtils {
 
-    //TODO: Explore using ObjectReader.
     private static final ObjectMapper MAPPER = new ObjectMapper();
-
-    // TODO: Unwrap root using UNWRAP_ROOT_VALUE annotation to improve performance, elegance and dispense with superfluous wrapper classes.
     static {
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
+    private static final ObjectReader DRINK_READER = MAPPER.readerFor(new TypeReference<List<Drink>>() {}).withRootName("drinks");
+    private static final ObjectReader INGREDIENT_READER = MAPPER.readerFor(new TypeReference<List<Ingredient>>() {}).withRootName("ingredients");
+    private static final ObjectReader INGREDIENT_IN_LIST_READER = MAPPER.readerFor(new TypeReference<List<IngredientInList>>() {}).withRootName("drinks");
 
     private static final String URL_FIRST_HALF="https://www.thecocktaildb.com/api/json/v2/";
     
@@ -54,10 +53,9 @@ public class DeserializerUtils {
 
         try {
             URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/list.php?i=list");
-            IngredientInListWrapper listIngredients= MAPPER.readValue(ingredientList, IngredientInListWrapper.class);
-            allIngredients=listIngredients.getDrinks();
+            allIngredients=INGREDIENT_IN_LIST_READER.readValue(ingredientList);
         } catch (IOException e){
-            allIngredients.clear();
+            e.printStackTrace();
         }
         return allIngredients;
     }
@@ -83,11 +81,10 @@ public class DeserializerUtils {
 
         try {
             URL drinkSearchURL = new URL (url);
-            DrinkWrapper drinkWrapper = MAPPER.readValue(drinkSearchURL, DrinkWrapper.class);
-            drinks = drinkWrapper.getDrinks();
+            drinks = DRINK_READER.readValue(drinkSearchURL);
 
         } catch (IOException e) {
-            drinks.clear();
+            e.printStackTrace();
         }
         return drinks;
     }
@@ -98,11 +95,10 @@ public class DeserializerUtils {
 
         try {
             URL ingredientList = new URL(URL_FIRST_HALF+getKey()+"/search.php?i="+ SpaceToUnderscoreConverter.convert((name)));
-            IngredientWrapper ingredientWrapper= MAPPER.readValue(ingredientList, IngredientWrapper.class);
-            ingredients=ingredientWrapper.getIngredient();
+            ingredients= INGREDIENT_READER.readValue(ingredientList);
 
         } catch (IOException e){
-            ingredients.clear();
+            e.printStackTrace();
         }
         return ingredients.get(0);
     }
