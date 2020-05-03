@@ -65,14 +65,18 @@ public class DeserializerUtils {
         return searchDrinks(URL_FIRST_HALF+getKey()+"/lookup.php?i="+id).get(0);
     }
 
-    public static List<Drink> searchDrinkByMultipleIngredients(String name) {
+    public static List<Drink> searchDrinkByMultipleIngredients(String ingredientNames) {
 
-        return searchDrinks(URL_FIRST_HALF+getKey()+"/filter.php?i="+ name);
+        return searchDrinks(URL_FIRST_HALF+getKey()+"/filter.php?i="+ ingredientNames);
     }
 
     public static List<Drink> searchDrinkByName(String name) {
 
         return searchDrinks(URL_FIRST_HALF+getKey()+"/search.php?s="+ name);
+    }
+
+    public static List<Drink> searchDrinkBySingleIngredient(Ingredient ingredient){
+        return searchDrinks(URL_FIRST_HALF+getKey()+"/filter.php?i="+ SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient()));
     }
 
     public static List<Drink> searchDrinks(String url) {

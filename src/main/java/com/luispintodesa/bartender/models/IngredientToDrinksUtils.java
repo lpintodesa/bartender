@@ -1,7 +1,5 @@
 package com.luispintodesa.bartender.models;
 
-import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,7 +18,7 @@ public class IngredientToDrinksUtils {
         }
 
         for (Ingredient ingredient:theUser.getIngredients()){
-            List<Drink> singleIngredientDrinks = DeserializerUtils.searchDrinks(makeSearchDrinkBySingleIngredientURL(ingredient));
+            List<Drink> singleIngredientDrinks = DeserializerUtils.searchDrinkBySingleIngredient(ingredient);
             for (Drink drink: singleIngredientDrinks){
                 int id = drink.getIdDrink();
                 if (!ids.contains(id)) {
@@ -34,10 +32,6 @@ public class IngredientToDrinksUtils {
             }
         }
         return drinks;
-    }
-
-    public static String makeSearchDrinkBySingleIngredientURL (Ingredient ingredient){
-        return "https://www.thecocktaildb.com/api/json/v2/" + DeserializerUtils.getKey()+"/filter.php?i="+ SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient());
     }
 
     public static Integer setMatchCounter (Drink drink, Set<String> userIngredientsSet){
