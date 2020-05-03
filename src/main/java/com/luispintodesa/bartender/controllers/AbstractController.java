@@ -8,18 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by LaunchCode
- */
 public abstract class AbstractController {
 
     @Autowired
     protected UserDao userDao;
-
-    /*
-    * Other DAOs can be autowired here and they'll be available
-    * to all classes extending AbstractController
-    * */
 
     public static final String USER_SESSION_KEY = "user_id";
 
