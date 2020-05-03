@@ -1,6 +1,6 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.Deserializer;
+import com.luispintodesa.bartender.models.DeserializerUtils;
 import com.luispintodesa.bartender.models.Drink;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ public class DrinksController extends AbstractController{
     @GetMapping(value="{idDrink}")
     public String displayDrink (@PathVariable int idDrink, Model model, HttpServletRequest request){
 
-        Drink drink = (Drink) Deserializer.searchDrinkById(idDrink);
+        Drink drink = (Drink) DeserializerUtils.searchDrinkById(idDrink);
 
         ArrayList<String> ingredients = new ArrayList<>();
 
