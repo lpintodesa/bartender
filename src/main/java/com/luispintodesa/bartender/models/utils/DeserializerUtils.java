@@ -1,10 +1,12 @@
-package com.luispintodesa.bartender.models;
+package com.luispintodesa.bartender.models.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
+import com.luispintodesa.bartender.models.Drink;
+import com.luispintodesa.bartender.models.Ingredient;
+import com.luispintodesa.bartender.models.IngredientInList;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
@@ -93,7 +95,7 @@ public class DeserializerUtils {
         URL_FIRST_HALF
             + getKey()
             + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
-            + SpaceToUnderscoreConverter.convert(ingredient.getStrIngredient()));
+            + ArrayAndStringUtils.convert(ingredient.getName()));
   }
 
   public static List<Drink> searchDrinks(String url) {
@@ -120,7 +122,7 @@ public class DeserializerUtils {
               URL_FIRST_HALF
                   + getKey()
                   + URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME
-                  + SpaceToUnderscoreConverter.convert((name)));
+                  + ArrayAndStringUtils.convert((name)));
       ingredients = INGREDIENT_READER.readValue(ingredientList);
 
     } catch (IOException e) {

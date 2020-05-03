@@ -19,7 +19,7 @@ import static com.luispintodesa.bartender.models.Constants.REGISTER;
 import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
-public class AuthenticationController extends AbstractController {
+public class AuthenticationController extends UserController {
 
   @GetMapping(value = "")
   public String index(Model model) {

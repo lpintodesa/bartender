@@ -7,378 +7,376 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Drink {
 
   @JsonProperty("idDrink")
-  private int idDrink;
+  private int id;
 
   @JsonProperty("strDrink")
-  private String strDrink;
+  private String name;
 
   @JsonProperty("strInstructions")
-  private String strInstructions;
+  private String instructions;
 
   @JsonProperty("strDrinkThumb")
-  private String strDrinkThumb;
+  private String thumbnail;
 
   @JsonProperty("strIngredient1")
-  private String strIngredient1;
+  private String nameIngredient1;
 
   @JsonProperty("strIngredient2")
-  private String strIngredient2;
+  private String nameIngredient2;
 
   @JsonProperty("strIngredient3")
-  private String strIngredient3;
+  private String nameIngredient3;
 
   @JsonProperty("strIngredient4")
-  private String strIngredient4;
+  private String nameIngredient4;
 
   @JsonProperty("strIngredient5")
-  private String strIngredient5;
+  private String nameIngredient5;
 
   @JsonProperty("strIngredient6")
-  private String strIngredient6;
+  private String nameIngredient6;
 
   @JsonProperty("strIngredient7")
-  private String strIngredient7;
+  private String nameIngredient7;
 
   @JsonProperty("strIngredient8")
-  private String strIngredient8;
+  private String nameIngredient8;
 
   @JsonProperty("strIngredient9")
-  private String strIngredient9;
+  private String nameIngredient9;
 
   @JsonProperty("strIngredient10")
-  private String strIngredient10;
+  private String nameIngredient10;
 
   @JsonProperty("strIngredient11")
-  private String strIngredient11;
+  private String nameIngredient11;
 
   @JsonProperty("strIngredient12")
-  private String strIngredient12;
+  private String nameIngredient12;
 
   @JsonProperty("strIngredient13")
-  private String strIngredient13;
+  private String nameIngredient13;
 
   @JsonProperty("strIngredient14")
-  private String strIngredient14;
+  private String nameIngredient14;
 
   @JsonProperty("strIngredient15")
-  private String strIngredient15;
+  private String nameIngredient15;
 
   @JsonProperty("strMeasure1")
-  private String strMeasure1;
+  private String measureIngredient1;
 
   @JsonProperty("strMeasure2")
-  private String strMeasure2;
+  private String measureIngredient2;
 
   @JsonProperty("strMeasure3")
-  private String strMeasure3;
+  private String measureIngredient3;
 
   @JsonProperty("strMeasure4")
-  private String strMeasure4;
+  private String measureIngredient4;
 
   @JsonProperty("strMeasure5")
-  private String strMeasure5;
+  private String measureIngredient5;
 
   @JsonProperty("strMeasure6")
-  private String strMeasure6;
+  private String measureIngredient6;
 
   @JsonProperty("strMeasure7")
-  private String strMeasure7;
+  private String measureIngredient7;
 
   @JsonProperty("strMeasure8")
-  private String strMeasure8;
+  private String measureIngredient8;
 
   @JsonProperty("strMeasure9")
-  private String strMeasure9;
+  private String measureIngredient9;
 
   @JsonProperty("strMeasure10")
-  private String strMeasure10;
+  private String measureIngredient10;
 
   @JsonProperty("strMeasure11")
-  private String strMeasure11;
+  private String measureIngredient11;
 
   @JsonProperty("strMeasure12")
-  private String strMeasure12;
+  private String measureIngredient12;
 
   @JsonProperty("strMeasure13")
-  private String strMeasure13;
+  private String measureIngredient13;
 
   @JsonProperty("strMeasure14")
-  private String strMeasure14;
+  private String measureIngredient14;
 
   @JsonProperty("strMeasure15")
-  private String strMeasure15;
+  private String measureIngredient15;
 
-  // Getters and Setters
-
-  public int getIdDrink() {
-    return idDrink;
+  public int getId() {
+    return id;
   }
 
-  public void setIdDrink(int idDrink) {
-    this.idDrink = idDrink;
+  public void setId(int id) {
+    this.id = id;
   }
 
-  public String getStrDrink() {
-    return strDrink;
+  public String getName() {
+    return name;
   }
 
-  public void setStrDrink(String strDrink) {
-    this.strDrink = strDrink;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public String getStrInstructions() {
-    return strInstructions;
+  public String getInstructions() {
+    return instructions;
   }
 
-  public void setStrInstructions(String strInstructions) {
-    this.strInstructions = strInstructions;
+  public void setInstructions(String instructions) {
+    this.instructions = instructions;
   }
 
-  public String getStrDrinkThumb() {
-    return strDrinkThumb;
+  public String getThumbnail() {
+    return thumbnail;
   }
 
-  public void setStrDrinkThumb(String strDrinkThumb) {
-    this.strDrinkThumb = strDrinkThumb;
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
   }
 
-  public String getStrIngredient1() {
-    return strIngredient1;
+  public String getNameIngredient1() {
+    return nameIngredient1;
   }
 
-  public void setStrIngredient1(String strIngredient1) {
-    this.strIngredient1 = strIngredient1;
+  public void setNameIngredient1(String nameIngredient1) {
+    this.nameIngredient1 = nameIngredient1;
   }
 
-  public String getStrIngredient2() {
-    return strIngredient2;
+  public String getNameIngredient2() {
+    return nameIngredient2;
   }
 
-  public void setStrIngredient2(String strIngredient2) {
-    this.strIngredient2 = strIngredient2;
+  public void setNameIngredient2(String nameIngredient2) {
+    this.nameIngredient2 = nameIngredient2;
   }
 
-  public String getStrIngredient3() {
-    return strIngredient3;
+  public String getNameIngredient3() {
+    return nameIngredient3;
   }
 
-  public void setStrIngredient3(String strIngredient3) {
-    this.strIngredient3 = strIngredient3;
+  public void setNameIngredient3(String nameIngredient3) {
+    this.nameIngredient3 = nameIngredient3;
   }
 
-  public String getStrIngredient4() {
-    return strIngredient4;
+  public String getNameIngredient4() {
+    return nameIngredient4;
   }
 
-  public void setStrIngredient4(String strIngredient4) {
-    this.strIngredient4 = strIngredient4;
+  public void setNameIngredient4(String nameIngredient4) {
+    this.nameIngredient4 = nameIngredient4;
   }
 
-  public String getStrIngredient5() {
-    return strIngredient5;
+  public String getNameIngredient5() {
+    return nameIngredient5;
   }
 
-  public void setStrIngredient5(String strIngredient5) {
-    this.strIngredient5 = strIngredient5;
+  public void setNameIngredient5(String nameIngredient5) {
+    this.nameIngredient5 = nameIngredient5;
   }
 
-  public String getStrIngredient6() {
-    return strIngredient6;
+  public String getNameIngredient6() {
+    return nameIngredient6;
   }
 
-  public void setStrIngredient6(String strIngredient6) {
-    this.strIngredient6 = strIngredient6;
+  public void setNameIngredient6(String nameIngredient6) {
+    this.nameIngredient6 = nameIngredient6;
   }
 
-  public String getStrIngredient7() {
-    return strIngredient7;
+  public String getNameIngredient7() {
+    return nameIngredient7;
   }
 
-  public void setStrIngredient7(String strIngredient7) {
-    this.strIngredient7 = strIngredient7;
+  public void setNameIngredient7(String nameIngredient7) {
+    this.nameIngredient7 = nameIngredient7;
   }
 
-  public String getStrIngredient8() {
-    return strIngredient8;
+  public String getNameIngredient8() {
+    return nameIngredient8;
   }
 
-  public void setStrIngredient8(String strIngredient8) {
-    this.strIngredient8 = strIngredient8;
+  public void setNameIngredient8(String nameIngredient8) {
+    this.nameIngredient8 = nameIngredient8;
   }
 
-  public String getStrIngredient9() {
-    return strIngredient9;
+  public String getNameIngredient9() {
+    return nameIngredient9;
   }
 
-  public void setStrIngredient9(String strIngredient9) {
-    this.strIngredient9 = strIngredient9;
+  public void setNameIngredient9(String nameIngredient9) {
+    this.nameIngredient9 = nameIngredient9;
   }
 
-  public String getStrIngredient10() {
-    return strIngredient10;
+  public String getNameIngredient10() {
+    return nameIngredient10;
   }
 
-  public void setStrIngredient10(String strIngredient10) {
-    this.strIngredient10 = strIngredient10;
+  public void setNameIngredient10(String nameIngredient10) {
+    this.nameIngredient10 = nameIngredient10;
   }
 
-  public String getStrIngredient11() {
-    return strIngredient11;
+  public String getNameIngredient11() {
+    return nameIngredient11;
   }
 
-  public void setStrIngredient11(String strIngredient11) {
-    this.strIngredient11 = strIngredient11;
+  public void setNameIngredient11(String nameIngredient11) {
+    this.nameIngredient11 = nameIngredient11;
   }
 
-  public String getStrIngredient12() {
-    return strIngredient12;
+  public String getNameIngredient12() {
+    return nameIngredient12;
   }
 
-  public void setStrIngredient12(String strIngredient12) {
-    this.strIngredient12 = strIngredient12;
+  public void setNameIngredient12(String nameIngredient12) {
+    this.nameIngredient12 = nameIngredient12;
   }
 
-  public String getStrIngredient13() {
-    return strIngredient13;
+  public String getNameIngredient13() {
+    return nameIngredient13;
   }
 
-  public void setStrIngredient13(String strIngredient13) {
-    this.strIngredient13 = strIngredient13;
+  public void setNameIngredient13(String nameIngredient13) {
+    this.nameIngredient13 = nameIngredient13;
   }
 
-  public String getStrIngredient14() {
-    return strIngredient14;
+  public String getNameIngredient14() {
+    return nameIngredient14;
   }
 
-  public void setStrIngredient14(String strIngredient14) {
-    this.strIngredient14 = strIngredient14;
+  public void setNameIngredient14(String nameIngredient14) {
+    this.nameIngredient14 = nameIngredient14;
   }
 
-  public String getStrIngredient15() {
-    return strIngredient15;
+  public String getNameIngredient15() {
+    return nameIngredient15;
   }
 
-  public void setStrIngredient15(String strIngredient15) {
-    this.strIngredient15 = strIngredient15;
+  public void setNameIngredient15(String nameIngredient15) {
+    this.nameIngredient15 = nameIngredient15;
   }
 
-  public String getStrMeasure1() {
-    return strMeasure1;
+  public String getMeasureIngredient1() {
+    return measureIngredient1;
   }
 
-  public void setStrMeasure1(String strMeasure1) {
-    this.strMeasure1 = strMeasure1;
+  public void setMeasureIngredient1(String measureIngredient1) {
+    this.measureIngredient1 = measureIngredient1;
   }
 
-  public String getStrMeasure2() {
-    return strMeasure2;
+  public String getMeasureIngredient2() {
+    return measureIngredient2;
   }
 
-  public void setStrMeasure2(String strMeasure2) {
-    this.strMeasure2 = strMeasure2;
+  public void setMeasureIngredient2(String measureIngredient2) {
+    this.measureIngredient2 = measureIngredient2;
   }
 
-  public String getStrMeasure3() {
-    return strMeasure3;
+  public String getMeasureIngredient3() {
+    return measureIngredient3;
   }
 
-  public void setStrMeasure3(String strMeasure3) {
-    this.strMeasure3 = strMeasure3;
+  public void setMeasureIngredient3(String measureIngredient3) {
+    this.measureIngredient3 = measureIngredient3;
   }
 
-  public String getStrMeasure4() {
-    return strMeasure4;
+  public String getMeasureIngredient4() {
+    return measureIngredient4;
   }
 
-  public void setStrMeasure4(String strMeasure4) {
-    this.strMeasure4 = strMeasure4;
+  public void setMeasureIngredient4(String measureIngredient4) {
+    this.measureIngredient4 = measureIngredient4;
   }
 
-  public String getStrMeasure5() {
-    return strMeasure5;
+  public String getMeasureIngredient5() {
+    return measureIngredient5;
   }
 
-  public void setStrMeasure5(String strMeasure5) {
-    this.strMeasure5 = strMeasure5;
+  public void setMeasureIngredient5(String measureIngredient5) {
+    this.measureIngredient5 = measureIngredient5;
   }
 
-  public String getStrMeasure6() {
-    return strMeasure6;
+  public String getMeasureIngredient6() {
+    return measureIngredient6;
   }
 
-  public void setStrMeasure6(String strMeasure6) {
-    this.strMeasure6 = strMeasure6;
+  public void setMeasureIngredient6(String measureIngredient6) {
+    this.measureIngredient6 = measureIngredient6;
   }
 
-  public String getStrMeasure7() {
-    return strMeasure7;
+  public String getMeasureIngredient7() {
+    return measureIngredient7;
   }
 
-  public void setStrMeasure7(String strMeasure7) {
-    this.strMeasure7 = strMeasure7;
+  public void setMeasureIngredient7(String measureIngredient7) {
+    this.measureIngredient7 = measureIngredient7;
   }
 
-  public String getStrMeasure8() {
-    return strMeasure8;
+  public String getMeasureIngredient8() {
+    return measureIngredient8;
   }
 
-  public void setStrMeasure8(String strMeasure8) {
-    this.strMeasure8 = strMeasure8;
+  public void setMeasureIngredient8(String measureIngredient8) {
+    this.measureIngredient8 = measureIngredient8;
   }
 
-  public String getStrMeasure9() {
-    return strMeasure9;
+  public String getMeasureIngredient9() {
+    return measureIngredient9;
   }
 
-  public void setStrMeasure9(String strMeasure9) {
-    this.strMeasure9 = strMeasure9;
+  public void setMeasureIngredient9(String measureIngredient9) {
+    this.measureIngredient9 = measureIngredient9;
   }
 
-  public String getStrMeasure10() {
-    return strMeasure10;
+  public String getMeasureIngredient10() {
+    return measureIngredient10;
   }
 
-  public void setStrMeasure10(String strMeasure10) {
-    this.strMeasure10 = strMeasure10;
+  public void setMeasureIngredient10(String measureIngredient10) {
+    this.measureIngredient10 = measureIngredient10;
   }
 
-  public String getStrMeasure11() {
-    return strMeasure11;
+  public String getMeasureIngredient11() {
+    return measureIngredient11;
   }
 
-  public void setStrMeasure11(String strMeasure11) {
-    this.strMeasure11 = strMeasure11;
+  public void setMeasureIngredient11(String measureIngredient11) {
+    this.measureIngredient11 = measureIngredient11;
   }
 
-  public String getStrMeasure12() {
-    return strMeasure12;
+  public String getMeasureIngredient12() {
+    return measureIngredient12;
   }
 
-  public void setStrMeasure12(String strMeasure12) {
-    this.strMeasure12 = strMeasure12;
+  public void setMeasureIngredient12(String measureIngredient12) {
+    this.measureIngredient12 = measureIngredient12;
   }
 
-  public String getStrMeasure13() {
-    return strMeasure13;
+  public String getMeasureIngredient13() {
+    return measureIngredient13;
   }
 
-  public void setStrMeasure13(String strMeasure13) {
-    this.strMeasure13 = strMeasure13;
+  public void setMeasureIngredient13(String measureIngredient13) {
+    this.measureIngredient13 = measureIngredient13;
   }
 
-  public String getStrMeasure14() {
-    return strMeasure14;
+  public String getMeasureIngredient14() {
+    return measureIngredient14;
   }
 
-  public void setStrMeasure14(String strMeasure14) {
-    this.strMeasure14 = strMeasure14;
+  public void setMeasureIngredient14(String measureIngredient14) {
+    this.measureIngredient14 = measureIngredient14;
   }
 
-  public String getStrMeasure15() {
-    return strMeasure15;
+  public String getMeasureIngredient15() {
+    return measureIngredient15;
   }
 
-  public void setStrMeasure15(String strMeasure15) {
-    this.strMeasure15 = strMeasure15;
+  public void setMeasureIngredient15(String measureIngredient15) {
+    this.measureIngredient15 = measureIngredient15;
   }
 }

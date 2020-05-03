@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public abstract class AbstractController {
+public abstract class UserController {
 
   public static final String USER_SESSION_KEY = "user_id";
   @Autowired protected UserDao userDao;
@@ -19,7 +19,7 @@ public abstract class AbstractController {
   }
 
   protected void setUserInSession(HttpSession session, User user) {
-    session.setAttribute(USER_SESSION_KEY, user.getUid());
+    session.setAttribute(USER_SESSION_KEY, user.getId());
   }
 
   @ModelAttribute("user")

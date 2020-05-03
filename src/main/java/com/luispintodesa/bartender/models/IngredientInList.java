@@ -5,24 +5,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class IngredientInList {
 
   @JsonProperty("strIngredient1")
-  private String strIngredient1;
+  private String name;
 
-  public IngredientInList(String strIngredient1) {
-    this.strIngredient1 = strIngredient1;
+  public IngredientInList(String name) {
+    this.name = name;
   }
 
   public IngredientInList() {}
 
-  public String getStrIngredient1() {
-    return strIngredient1;
+  public String getName() {
+    return name;
   }
 
-  public void setStrIngredient1(String strIngredient1) {
-    this.strIngredient1 = strIngredient1;
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override
   public String toString() {
-    return getStrIngredient1();
+    return getName();
   }
 }

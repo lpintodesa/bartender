@@ -39,7 +39,7 @@
                                 <!--[if lte IE 9]><select
                                     data-datalist="ingredient_list"><![endif]-->
                                 <option th:each="ingredient:${ingredients}"
-                                        th:value="${ingredient.strIngredient1}"></option>
+                                        th:value="${ingredient.name}"></option>
                                 <!--[if lte IE 9]></select><![endif]-->
                             </datalist>
                         </div>
@@ -97,10 +97,10 @@
                         <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
                             <td><img
                                     height="70"
-                                    th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.strIngredient})}"
+                                    th:src="@{https://www.thecocktaildb.com/images/ingredients/{name}-Small.png(name=${ingredient.name})}"
                                     width="70"></td>
-                            <td th:text="${ingredient.strIngredient}"></td>
-                            <td th:text="${ingredient.strType}"></td>
+                            <td th:text="${ingredient.name}"></td>
+                            <td th:text="${ingredient.type}"></td>
                             <td><input name="ingredientIDs"
                                        th:id="${ingredient.id}"
                                        th:value="${ingredient.id}"

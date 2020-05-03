@@ -125,10 +125,10 @@
                         </thead>
                         <tbody th:each="ingredient, iterStat:${user.ingredients}">
                         <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
-                            <td th:text="${ingredient.strIngredient}"></td>
+                            <td th:text="${ingredient.name}"></td>
                             <td><input name="strIngredients"
-                                       th:id="${ingredient.strIngredient}"
-                                       th:value="${ingredient.strIngredient}"
+                                       th:id="${ingredient.name}"
+                                       th:value="${ingredient.name}"
                                        type="checkbox"/></td>
                         </tr>
                         </tbody>

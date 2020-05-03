@@ -1,12 +1,11 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.DeserializerUtils;
+import com.luispintodesa.bartender.models.utils.DeserializerUtils;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.IngredientInList;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.forms.MyBarForm;
-import com.luispintodesa.bartender.models.manipulation.DuplicateChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +28,7 @@ import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
 @RequestMapping(MY_BAR_TEMPLATE)
-public class MyBarController extends AbstractController {
+public class MyBarController extends UserController {
 
   @Autowired private IngredientDao ingredientDao;
 
@@ -50,7 +49,7 @@ public class MyBarController extends AbstractController {
     User theUser = getUserFromSession(request.getSession());
     List<Ingredient> ingredientsInMyBar = theUser.getIngredients();
 
-    if (!DuplicateChecker.checkIngredientInList(form.getIngredientName(), list)) {
+    if (!form.checkIngredientInList(list)) {
       model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
       model.addAttribute(new MyBarForm());
       model.addAttribute(ERROR, "invalid");
@@ -58,7 +57,7 @@ public class MyBarController extends AbstractController {
       return MY_BAR_TEMPLATE;
     }
 
-    if (DuplicateChecker.checkIngredient(form.getIngredientName(), ingredientsInMyBar)) {
+    if (form.checkIngredient(ingredientsInMyBar)) {
       model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
       model.addAttribute(new MyBarForm());
       model.addAttribute(ERROR, "duplicate");

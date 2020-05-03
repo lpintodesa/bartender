@@ -15,10 +15,10 @@ public class Ingredient {
   private int id;
 
   @JsonProperty("strIngredient")
-  private String strIngredient;
+  private String name;
 
   @JsonProperty("strType")
-  private String strType;
+  private String type;
 
   @ManyToMany(mappedBy = "ingredients")
   private List<User> users;
@@ -31,24 +31,24 @@ public class Ingredient {
     this.id = id;
   }
 
-  public String getStrIngredient() {
-    return strIngredient;
+  public String getName() {
+    return name;
   }
 
-  public void setStrIngredient(String strIngredient) {
-    this.strIngredient = strIngredient;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public String getStrType() {
-    return strType;
+  public String getType() {
+    return type;
   }
 
-  public void setStrType(String strType) {
-    this.strType = strType;
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override
   public String toString() {
-    return getStrIngredient();
+    return getName();
   }
 }

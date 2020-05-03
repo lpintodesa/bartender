@@ -3,15 +3,21 @@ package com.luispintodesa.bartender.models;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
-public class User extends AbstractEntity {
+public class User {
 
   private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+  @Id
+  @GeneratedValue
+  private int id;
 
   @NotNull
   @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9_-]{4,11}", message = "Invalid username")
@@ -45,5 +51,9 @@ public class User extends AbstractEntity {
 
   public List<Ingredient> getIngredients() {
     return ingredients;
+  }
+
+  public int getId() {
+    return this.id;
   }
 }

@@ -1,12 +1,11 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.DeserializerUtils;
+import com.luispintodesa.bartender.models.utils.ArrayAndStringUtils;
+import com.luispintodesa.bartender.models.utils.DeserializerUtils;
 import com.luispintodesa.bartender.models.Drink;
-import com.luispintodesa.bartender.models.IngredientToDrinksUtils;
+import com.luispintodesa.bartender.models.utils.IngredientToDrinksMatcher;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.WhatCanIMakeForm;
-import com.luispintodesa.bartender.models.manipulation.DrinkListDivider;
-import com.luispintodesa.bartender.models.manipulation.SpaceToUnderscoreConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +25,7 @@ import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
 @RequestMapping("")
-public class WhatCanIMakeController extends AbstractController {
+public class WhatCanIMakeController extends UserController {
 
   @GetMapping(value = "whatcanimake")
   public String myBarForm(Model model) {
@@ -39,7 +38,7 @@ public class WhatCanIMakeController extends AbstractController {
   @PostMapping(value = "whatcanimake")
   public String myBar(Model model, @ModelAttribute WhatCanIMakeForm form) {
 
-    String cocktailName = SpaceToUnderscoreConverter.convert(form.getCocktailName());
+    String cocktailName = ArrayAndStringUtils.convert(form.getCocktailName());
 
     if (DeserializerUtils.searchDrinkByName(cocktailName) == null) {
       model.addAttribute(TITLE, NO_RESULTS);
@@ -48,7 +47,7 @@ public class WhatCanIMakeController extends AbstractController {
 
     List<Drink> drinks = DeserializerUtils.searchDrinkByName(cocktailName);
 
-    List<List<Drink>> lists = DrinkListDivider.divideInThree(drinks);
+    List<List<Drink>> lists = ArrayAndStringUtils.divideInThree(drinks);
     List<Drink> one = lists.get(0);
     List<Drink> two = lists.get(1);
     List<Drink> three = lists.get(2);
@@ -69,14 +68,14 @@ public class WhatCanIMakeController extends AbstractController {
     User theUser = getUserFromSession(request.getSession());
 
     List<Drink> drinks =
-        IngredientToDrinksUtils.userIngredientsToDrinks(theUser, numberOfMissingIngredients);
+        IngredientToDrinksMatcher.matchUserIngredientsToDrinks(theUser, numberOfMissingIngredients);
 
     if (drinks.isEmpty()) {
       model.addAttribute(TITLE, NO_RESULTS);
       return NO_RESULTS_TEMPLATE;
     }
 
-    List<List<Drink>> listOfListsOfDrinks = DrinkListDivider.divideInThree(drinks);
+    List<List<Drink>> listOfListsOfDrinks = ArrayAndStringUtils.divideInThree(drinks);
 
     List<Drink> firstColumn = listOfListsOfDrinks.get(0);
     List<Drink> secondColumn = listOfListsOfDrinks.get(1);
@@ -104,9 +103,9 @@ public class WhatCanIMakeController extends AbstractController {
 
     for (String i : strIngredients) {
       if (!i.equals(strIngredients[strIngredients.length - 1])) {
-        search.append(SpaceToUnderscoreConverter.convert(i) + ",");
+        search.append(ArrayAndStringUtils.convert(i) + ",");
       } else {
-        search.append(SpaceToUnderscoreConverter.convert(i));
+        search.append(ArrayAndStringUtils.convert(i));
       }
     }
 
@@ -116,7 +115,7 @@ public class WhatCanIMakeController extends AbstractController {
     }
 
     List<Drink> drinks = DeserializerUtils.searchDrinkByMultipleIngredients(search.toString());
-    List<List<Drink>> lists = DrinkListDivider.divideInThree(drinks);
+    List<List<Drink>> lists = ArrayAndStringUtils.divideInThree(drinks);
     List<Drink> one = lists.get(0);
     List<Drink> two = lists.get(1);
     List<Drink> three = lists.get(2);

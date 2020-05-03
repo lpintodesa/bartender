@@ -1,6 +1,6 @@
 package com.luispintodesa.bartender;
 
-import com.luispintodesa.bartender.controllers.AbstractController;
+import com.luispintodesa.bartender.controllers.UserController;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     if (!nonAuthPages.contains(request.getRequestURI())) {
 
       Integer userId =
-          (Integer) request.getSession().getAttribute(AbstractController.USER_SESSION_KEY);
+          (Integer) request.getSession().getAttribute(UserController.USER_SESSION_KEY);
 
       if (userId != null) {
         User user = userDao.findById(userId).orElse(null);
