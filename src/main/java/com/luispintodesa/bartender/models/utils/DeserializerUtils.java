@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.IngredientInList;
@@ -106,7 +107,10 @@ public class DeserializerUtils {
       URL drinkSearchURL = new URL(url);
       drinks = DRINK_READER.readValue(drinkSearchURL);
 
-    } catch (IOException e) {
+    } catch (MismatchedInputException e){
+      return drinks;
+    }
+    catch (IOException e) {
       e.printStackTrace();
     }
     return drinks;
