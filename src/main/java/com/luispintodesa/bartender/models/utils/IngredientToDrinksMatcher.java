@@ -1,21 +1,23 @@
 package com.luispintodesa.bartender.models.utils;
 
+import com.google.common.collect.Sets;
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 public class IngredientToDrinksMatcher {
 
   private IngredientToDrinksMatcher() {}
 
   public static List<Drink> matchUserIngredientsToDrinks(User theUser, int intendedScore) {
-    List<Integer> ids = new ArrayList<>();
+    Set<Integer> ids = new HashSet<>();
     Set<String> strUserIngredientHashSet = new HashSet<>();
     List<Drink> drinks = new ArrayList<>();
 
@@ -43,8 +45,7 @@ public class IngredientToDrinksMatcher {
 
   public static Integer setMatchCounter(Drink drink, Set<String> userIngredientsSet) {
 
-    List<String> strIngredients =
-        Arrays.asList(
+    HashSet<String> strDrinkIngredientsHashSet = newHashSet(
             drink.getNameIngredient1(),
             drink.getNameIngredient2(),
             drink.getNameIngredient3(),
@@ -61,12 +62,8 @@ public class IngredientToDrinksMatcher {
             drink.getNameIngredient14(),
             drink.getNameIngredient15());
 
-    HashSet<String> strDrinkIngredientsHashSet = new HashSet<>(strIngredients);
-
     strDrinkIngredientsHashSet.remove(null);
 
-    strDrinkIngredientsHashSet.removeAll(userIngredientsSet);
-
-    return strDrinkIngredientsHashSet.size();
+    return Sets.difference(strDrinkIngredientsHashSet,userIngredientsSet).size();
   }
 }
