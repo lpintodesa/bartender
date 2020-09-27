@@ -2,6 +2,7 @@ package com.luispintodesa.bartender.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Drink {
@@ -378,5 +379,18 @@ public class Drink {
 
   public void setMeasureIngredient15(String measureIngredient15) {
     this.measureIngredient15 = measureIngredient15;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Drink)) return false;
+    Drink drink = (Drink) o;
+    return id == drink.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }
