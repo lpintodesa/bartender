@@ -5,10 +5,11 @@ import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.User;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -17,33 +18,25 @@ public class IngredientToDrinksMatcher {
   private IngredientToDrinksMatcher() {}
 
   public static List<Drink> matchUserIngredientsToDrinks(User theUser, int intendedScore) {
-    Set<Integer> ids = new HashSet<>();
+
     Set<String> strUserIngredientHashSet = new HashSet<>();
-    List<Drink> drinks = new ArrayList<>();
 
     for (Ingredient ingredient : theUser.getIngredients()) {
       strUserIngredientHashSet.add(ingredient.getName());
     }
 
-    for (Ingredient ingredient : theUser.getIngredients()) {
-      List<Drink> singleIngredientDrinks =
-          DeserializerUtils.searchDrinkBySingleIngredient(ingredient);
-      for (Drink drink : singleIngredientDrinks) {
-        int id = drink.getId();
-        if (!ids.contains(id)) {
-          ids.add(id);
-          Drink drinkById = DeserializerUtils.searchDrinkById(id);
-          int score = setMatchCounter(drinkById, strUserIngredientHashSet);
-          if (score == intendedScore) {
-            drinks.add(drinkById);
-          }
-        }
-      }
-    }
-    return drinks;
+    return theUser.getIngredients()
+            .stream()
+            .map(DeserializerUtils::searchDrinkBySingleIngredient)
+            .flatMap(Collection::stream)
+            .distinct()
+            .map(Drink::getId)
+            .map(DeserializerUtils::searchDrinkById)
+            .filter(drink -> setMatchCounter(drink,strUserIngredientHashSet)==intendedScore)
+            .collect(Collectors.toList());
   }
 
-  public static Integer setMatchCounter(Drink drink, Set<String> userIngredientsSet) {
+  public static int setMatchCounter(Drink drink, Set<String> userIngredientsSet) {
 
     HashSet<String> strDrinkIngredientsHashSet = newHashSet(
             drink.getNameIngredient1(),
