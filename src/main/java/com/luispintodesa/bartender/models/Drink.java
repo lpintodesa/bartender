@@ -1,10 +1,8 @@
 package com.luispintodesa.bartender.models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Drink {
 
   @JsonProperty("idDrink")
