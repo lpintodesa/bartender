@@ -27,10 +27,9 @@ public class IngredientToDrinksMatcher {
 
     return theUser.getIngredients()
             .stream()
-            .map(DeserializerUtils::searchDrinkBySingleIngredient)
+            .map(DeserializerUtils::searchDrinkIdsBySingleIngredient)
             .flatMap(Collection::stream)
             .distinct()
-            .map(Drink::getId)
             .map(DeserializerUtils::searchDrinkById)
             .filter(drink -> setMatchCounter(drink,strUserIngredientHashSet)==intendedScore)
             .collect(Collectors.toList());

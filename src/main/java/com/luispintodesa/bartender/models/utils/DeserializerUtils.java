@@ -1,5 +1,8 @@
 package com.luispintodesa.bartender.models.utils;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +24,7 @@ import java.util.List;
 public class DeserializerUtils {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
+  private static final JsonFactory JSON_FACTORY = new JsonFactory();
 
   static {
     MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -91,12 +95,38 @@ public class DeserializerUtils {
     return searchDrinks(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_NAME + name);
   }
 
-  public static List<Drink> searchDrinkBySingleIngredient(Ingredient ingredient) {
-    return searchDrinks(
-        URL_FIRST_HALF
-            + getKey()
-            + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
-            + ArrayAndStringUtils.convert(ingredient.getName()));
+  public static List<Integer> searchDrinkIdsBySingleIngredient(Ingredient ingredient) {
+
+    List<Integer> list = new ArrayList<>();
+
+    try {
+      URL drinkSearchURL =
+          new URL(
+              URL_FIRST_HALF
+                  + getKey()
+                  + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
+                  + ArrayAndStringUtils.convert(ingredient.getName()));
+
+      try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL); ) {
+
+        while (!parser.isClosed()) {
+          JsonToken jsonToken = parser.nextToken();
+
+          if (JsonToken.FIELD_NAME.equals(jsonToken)) {
+            String fieldName = parser.getCurrentName();
+            parser.nextToken();
+            if ("idDrink".equals(fieldName)) {
+              list.add(parser.getValueAsInt());
+            }
+          }
+        }
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return list;
   }
 
   public static List<Drink> searchDrinks(String url) {
