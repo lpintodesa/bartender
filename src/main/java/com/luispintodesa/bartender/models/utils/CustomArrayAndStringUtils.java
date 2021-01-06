@@ -5,7 +5,7 @@ import com.luispintodesa.bartender.models.Drink;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArrayAndStringUtils {
+public class GeneralUtils {
 
     public static List<List<Drink>> divideInThree(List<Drink> original) {
 
@@ -34,4 +34,5 @@ public class ArrayAndStringUtils {
 
       return string.replaceAll("\\s", "_");
     }
+
 }
