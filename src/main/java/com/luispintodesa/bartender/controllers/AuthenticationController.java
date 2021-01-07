@@ -1,8 +1,12 @@
 package com.luispintodesa.bartender.controllers;
 
+import com.luispintodesa.bartender.models.Drink;
+import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.LoginForm;
 import com.luispintodesa.bartender.models.forms.RegisterForm;
+import com.luispintodesa.bartender.models.utils.DeserializerUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 import static com.luispintodesa.bartender.models.Constants.LOGIN_TEMPLATE;
 import static com.luispintodesa.bartender.models.Constants.LOGIN_TITLE;
@@ -92,6 +97,27 @@ public class AuthenticationController extends UserController {
     }
 
     setUserInSession(request.getSession(), theUser);
+
+    for (Ingredient ingredient : theUser.getIngredients()) {
+      List<Integer> drinkIds = DeserializerUtils.searchDrinkIdsBySingleIngredient(ingredient);
+      List<Integer> newIds =
+          (List<Integer>) CollectionUtils.removeAll(drinkIds, ingredient.getDrinkIds());
+
+      for (Drink drink : ingredient.getDrinks()) {
+        if (!drinkIds.contains(drink.getId())) {
+          ingredient.removeDrink(drink);
+        }
+      }
+
+      for (Integer id : drinkIds) {
+        if (newIds.contains(id)) {
+          Drink newDrink = DeserializerUtils.searchDrinkById(id);
+          drinkDao.save(newDrink);
+          ingredient.addDrink(newDrink);
+        }
+      }
+      ingredientDao.save(ingredient);
+    }
 
     return "redirect:/mybar";
   }
