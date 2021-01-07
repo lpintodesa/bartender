@@ -1,11 +1,13 @@
 package com.luispintodesa.bartender.controllers;
 
-import com.luispintodesa.bartender.models.utils.DeserializerUtils;
+import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.IngredientInList;
 import com.luispintodesa.bartender.models.User;
+import com.luispintodesa.bartender.models.dao.DrinkDao;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.forms.MyBarForm;
+import com.luispintodesa.bartender.models.utils.DeserializerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 import static com.luispintodesa.bartender.models.Constants.ERROR;
 import static com.luispintodesa.bartender.models.Constants.INGREDIENTS;
@@ -31,9 +33,11 @@ import static com.luispintodesa.bartender.models.Constants.TITLE;
 public class MyBarController extends UserController {
 
   @Autowired private IngredientDao ingredientDao;
+  @Autowired private DrinkDao drinkDao;
 
   @GetMapping(value = "")
   public String myBarForm(Model model) {
+
     model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
     model.addAttribute(new MyBarForm());
     model.addAttribute(TITLE, MY_BAR);
@@ -66,7 +70,21 @@ public class MyBarController extends UserController {
     }
 
     Ingredient newIngredient = DeserializerUtils.searchIngredientByName(form.getIngredientName());
+
+    List<Drink> drinks =
+        DeserializerUtils.searchDrinkIdsBySingleIngredient(newIngredient).stream()
+            .map(
+                id ->
+                    (drinkDao.existsById(id)
+                        ? (drinkDao.findById(id)).get()
+                        : DeserializerUtils.searchDrinkById(id)))
+            .collect(Collectors.toList());
+
+    drinkDao.saveAll(drinks);
+
+    newIngredient.setDrinks(drinks);
     ingredientDao.save(newIngredient);
+
     theUser.addItem(newIngredient);
     userDao.save(theUser);
 
@@ -91,13 +109,7 @@ public class MyBarController extends UserController {
 
     for (int ingredientID : ingredientIDs) {
 
-      ListIterator<Ingredient> iter = theUser.getIngredients().listIterator();
-
-      while (iter.hasNext()) {
-        if (iter.next().getId() == ingredientID) {
-          iter.remove();
-        }
-      }
+      theUser.getIngredients().removeIf(ingredient -> ingredient.getId() == ingredientID);
     }
     userDao.save(theUser);
     return "redirect:./";
