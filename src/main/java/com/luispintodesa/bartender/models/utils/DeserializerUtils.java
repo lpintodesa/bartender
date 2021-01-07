@@ -25,15 +25,8 @@ public class DeserializerUtils {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
   private static final JsonFactory JSON_FACTORY = new JsonFactory();
-
-  static {
-    MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-  }
-
   private static final ObjectReader DRINK_READER =
       MAPPER.readerFor(new TypeReference<List<Drink>>() {}).withRootName("drinks");
-  private static final ObjectReader INGREDIENT_READER =
-      MAPPER.readerFor(new TypeReference<List<Ingredient>>() {}).withRootName("ingredients");
   private static final ObjectReader INGREDIENT_IN_LIST_READER =
       MAPPER.readerFor(new TypeReference<List<IngredientInList>>() {}).withRootName("drinks");
   private static final String URL_FIRST_HALF = "https://www.thecocktaildb.com/api/json/v2/";
@@ -43,6 +36,10 @@ public class DeserializerUtils {
   private static final String URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS = "/filter.php?i=";
   private static final String URL_SEGMENT_SEARCH_DRINK_BY_ID = "/lookup.php?i=";
   private static final String API_KEY_FILE = "API_Key.txt";
+
+  static {
+    MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  }
 
   private DeserializerUtils() {}
 
@@ -81,7 +78,24 @@ public class DeserializerUtils {
 
   public static Drink searchDrinkById(Integer id) {
 
-    return searchDrinks(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_ID + id).get(0);
+    try {
+      URL drinkSearchURL = new URL(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_ID + id);
+
+      try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL); ) {
+        JsonToken jsonToken;
+        parser.nextToken();
+
+        do {
+          jsonToken = parser.nextToken();
+        } while (!JsonToken.START_OBJECT.equals(jsonToken));
+
+        return MAPPER.readValue(parser, Drink.class);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return Drink.NOT_FOUND;
   }
 
   public static List<Drink> searchDrinkByMultipleIngredients(String ingredientNames) {
@@ -105,7 +119,7 @@ public class DeserializerUtils {
               URL_FIRST_HALF
                   + getKey()
                   + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
-                  + ArrayAndStringUtils.convert(ingredient.getName()));
+                  + CustomArrayAndStringUtils.convert(ingredient.getName()));
 
       try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL); ) {
 
@@ -121,8 +135,7 @@ public class DeserializerUtils {
           }
         }
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
 
@@ -137,10 +150,9 @@ public class DeserializerUtils {
       URL drinkSearchURL = new URL(url);
       drinks = DRINK_READER.readValue(drinkSearchURL);
 
-    } catch (MismatchedInputException e){
+    } catch (MismatchedInputException e) {
       return drinks;
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
     return drinks;
@@ -148,20 +160,27 @@ public class DeserializerUtils {
 
   public static Ingredient searchIngredientByName(String name) {
 
-    List<Ingredient> ingredients = new ArrayList<>();
-
     try {
       URL ingredientList =
           new URL(
               URL_FIRST_HALF
                   + getKey()
                   + URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME
-                  + ArrayAndStringUtils.convert((name)));
-      ingredients = INGREDIENT_READER.readValue(ingredientList);
+                  + CustomArrayAndStringUtils.convert((name)));
 
+      try (JsonParser parser = JSON_FACTORY.createParser(ingredientList); ) {
+        JsonToken jsonToken;
+        parser.nextToken();
+
+        do {
+          jsonToken = parser.nextToken();
+        } while (!JsonToken.START_OBJECT.equals(jsonToken));
+
+        return MAPPER.readValue(parser, Ingredient.class);
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return ingredients.get(0);
+    return new Ingredient();
   }
 }
