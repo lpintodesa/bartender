@@ -1,6 +1,8 @@
 package com.luispintodesa.bartender.controllers;
 
 import com.luispintodesa.bartender.models.User;
+import com.luispintodesa.bartender.models.dao.DrinkDao;
+import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +14,8 @@ public abstract class UserController {
 
   public static final String USER_SESSION_KEY = "user_id";
   @Autowired protected UserDao userDao;
+  @Autowired protected IngredientDao ingredientDao;
+  @Autowired protected DrinkDao drinkDao;
 
   protected User getUserFromSession(HttpSession session) {
     Integer userId = (Integer) session.getAttribute(USER_SESSION_KEY);
