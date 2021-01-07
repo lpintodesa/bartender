@@ -3,14 +3,27 @@ package com.luispintodesa.bartender.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Entity
 public class Drink {
 
+  public static final Drink NOT_FOUND = new Drink("Drink Not Found");
+
   @JsonProperty("idDrink")
+  @Id
   private int id;
 
   @JsonProperty("strDrink")
   private String name;
 
+  @Column(length = 1000)
   @JsonProperty("strInstructions")
   private String instructions;
 
@@ -106,6 +119,80 @@ public class Drink {
 
   @JsonProperty("strMeasure15")
   private String measureIngredient15;
+
+  @ManyToMany(mappedBy = "drinks")
+  private List<Ingredient> ingredients;
+
+  public Drink(String name) {
+    this.name = name;
+  }
+
+  public Drink() {}
+
+  public static Drink getNotFound() {
+    return NOT_FOUND;
+  }
+
+  public List<Ingredient> getIngredients() {
+    return ingredients;
+  }
+
+  private List<String> getIngredientMeasuresArray() {
+    return Arrays.asList(
+        measureIngredient1,
+        measureIngredient2,
+        measureIngredient3,
+        measureIngredient4,
+        measureIngredient5,
+        measureIngredient6,
+        measureIngredient7,
+        measureIngredient8,
+        measureIngredient9,
+        measureIngredient10,
+        measureIngredient11,
+        measureIngredient12,
+        measureIngredient13,
+        measureIngredient14,
+        measureIngredient15);
+  }
+
+  private List<String> getIngredientNamesArray() {
+    return Arrays.asList(
+        nameIngredient1,
+        nameIngredient2,
+        nameIngredient3,
+        nameIngredient4,
+        nameIngredient5,
+        nameIngredient6,
+        nameIngredient7,
+        nameIngredient8,
+        nameIngredient9,
+        nameIngredient10,
+        nameIngredient11,
+        nameIngredient12,
+        nameIngredient13,
+        nameIngredient14,
+        nameIngredient15);
+  }
+
+  public List<String> getLowerCaseIngredientNames() {
+    return getIngredientNamesArray().stream()
+        .filter(java.util.Objects::nonNull)
+        .map(String::toLowerCase)
+        .collect(Collectors.toList());
+  }
+
+  public List<String> getIngredientNames() {
+    return getIngredientNamesArray().stream()
+        .filter(java.util.Objects::nonNull)
+        .collect(Collectors.toList());
+  }
+
+  public List<String> getIngredientMeasures() {
+    return getIngredientMeasuresArray().stream()
+        .filter(java.util.Objects::nonNull)
+        .collect(Collectors.toList());
+  }
 
   public int getId() {
     return id;
