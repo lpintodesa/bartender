@@ -9,15 +9,14 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class User {
 
   private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-  @Id
-  @GeneratedValue
-  private int id;
+  @Id @GeneratedValue private int id;
 
   @NotNull
   @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9_-]{4,11}", message = "Invalid username")
@@ -51,6 +50,12 @@ public class User {
 
   public List<Ingredient> getIngredients() {
     return ingredients;
+  }
+
+  public List<String> getLowerCaseIngredientNames() {
+    return ingredients.stream()
+        .map(ingredient -> ingredient.getName().toLowerCase())
+        .collect(Collectors.toList());
   }
 
   public int getId() {
