@@ -31,6 +31,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.apache.commons:commons-text:1.9'
     runtime 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
