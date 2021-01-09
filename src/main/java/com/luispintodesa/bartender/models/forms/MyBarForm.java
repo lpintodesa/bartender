@@ -13,18 +13,17 @@ public class MyBarForm {
   public boolean checkIngredient(List<Ingredient> list) {
 
     for (Ingredient i : list) {
-      if (i.getName().equalsIgnoreCase(this.getIngredientName())) {
+      if (i.getName().equalsIgnoreCase(ingredientName)) {
         return true;
       }
     }
-
     return false;
   }
 
   public boolean checkIngredientInList(List<IngredientInList> list) {
 
     for (IngredientInList i : list) {
-      if (i.getName() != null && i.getName().equalsIgnoreCase(this.getIngredientName())) {
+      if (i.getName() != null && i.getName().equalsIgnoreCase(ingredientName)) {
         return true;
       }
     }

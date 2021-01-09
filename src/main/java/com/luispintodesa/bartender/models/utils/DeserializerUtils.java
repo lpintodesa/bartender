@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
@@ -20,6 +19,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.luispintodesa.bartender.models.Constants.EMPTY_STRING;
 
 public class DeserializerUtils {
 
@@ -37,10 +38,6 @@ public class DeserializerUtils {
   private static final String URL_SEGMENT_SEARCH_DRINK_BY_ID = "/lookup.php?i=";
   private static final String API_KEY_FILE = "API_Key.txt";
 
-  static {
-    MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-  }
-
   private DeserializerUtils() {}
 
   public static Object getAPIFile() {
@@ -50,7 +47,7 @@ public class DeserializerUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return "";
+    return EMPTY_STRING;
   }
 
   public static String getKey() {
@@ -60,7 +57,7 @@ public class DeserializerUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return "";
+    return EMPTY_STRING;
   }
 
   public static List<IngredientInList> listAllIngredients() {
@@ -81,7 +78,7 @@ public class DeserializerUtils {
     try {
       URL drinkSearchURL = new URL(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_ID + id);
 
-      try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL); ) {
+      try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL)) {
         JsonToken jsonToken;
         parser.nextToken();
 
@@ -119,9 +116,9 @@ public class DeserializerUtils {
               URL_FIRST_HALF
                   + getKey()
                   + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
-                  + CustomArrayAndStringUtils.convert(ingredient.getName()));
+                  + ArrayAndStringUtils.replaceWhitespaceWithUnderscore(ingredient.getName()));
 
-      try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL); ) {
+      try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL)) {
 
         while (!parser.isClosed()) {
           JsonToken jsonToken = parser.nextToken();
@@ -166,9 +163,9 @@ public class DeserializerUtils {
               URL_FIRST_HALF
                   + getKey()
                   + URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME
-                  + CustomArrayAndStringUtils.convert((name)));
+                  + ArrayAndStringUtils.replaceWhitespaceWithUnderscore((name)));
 
-      try (JsonParser parser = JSON_FACTORY.createParser(ingredientList); ) {
+      try (JsonParser parser = JSON_FACTORY.createParser(ingredientList)) {
         JsonToken jsonToken;
         parser.nextToken();
 

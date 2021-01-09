@@ -58,43 +58,9 @@
                 <div class="col-md-auto">
                     <label class="col-form-label">Show me what I can make with
                         the ingredients I have in my bar <b>right
-                            now</b>: </label>
+                            now</b> or by adding only <b>one or two more ingredients</b>: </label>
                 </div>
                 <div class="col-md-auto">
-                    <input name="numberOfMissingIngredients" th:value="0"
-                           type="hidden">
-                    <input type="submit" value="Show Me!"/>
-                </div>
-            </div>
-        </form>
-    </section>
-    <section>
-        <form action="/whatcanimake/surpriseme" method="post">
-            <div class="row justify-content-md-start">
-                <div class="col-md-auto">
-                    <label class="col-form-label">Show me what I can make by
-                        adding only <b>one more ingredient</b> to
-                        my bar:</label>
-                </div>
-                <div class="col-md-auto">
-                    <input name="numberOfMissingIngredients" th:value="1"
-                           type="hidden">
-                    <input type="submit" value="Show Me!"/>
-                </div>
-            </div>
-        </form>
-    </section>
-    <section>
-        <form action="/whatcanimake/surpriseme" method="post">
-            <div class="row justify-content-md-start">
-                <div class="col-md-auto">
-                    <label class="col-form-label">Show me what I can make by
-                        adding only <b>two more ingredients</b> to
-                        my bar:</label>
-                </div>
-                <div class="col-md-auto">
-                    <input name="numberOfMissingIngredients" th:value="2"
-                           type="hidden">
                     <input type="submit" value="Show Me!"/>
                 </div>
             </div>
@@ -126,7 +92,7 @@
                         <tbody th:each="ingredient, iterStat:${user.ingredients}">
                         <tr th:class="${iterStat.odd}? 'table-light':'table-dark'">
                             <td th:text="${ingredient.name}"></td>
-                            <td><input name="strIngredients"
+                            <td><input name="ingredientNames"
                                        th:id="${ingredient.name}"
                                        th:value="${ingredient.name}"
                                        type="checkbox"/></td>

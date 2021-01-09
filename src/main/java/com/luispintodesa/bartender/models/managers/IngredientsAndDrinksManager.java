@@ -1,4 +1,4 @@
-package com.luispintodesa.bartender.models;
+package com.luispintodesa.bartender.models.managers;
 
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.Ingredient;
@@ -8,13 +8,14 @@ import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.utils.DeserializerUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class IngredientsAndDrinksManager {
 
   @Autowired protected IngredientDao ingredientDao;
@@ -22,17 +23,21 @@ public class IngredientsAndDrinksManager {
 
   public Map<Integer, List<Drink>> matchUserIngredientsToDrinks(User theUser) {
 
-    List<Drink> allDrinks = theUser.getIngredients().stream()
+    List<Drink> allDrinks =
+        theUser.getIngredients().stream()
             .map(Ingredient::getDrinks)
             .flatMap(Collection::stream)
             .distinct()
             .collect(Collectors.toList());
 
-    for (Drink drink : allDrinks){
-      drink.setMissingIngredients(removeMatchedIngredients(drink.getTitleCaseIngredientNames(),theUser.getLowerCaseIngredientNames()));
+    for (Drink drink : allDrinks) {
+      drink.setMissingIngredients(
+          removeMatchedIngredients(
+              drink.getTitleCaseIngredientNames(), theUser.getLowerCaseIngredientNames()));
     }
 
-    return allDrinks.stream().collect(Collectors.groupingBy(drink -> drink.getMissingIngredients().size()));
+    return allDrinks.stream()
+        .collect(Collectors.groupingBy(drink -> drink.getMissingIngredients().size()));
   }
 
   public List<String> removeMatchedIngredients(
@@ -43,11 +48,11 @@ public class IngredientsAndDrinksManager {
     return drinkIngredientNames;
   }
 
-  public void updateDrinksForAllIngredients(User theUser){
+  public void updateDrinksForAllIngredients(User theUser) {
     for (Ingredient ingredient : theUser.getIngredients()) {
       List<Integer> drinkIds = DeserializerUtils.searchDrinkIdsBySingleIngredient(ingredient);
       List<Integer> newIds =
-              (List<Integer>) CollectionUtils.removeAll(drinkIds, ingredient.getDrinkIds());
+          (List<Integer>) CollectionUtils.removeAll(drinkIds, ingredient.getDrinkIds());
 
       for (Drink drink : ingredient.getDrinks()) {
         if (!drinkIds.contains(drink.getId())) {
@@ -66,15 +71,15 @@ public class IngredientsAndDrinksManager {
     }
   }
 
-  public void addNewDrinksForNewIngredient (Ingredient newIngredient){
+  public void addNewDrinksForNewIngredient(Ingredient newIngredient) {
     List<Drink> drinks =
-            DeserializerUtils.searchDrinkIdsBySingleIngredient(newIngredient).stream()
-                    .map(
-                            id ->
-                                    (drinkDao.existsById(id)
-                                            ? (drinkDao.findById((int)id))
-                                            : DeserializerUtils.searchDrinkById(id)))
-                    .collect(Collectors.toList());
+        DeserializerUtils.searchDrinkIdsBySingleIngredient(newIngredient).stream()
+            .map(
+                id ->
+                    (drinkDao.existsById(id)
+                        ? (drinkDao.findById((int) id))
+                        : DeserializerUtils.searchDrinkById(id)))
+            .collect(Collectors.toList());
 
     drinkDao.saveAll(drinks);
 
@@ -82,8 +87,7 @@ public class IngredientsAndDrinksManager {
     ingredientDao.save(newIngredient);
   }
 
-  public void saveDrink(Drink drink){
+  public void saveDrink(Drink drink) {
     drinkDao.save(drink);
   }
-
 }

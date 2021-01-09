@@ -1,5 +1,6 @@
 package com.luispintodesa.bartender.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Ingredient {
 
   @JsonProperty("idIngredient")
@@ -25,8 +27,6 @@ public class Ingredient {
   private List<User> users;
 
   @ManyToMany private List<Drink> drinks;
-
-  public Ingredient() {}
 
   public int getId() {
     return id;

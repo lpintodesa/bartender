@@ -15,54 +15,21 @@
             <div class="col">
                 <div class="row" th:each="drink:${one}"
                      th:if="${one != null and !one.empty}">
-                    <div class="col">
-                        <div class="card text-white bg-primary mb-5"
-                             style="max-width: 20rem;">
-                            <a class="card-header"
-                               th:href="@{'drinks/'+${drink.id}}"
-                               th:text="${drink.name}"
-                               th:value="${drink.id}"></a>
-                            <a class="card-body"
-                               th:href="@{'drinks/'+${drink.id}}"><img
-                                    style="width: 100%; display: block;"
-                                    th:src="${drink.thumbnail}"></a>
-                        </div>
+                    <div class="col" th:replace="fragments :: cardBg-primary">
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="row" th:each="drink:${two}"
                      th:if="${two != null and !two.empty}">
-                    <div class="col">
-                        <div class="card text-white bg-info mb-5"
-                             style="max-width: 20rem;">
-                            <a class="card-header"
-                               th:href="@{'drinks/'+${drink.id}}"
-                               th:text="${drink.name}"
-                               th:value="${drink.id}"></a>
-                            <a class="card-body"
-                               th:href="@{'drinks/'+${drink.id}}"><img
-                                    style="width: 100%; display: block;"
-                                    th:src="${drink.thumbnail}"></a>
-                        </div>
+                    <div class="col" th:replace="fragments :: cardBg-info">
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="row" th:each="drink:${three}"
                      th:if="${three != null and !three.empty}">
-                    <div class="col">
-                        <div class="card text-white bg-danger mb-5"
-                             style="max-width: 20rem;">
-                            <a class="card-header"
-                               th:href="@{'drinks/'+${drink.id}}"
-                               th:text="${drink.name}"
-                               th:value="${drink.id}"></a>
-                            <a class="card-body"
-                               th:href="@{'drinks/'+${drink.id}}"><img
-                                    style="width: 100%; display: block;"
-                                    th:src="${drink.thumbnail}"></a>
-                        </div>
+                    <div class="col" th:replace="fragments :: cardBg-danger">
                     </div>
                 </div>
             </div>

@@ -8,4 +8,6 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Repository
-public interface DrinkDao extends CrudRepository<Drink, Integer> {}
+public interface DrinkDao extends CrudRepository<Drink, Integer> {
+    Drink findById(int id);
+}
