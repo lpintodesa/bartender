@@ -1,17 +1,21 @@
 package com.luispintodesa.bartender.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import org.apache.commons.text.WordUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Drink {
 
   public static final Drink NOT_FOUND = new Drink("Drink Not Found");
@@ -123,15 +127,13 @@ public class Drink {
   @ManyToMany(mappedBy = "drinks")
   private List<Ingredient> ingredients;
 
+  @Transient private List<String> missingIngredients;
+
   public Drink(String name) {
     this.name = name;
   }
 
   public Drink() {}
-
-  public static Drink getNotFound() {
-    return NOT_FOUND;
-  }
 
   public List<Ingredient> getIngredients() {
     return ingredients;
@@ -175,10 +177,10 @@ public class Drink {
         nameIngredient15);
   }
 
-  public List<String> getLowerCaseIngredientNames() {
+  public List<String> getTitleCaseIngredientNames() {
     return getIngredientNamesArray().stream()
         .filter(java.util.Objects::nonNull)
-        .map(String::toLowerCase)
+        .map(WordUtils::capitalizeFully)
         .collect(Collectors.toList());
   }
 
@@ -226,244 +228,132 @@ public class Drink {
     this.thumbnail = thumbnail;
   }
 
-  public String getNameIngredient1() {
-    return nameIngredient1;
-  }
-
   public void setNameIngredient1(String nameIngredient1) {
     this.nameIngredient1 = nameIngredient1;
-  }
-
-  public String getNameIngredient2() {
-    return nameIngredient2;
   }
 
   public void setNameIngredient2(String nameIngredient2) {
     this.nameIngredient2 = nameIngredient2;
   }
 
-  public String getNameIngredient3() {
-    return nameIngredient3;
-  }
-
   public void setNameIngredient3(String nameIngredient3) {
     this.nameIngredient3 = nameIngredient3;
-  }
-
-  public String getNameIngredient4() {
-    return nameIngredient4;
   }
 
   public void setNameIngredient4(String nameIngredient4) {
     this.nameIngredient4 = nameIngredient4;
   }
 
-  public String getNameIngredient5() {
-    return nameIngredient5;
-  }
-
   public void setNameIngredient5(String nameIngredient5) {
     this.nameIngredient5 = nameIngredient5;
-  }
-
-  public String getNameIngredient6() {
-    return nameIngredient6;
   }
 
   public void setNameIngredient6(String nameIngredient6) {
     this.nameIngredient6 = nameIngredient6;
   }
 
-  public String getNameIngredient7() {
-    return nameIngredient7;
-  }
-
   public void setNameIngredient7(String nameIngredient7) {
     this.nameIngredient7 = nameIngredient7;
-  }
-
-  public String getNameIngredient8() {
-    return nameIngredient8;
   }
 
   public void setNameIngredient8(String nameIngredient8) {
     this.nameIngredient8 = nameIngredient8;
   }
 
-  public String getNameIngredient9() {
-    return nameIngredient9;
-  }
-
   public void setNameIngredient9(String nameIngredient9) {
     this.nameIngredient9 = nameIngredient9;
-  }
-
-  public String getNameIngredient10() {
-    return nameIngredient10;
   }
 
   public void setNameIngredient10(String nameIngredient10) {
     this.nameIngredient10 = nameIngredient10;
   }
 
-  public String getNameIngredient11() {
-    return nameIngredient11;
-  }
-
   public void setNameIngredient11(String nameIngredient11) {
     this.nameIngredient11 = nameIngredient11;
-  }
-
-  public String getNameIngredient12() {
-    return nameIngredient12;
   }
 
   public void setNameIngredient12(String nameIngredient12) {
     this.nameIngredient12 = nameIngredient12;
   }
 
-  public String getNameIngredient13() {
-    return nameIngredient13;
-  }
-
   public void setNameIngredient13(String nameIngredient13) {
     this.nameIngredient13 = nameIngredient13;
-  }
-
-  public String getNameIngredient14() {
-    return nameIngredient14;
   }
 
   public void setNameIngredient14(String nameIngredient14) {
     this.nameIngredient14 = nameIngredient14;
   }
 
-  public String getNameIngredient15() {
-    return nameIngredient15;
-  }
-
   public void setNameIngredient15(String nameIngredient15) {
     this.nameIngredient15 = nameIngredient15;
-  }
-
-  public String getMeasureIngredient1() {
-    return measureIngredient1;
   }
 
   public void setMeasureIngredient1(String measureIngredient1) {
     this.measureIngredient1 = measureIngredient1;
   }
 
-  public String getMeasureIngredient2() {
-    return measureIngredient2;
-  }
-
   public void setMeasureIngredient2(String measureIngredient2) {
     this.measureIngredient2 = measureIngredient2;
-  }
-
-  public String getMeasureIngredient3() {
-    return measureIngredient3;
   }
 
   public void setMeasureIngredient3(String measureIngredient3) {
     this.measureIngredient3 = measureIngredient3;
   }
 
-  public String getMeasureIngredient4() {
-    return measureIngredient4;
-  }
-
   public void setMeasureIngredient4(String measureIngredient4) {
     this.measureIngredient4 = measureIngredient4;
-  }
-
-  public String getMeasureIngredient5() {
-    return measureIngredient5;
   }
 
   public void setMeasureIngredient5(String measureIngredient5) {
     this.measureIngredient5 = measureIngredient5;
   }
 
-  public String getMeasureIngredient6() {
-    return measureIngredient6;
-  }
-
   public void setMeasureIngredient6(String measureIngredient6) {
     this.measureIngredient6 = measureIngredient6;
-  }
-
-  public String getMeasureIngredient7() {
-    return measureIngredient7;
   }
 
   public void setMeasureIngredient7(String measureIngredient7) {
     this.measureIngredient7 = measureIngredient7;
   }
 
-  public String getMeasureIngredient8() {
-    return measureIngredient8;
-  }
-
   public void setMeasureIngredient8(String measureIngredient8) {
     this.measureIngredient8 = measureIngredient8;
-  }
-
-  public String getMeasureIngredient9() {
-    return measureIngredient9;
   }
 
   public void setMeasureIngredient9(String measureIngredient9) {
     this.measureIngredient9 = measureIngredient9;
   }
 
-  public String getMeasureIngredient10() {
-    return measureIngredient10;
-  }
-
   public void setMeasureIngredient10(String measureIngredient10) {
     this.measureIngredient10 = measureIngredient10;
-  }
-
-  public String getMeasureIngredient11() {
-    return measureIngredient11;
   }
 
   public void setMeasureIngredient11(String measureIngredient11) {
     this.measureIngredient11 = measureIngredient11;
   }
 
-  public String getMeasureIngredient12() {
-    return measureIngredient12;
-  }
-
   public void setMeasureIngredient12(String measureIngredient12) {
     this.measureIngredient12 = measureIngredient12;
-  }
-
-  public String getMeasureIngredient13() {
-    return measureIngredient13;
   }
 
   public void setMeasureIngredient13(String measureIngredient13) {
     this.measureIngredient13 = measureIngredient13;
   }
 
-  public String getMeasureIngredient14() {
-    return measureIngredient14;
-  }
-
   public void setMeasureIngredient14(String measureIngredient14) {
     this.measureIngredient14 = measureIngredient14;
   }
 
-  public String getMeasureIngredient15() {
-    return measureIngredient15;
-  }
-
   public void setMeasureIngredient15(String measureIngredient15) {
     this.measureIngredient15 = measureIngredient15;
+  }
+
+  public List<String> getMissingIngredients() {
+    return missingIngredients;
+  }
+
+  public void setMissingIngredients(List<String> missingIngredients) {
+    this.missingIngredients = missingIngredients;
   }
 
   @Override

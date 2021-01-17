@@ -3,9 +3,8 @@ package com.luispintodesa.bartender.controllers;
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.WhatCanIMakeForm;
-import com.luispintodesa.bartender.models.utils.CustomArrayAndStringUtils;
+import com.luispintodesa.bartender.models.utils.ArrayAndStringUtils;
 import com.luispintodesa.bartender.models.utils.DeserializerUtils;
-import com.luispintodesa.bartender.models.utils.IngredientToDrinksMatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import static com.luispintodesa.bartender.models.Constants.INGREDIENTS;
 import static com.luispintodesa.bartender.models.Constants.NO_RESULTS;
 import static com.luispintodesa.bartender.models.Constants.NO_RESULTS_TEMPLATE;
+import static com.luispintodesa.bartender.models.Constants.REDIRECT_PATH;
 import static com.luispintodesa.bartender.models.Constants.RESULTS_TEMPLATE;
 import static com.luispintodesa.bartender.models.Constants.SEARCH_RESULTS;
 import static com.luispintodesa.bartender.models.Constants.TITLE;
@@ -30,7 +33,7 @@ public class WhatCanIMakeController extends UserController {
   @GetMapping(value = "whatcanimake")
   public String myBarForm(Model model) {
     model.addAttribute(new WhatCanIMakeForm());
-    model.addAttribute("ingredients", DeserializerUtils.listAllIngredients());
+    model.addAttribute(INGREDIENTS, DeserializerUtils.listAllIngredients());
     model.addAttribute(TITLE, "What Can I Make?");
     return "whatcanimake";
   }
@@ -38,53 +41,57 @@ public class WhatCanIMakeController extends UserController {
   @PostMapping(value = "whatcanimake")
   public String myBar(Model model, @ModelAttribute WhatCanIMakeForm form) {
 
-    String cocktailName = CustomArrayAndStringUtils.convert(form.getCocktailName());
-
-    if (DeserializerUtils.searchDrinkByName(cocktailName) == null) {
-      model.addAttribute(TITLE, NO_RESULTS);
-      return NO_RESULTS_TEMPLATE;
-    }
+    String cocktailName =
+        ArrayAndStringUtils.replaceWhitespaceWithUnderscore(form.getCocktailName());
 
     List<Drink> drinks = DeserializerUtils.searchDrinkByName(cocktailName);
-
-    List<List<Drink>> lists = CustomArrayAndStringUtils.divideInThree(drinks);
-    List<Drink> one = lists.get(0);
-    List<Drink> two = lists.get(1);
-    List<Drink> three = lists.get(2);
-
-    model.addAttribute("one", one);
-    model.addAttribute("two", two);
-    model.addAttribute("three", three);
-    model.addAttribute(TITLE, SEARCH_RESULTS);
-    return "results";
-  }
-
-  @PostMapping(value = "whatcanimake/surpriseme")
-  public String surpriseMe(
-      Model model,
-      HttpServletRequest request,
-      @ModelAttribute @RequestParam(required = true) int numberOfMissingIngredients) {
-
-    User theUser = getUserFromSession(request.getSession());
-
-    List<Drink> drinks =
-        IngredientToDrinksMatcher.matchUserIngredientsToDrinks(theUser, numberOfMissingIngredients);
 
     if (drinks.isEmpty()) {
       model.addAttribute(TITLE, NO_RESULTS);
       return NO_RESULTS_TEMPLATE;
     }
 
-    List<List<Drink>> listOfListsOfDrinks = CustomArrayAndStringUtils.divideInThree(drinks);
+    Map<Integer, List<Drink>> lists = ArrayAndStringUtils.divideInThree(drinks);
 
-    List<Drink> firstColumn = listOfListsOfDrinks.get(0);
-    List<Drink> secondColumn = listOfListsOfDrinks.get(1);
-    List<Drink> thirdColumn = listOfListsOfDrinks.get(2);
+    model.addAttribute("one", lists.get(0));
+    model.addAttribute("two", lists.get(1));
+    model.addAttribute("three", lists.get(2));
+    model.addAttribute(TITLE, SEARCH_RESULTS);
+    return RESULTS_TEMPLATE;
+  }
 
-    model.addAttribute("firstColumn", firstColumn);
-    model.addAttribute("secondColumn", secondColumn);
-    model.addAttribute("thirdColumn", thirdColumn);
-    model.addAttribute("score", numberOfMissingIngredients);
+  @PostMapping(value = "whatcanimake/surpriseme")
+  public String surpriseMe(Model model, HttpServletRequest request) {
+
+    User theUser = getUserFromSession(request.getSession());
+
+    Map<Integer, List<Drink>> drinks =
+        ingredientsAndDrinksManager.matchUserIngredientsToDrinks(theUser);
+
+    if (drinks.isEmpty()) {
+      model.addAttribute(TITLE, NO_RESULTS);
+      return NO_RESULTS_TEMPLATE;
+    }
+
+    Map<Integer, List<Drink>> drinksWithPerfectMatch = null;
+    Map<Integer, List<Drink>> drinksWithOneMissingIngredient = null;
+    Map<Integer, List<Drink>> drinksWithTwoMissingIngredients = null;
+
+    if (null != drinks.get(0)) {
+      drinksWithPerfectMatch = ArrayAndStringUtils.divideInThree(drinks.get(0));
+    }
+
+    if (null != drinks.get(1)) {
+      drinksWithOneMissingIngredient = ArrayAndStringUtils.divideInThree(drinks.get(1));
+    }
+
+    if (null != drinks.get(2)) {
+      drinksWithTwoMissingIngredients = ArrayAndStringUtils.divideInThree(drinks.get(2));
+    }
+
+    model.addAttribute("perfectMatch", drinksWithPerfectMatch);
+    model.addAttribute("oneMissing", drinksWithOneMissingIngredient);
+    model.addAttribute("twoMissing", drinksWithTwoMissingIngredients);
 
     model.addAttribute(TITLE, SEARCH_RESULTS);
 
@@ -93,36 +100,28 @@ public class WhatCanIMakeController extends UserController {
 
   @PostMapping(value = "byingredient")
   public String byIngredient(
-      Model model, @ModelAttribute @RequestParam(required = false) String[] strIngredients) {
+      Model model, @ModelAttribute @RequestParam(required = false) String[] ingredientNames) {
 
-    if (strIngredients == null) {
-      return "redirect:/whatcanimake";
+    if (ingredientNames == null) {
+      return REDIRECT_PATH + "/whatcanimake";
     }
 
-    StringBuilder search = new StringBuilder();
+    String ingredientNamesCommaSeparated =
+        ArrayAndStringUtils.processMultiIngredientSearchInput(Arrays.toString(ingredientNames));
 
-    for (String i : strIngredients) {
-      if (!i.equals(strIngredients[strIngredients.length - 1])) {
-        search.append(CustomArrayAndStringUtils.convert(i) + ",");
-      } else {
-        search.append(CustomArrayAndStringUtils.convert(i));
-      }
-    }
+    List<Drink> drinks =
+        DeserializerUtils.searchDrinkByMultipleIngredients(ingredientNamesCommaSeparated);
 
-    if (DeserializerUtils.searchDrinkByMultipleIngredients(search.toString()).isEmpty()) {
+    if (drinks.isEmpty()) {
       model.addAttribute(TITLE, NO_RESULTS);
       return NO_RESULTS_TEMPLATE;
     }
 
-    List<Drink> drinks = DeserializerUtils.searchDrinkByMultipleIngredients(search.toString());
-    List<List<Drink>> lists = CustomArrayAndStringUtils.divideInThree(drinks);
-    List<Drink> one = lists.get(0);
-    List<Drink> two = lists.get(1);
-    List<Drink> three = lists.get(2);
+    Map<Integer, List<Drink>> lists = ArrayAndStringUtils.divideInThree(drinks);
 
-    model.addAttribute("one", one);
-    model.addAttribute("two", two);
-    model.addAttribute("three", three);
+    model.addAttribute("one", lists.get(0));
+    model.addAttribute("two", lists.get(1));
+    model.addAttribute("three", lists.get(2));
     model.addAttribute(TITLE, SEARCH_RESULTS);
     return RESULTS_TEMPLATE;
   }

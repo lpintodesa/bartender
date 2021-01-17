@@ -10,15 +10,15 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <p>Welcome, <span th:text="${user.username}"></span>!</p>
+                <h5>Welcome, <span th:text="${user.username}"></span>!</h5>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <p class="text-muted">To add an ingredient to your bar, please
+                <p>To add an ingredient to your bar, please
                     search for it in the form below and click
                     on "Add Ingredient".</p>
-                <p class="text-muted"> To remove one or more ingredients
+                <p> To remove one or more ingredients
                     currently in your bar, please check their
                     corresponding checkboxes and click on "Remove
                     Ingredient(s)".</p>
@@ -89,7 +89,7 @@
                             <th scope="col"><input type="submit"
                                                    value="Remove Ingredient(s)"/>
                                 <span class="invalid-feedback"
-                                      th:if="${error == 'empty'}">You must select at least one ingredient to be remove.</span>
+                                      th:if="${error == 'empty'}">You must select at least one ingredient to be removed.</span>
                             </th>
                         </tr>
                         </thead>

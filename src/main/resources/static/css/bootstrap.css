@@ -85,7 +85,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10rem;
 }
 
 p {
@@ -4888,7 +4888,33 @@ input[type="button"].btn-block {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
-  padding: 1.25rem;
+  padding: 1.0rem;
+}
+
+.card-body:hover .image {
+  opacity: 0.3;
+}
+
+.card-body:hover .middle {
+  opacity: 1;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.text {
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
 }
 
 .card-title {

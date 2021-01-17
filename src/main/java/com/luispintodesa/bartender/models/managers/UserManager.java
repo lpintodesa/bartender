@@ -1,10 +1,14 @@
-package com.luispintodesa.bartender.models;
+package com.luispintodesa.bartender.models.managers;
 
+import com.luispintodesa.bartender.models.Ingredient;
+import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+@Service
 public class UserManager {
     @Autowired
     protected UserDao userDao;

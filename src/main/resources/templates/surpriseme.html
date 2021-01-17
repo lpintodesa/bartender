@@ -8,74 +8,183 @@
 <header>
     <nav th:replace="fragments :: navigationResults"></nav>
 </header>
-<body>
-<section>
     <div class="container">
-        <div class="row">
-            <div class="col" th:if="${score==0}"><p> Here are the drinks you can
-                make right now:</p></div>
-            <div class="col" th:if="${score==1}"><p> Here are the drinks you can
-                make with one more ingredient:</p>
-            </div>
-            <div class="col" th:if="${score==2}"><p> Here are the drinks you can
-                make with two more ingredients:</p>
-            </div>
-        </div>
-        <div class="row">
+        <section>
+        <h5> Here are the drinks you can make right now:</h5>
+        <h5 th:if="${perfectMatch==null}" class="text-danger"> There are no drinks you can make using only the current ingredients in your bar.
+            Please add more ingredients and try again!</h5>
+        <div class="row" th:if="${perfectMatch!=null}">
             <div class="col">
-                <div class="row" th:each="drink:${firstColumn}">
-                    <div class="col">
-                        <div class="card text-white bg-primary mb-5"
-                             style="max-width: 20rem;">
-                            <a class="card-header"
-                               th:href="@{'../../drinks/'+${drink.id}}"
-                               th:text="${drink.name}"
-                               th:value="${drink.id}"></a>
-                            <a class="card-body"
-                               th:href="@{'../../drinks/'+${drink.id}}"><img
-                                    style="width: 100%; display: block;"
-                                    th:src="${drink.thumbnail}"></a>
-                        </div>
+                <div class="row" th:each="drink:${perfectMatch.get(0)}">
+                    <div class="col" th:replace="fragments :: cardBg-primary">
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="row" th:each="drink:${secondColumn}"
-                     th:if="${secondColumn != null and !secondColumn.empty}">
-                    <div class="col">
-                        <div class="card text-white bg-info mb-5"
-                             style="max-width: 20rem;">
-                            <a class="card-header"
-                               th:href="@{'../../drinks/'+${drink.id}}"
-                               th:text="${drink.name}"
-                               th:value="${drink.id}"></a>
-                            <a class="card-body"
-                               th:href="@{'../../drinks/'+${drink.id}}"><img
-                                    style="width: 100%; display: block;"
-                                    th:src="${drink.thumbnail}"></a>
-                        </div>
+            <div class="col" >
+                <div class="row"th:if="${perfectMatch.get(1) != null and !perfectMatch.get(1).empty}"
+                     th:each="drink:${perfectMatch.get(1)}">
+                    <div class="col" th:replace="fragments :: cardBg-info">
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="row" th:each="drink:${thirdColumn}"
-                     th:if="${thirdColumn != null and !thirdColumn.empty}">
-                    <div class="col">
-                        <div class="card text-white bg-danger mb-5"
-                             style="max-width: 20rem;">
-                            <a class="card-header"
-                               th:href="@{'../../drinks/'+${drink.id}}"
-                               th:text="${drink.name}"
-                               th:value="${drink.id}"></a>
-                            <a class="card-body"
-                               th:href="@{'../../drinks/'+${drink.id}}"><img
-                                    style="width: 100%; display: block;"
-                                    th:src="${drink.thumbnail}"></a>
-                        </div>
-                    </div>
+            <div class="col" >
+                <div class="row" th:if="${perfectMatch.get(2) != null and !perfectMatch.get(2).empty}"
+                     th:each="drink:${perfectMatch.get(2)}">
+                    <div class="col" th:replace="fragments :: cardBg-danger">
+                </div>
                 </div>
             </div>
         </div>
+        </section>
+        <section>
+        <h5> Here are the drinks you can make with one more ingredient:</h5>
+        <h5 th:if="${oneMissing==null}" class="text-danger"> There are no drinks you can make by adding only one more ingredient to your bar.
+                Please add more ingredients and try again!</h5>
+        <div class="row" th:if="${oneMissing!=null}">
+            <div class="col">
+                <div class="row" th:each="drink:${oneMissing.get(0)}">
+                    <div class="col">
+                        <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'../../drinks/'+${drink.id}}"
+                               th:text="${drink.name}"
+                               th:value="${drink.id}"></a>
+                            <a class="card-body" th:href="@{'../../drinks/'+${drink.id}}">
+                                <img class="image" style="width: 100%; display: block;" th:src="${drink.thumbnail}">
+                                <div class="middle text-white bg-primary" th:if="${!drink.missingIngredients.empty}">
+                                    <p>Your missing ingredients are:</p>
+                                    <strong>
+                                        <p th:each="name, iterStat : ${drink.missingIngredients}" th:text ="${name}">
+                                    </strong>
+                                    <p>Click for more details.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" >
+                <div class="row"th:if="${oneMissing.get(1) != null and !oneMissing.get(1).empty}"
+                     th:each="drink:${oneMissing.get(1)}">
+                    <div class="col">
+                        <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'../../drinks/'+${drink.id}}"
+                               th:text="${drink.name}"
+                               th:value="${drink.id}"></a>
+                            <a class="card-body" th:href="@{'../../drinks/'+${drink.id}}">
+                                <img class="image" style="width: 100%; display: block;" th:src="${drink.thumbnail}">
+                                <div class="middle text-white bg-info" th:if="${!drink.missingIngredients.empty}">
+                                    <p>Your missing ingredients are:</p>
+                                    <strong>
+                                        <p th:each="name, iterStat : ${drink.missingIngredients}" th:text ="${name}">
+                                    </strong>
+                                    <p>Click for more details.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" >
+                <div class="row" th:if="${oneMissing.get(2) != null and !oneMissing.get(2).empty}"
+                     th:each="drink:${oneMissing.get(2)}">
+                    <div class="col">
+                        <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'../../drinks/'+${drink.id}}"
+                               th:text="${drink.name}"
+                               th:value="${drink.id}"></a>
+                            <a class="card-body" th:href="@{'../../drinks/'+${drink.id}}">
+                                <img class="image" style="width: 100%; display: block;" th:src="${drink.thumbnail}">
+                                <div class="middle text-white bg-danger" th:if="${!drink.missingIngredients.empty}">
+                                    <p>Your missing ingredients are:</p>
+                                    <strong>
+                                        <p th:each="name, iterStat : ${drink.missingIngredients}" th:text ="${name}">
+                                    </strong>
+                                    <p>Click for more details.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+        <section>
+        <h5> Here are the drinks you can make with two more ingredients:</h5>
+        <h5 th:if="${twoMissing==null}" class="text-danger"> There are no drinks you can make by adding only two more ingredients to your bar.
+                Please add more ingredients and try again!</h5>
+        <div class="row" th:if="${twoMissing!=null}">
+            <div class="col">
+                <div class="row" th:each="drink:${twoMissing.get(0)}">
+                    <div class="col">
+                        <div class="card text-white bg-primary mb-5" style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'../../drinks/'+${drink.id}}"
+                               th:text="${drink.name}"
+                               th:value="${drink.id}"></a>
+                            <a class="card-body" th:href="@{'../../drinks/'+${drink.id}}">
+                                <img class="image" style="width: 100%; display: block;" th:src="${drink.thumbnail}">
+                                <div class="middle text-white bg-primary" th:if="${!drink.missingIngredients.empty}">
+                                    <p>Your missing ingredients are:</p>
+                                    <strong>
+                                        <p th:each="name, iterStat : ${drink.missingIngredients}" th:text ="${name}">
+                                    </strong>
+                                    <p>Click for more details.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" >
+                <div class="row"th:if="${twoMissing.get(1) != null and !twoMissing.get(1).empty}"
+                     th:each="drink:${twoMissing.get(1)}">
+                    <div class="col">
+                        <div class="card text-white bg-info mb-5" style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'../../drinks/'+${drink.id}}"
+                               th:text="${drink.name}"
+                               th:value="${drink.id}"></a>
+                            <a class="card-body" th:href="@{'../../drinks/'+${drink.id}}">
+                                <img class="image" style="width: 100%; display: block;" th:src="${drink.thumbnail}">
+                                <div class="middle text-white bg-info" th:if="${!drink.missingIngredients.empty}">
+                                    <p>Your missing ingredients are:</p>
+                                    <strong>
+                                        <p th:each="name, iterStat : ${drink.missingIngredients}" th:text ="${name}">
+                                    </strong>
+                                    <p>Click for more details.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" >
+                <div class="row" th:if="${twoMissing.get(2) != null and !twoMissing.get(2).empty}" th:each="drink:${twoMissing.get(2)}">
+                    <div class="col">
+                        <div class="card text-white bg-danger mb-5" style="max-width: 20rem;">
+                            <a class="card-header"
+                               th:href="@{'../../drinks/'+${drink.id}}"
+                               th:text="${drink.name}"
+                               th:value="${drink.id}"></a>
+                            <a class="card-body" th:href="@{'../../drinks/'+${drink.id}}">
+                                <img class="image" style="width: 100%; display: block;" th:src="${drink.thumbnail}">
+                                <div class="middle text-white bg-danger" th:if="${!drink.missingIngredients.empty}">
+                                    <p>Your missing ingredients are:</p>
+                                    <strong>
+                                        <p th:each="name, iterStat : ${drink.missingIngredients}" th:text ="${name}">
+                                    </strong>
+                                    <p>Click for more details.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
     </div>
 </section>
 </body>

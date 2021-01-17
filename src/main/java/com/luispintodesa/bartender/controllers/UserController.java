@@ -1,25 +1,33 @@
 package com.luispintodesa.bartender.controllers;
 
 import com.luispintodesa.bartender.models.User;
-import com.luispintodesa.bartender.models.dao.DrinkDao;
-import com.luispintodesa.bartender.models.dao.IngredientDao;
-import com.luispintodesa.bartender.models.dao.UserDao;
+import com.luispintodesa.bartender.models.managers.IngredientsAndDrinksManager;
+import com.luispintodesa.bartender.models.managers.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static com.luispintodesa.bartender.models.Constants.USER_SESSION_KEY;
+
 public abstract class UserController {
 
-  public static final String USER_SESSION_KEY = "user_id";
-  @Autowired protected UserDao userDao;
-  @Autowired protected IngredientDao ingredientDao;
-  @Autowired protected DrinkDao drinkDao;
+  @Autowired
+  IngredientsAndDrinksManager ingredientsAndDrinksManager;
+  @Autowired
+  UserManager userManager;
 
-  protected User getUserFromSession(HttpSession session) {
-    Integer userId = (Integer) session.getAttribute(USER_SESSION_KEY);
-    return userId == null ? null : userDao.findById(userId).orElse(null);
+  public User getUserFromSession(HttpSession session) {
+
+    User user = null;
+
+    Integer id = (Integer) session.getAttribute(USER_SESSION_KEY);
+
+    if (null != id){
+      user = userManager.findUserById((int) session.getAttribute(USER_SESSION_KEY));
+    }
+    return user;
   }
 
   protected void setUserInSession(HttpSession session, User user) {

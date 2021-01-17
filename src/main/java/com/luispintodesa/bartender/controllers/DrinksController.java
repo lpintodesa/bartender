@@ -9,9 +9,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+import static com.luispintodesa.bartender.models.Constants.DETAILS;
+import static com.luispintodesa.bartender.models.Constants.DRINKS;
+import static com.luispintodesa.bartender.models.Constants.IMAGE;
+import static com.luispintodesa.bartender.models.Constants.INGREDIENTS;
+import static com.luispintodesa.bartender.models.Constants.INSTRUCTIONS;
+import static com.luispintodesa.bartender.models.Constants.MEASURES;
+import static com.luispintodesa.bartender.models.Constants.NAME;
+import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
-@RequestMapping("drinks")
+@RequestMapping(DRINKS)
 public class DrinksController extends UserController {
 
   @GetMapping(value = "{idDrink}")
@@ -19,15 +29,22 @@ public class DrinksController extends UserController {
 
     Drink drink = DeserializerUtils.searchDrinkById(idDrink);
 
-    drinkDao.save(drink);
+    ingredientsAndDrinksManager.saveDrink(drink);
 
-    model.addAttribute("name", drink.getName());
-    model.addAttribute("ingredients", drink.getIngredientNames());
-    model.addAttribute("measures", drink.getIngredientMeasures());
-    model.addAttribute("instructions", drink.getInstructions());
-    model.addAttribute("image", drink.getThumbnail());
-    model.addAttribute("title", drink.getName());
+    List<String> ingredientNames = drink.getIngredientNames();
+    List<String> ingredientMeasures = drink.getIngredientMeasures();
 
-    return "details";
+    while (ingredientMeasures.size()<ingredientNames.size()){
+      ingredientMeasures.add("N/A");
+    }
+
+    model.addAttribute(NAME, drink.getName());
+    model.addAttribute(INGREDIENTS, ingredientNames);
+    model.addAttribute(MEASURES, ingredientMeasures);
+    model.addAttribute(INSTRUCTIONS, drink.getInstructions());
+    model.addAttribute(IMAGE, drink.getThumbnail());
+    model.addAttribute(TITLE, drink.getName());
+
+    return DETAILS;
   }
 }

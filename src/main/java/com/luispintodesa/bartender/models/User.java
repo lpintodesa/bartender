@@ -1,5 +1,6 @@
 package com.luispintodesa.bartender.models;
 
+import org.apache.commons.text.WordUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ public class User {
   private String username;
 
   @NotNull private String pwHash;
+
   @ManyToMany private List<Ingredient> ingredients;
 
   public User() {}
@@ -36,8 +38,8 @@ public class User {
     return encoder.encode(password);
   }
 
-  public void addItem(Ingredient item) {
-    ingredients.add(item);
+  public void addIngredient(Ingredient ingredient) {
+    ingredients.add(ingredient);
   }
 
   public String getUsername() {
@@ -54,7 +56,7 @@ public class User {
 
   public List<String> getLowerCaseIngredientNames() {
     return ingredients.stream()
-        .map(ingredient -> ingredient.getName().toLowerCase())
+        .map(ingredient -> WordUtils.capitalizeFully(ingredient.getName()))
         .collect(Collectors.toList());
   }
 
