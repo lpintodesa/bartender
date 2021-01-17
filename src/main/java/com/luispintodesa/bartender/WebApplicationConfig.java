@@ -20,6 +20,6 @@ public class WebApplicationConfig implements WebMvcConfigurer {
     registry
         .addInterceptor(authenticationInterceptor())
         .addPathPatterns("/**")
-        .excludePathPatterns("/**/*.css", "/**/*.jpg");
+        .excludePathPatterns("/**/*.css", "/**/*.jpg", "favicon.ico");
   }
 }
