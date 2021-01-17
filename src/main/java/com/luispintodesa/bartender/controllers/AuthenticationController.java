@@ -32,7 +32,7 @@ public class AuthenticationController extends UserController {
 
   @GetMapping(value = EMPTY_STRING)
   public String index(Model model) {
-    model.addAttribute(TITLE, "The Bartender");
+    model.addAttribute(TITLE, "The E-Bartender");
     return INDEX;
   }
 
