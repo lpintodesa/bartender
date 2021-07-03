@@ -6,4 +6,4 @@ The app uses <b>TheCocktailDB</b>'s API (https://www.thecocktaildb.com/) to retr
 
 The E-Bartender uses Thymeleaf's template engine and a tiny bit of JavaScript (mostly Bootstrap).
 
-It is deployed at https://e-bartender.net/ using Amazon Web Services's Elastic Beanstalk.
+<strike>It is deployed at https://e-bartender.net/ using Amazon Web Services's Elastic Beanstalk.</strike>
