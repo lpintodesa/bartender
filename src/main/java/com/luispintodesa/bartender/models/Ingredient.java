@@ -3,14 +3,17 @@ package com.luispintodesa.bartender.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import lombok.Data;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class Ingredient {
 
   @JsonProperty("idIngredient")
@@ -28,38 +31,6 @@ public class Ingredient {
 
   @ManyToMany private List<Drink> drinks;
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public List<Drink> getDrinks() {
-    return drinks;
-  }
-
-  public void setDrinks(List<Drink> drinks) {
-    this.drinks = drinks;
-  }
-
   public void addDrink(Drink drink) {
     this.drinks.add(drink);
   }
@@ -69,7 +40,10 @@ public class Ingredient {
   }
 
   public List<Integer> getDrinkIds() {
-    return drinks.stream().map(Drink::getId).collect(Collectors.toList());
+    return drinks
+            .stream()
+            .map(Drink::getId)
+            .toList();
   }
 
   @Override

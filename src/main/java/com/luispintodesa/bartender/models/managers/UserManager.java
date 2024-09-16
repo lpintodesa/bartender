@@ -3,15 +3,16 @@ package com.luispintodesa.bartender.models.managers;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
 @Service
+@RequiredArgsConstructor
 public class UserManager {
-    @Autowired
-    protected UserDao userDao;
+
+    private final UserDao userDao;
 
     public User findUserByUsername(String username){
         return userDao.findByUsername(username);

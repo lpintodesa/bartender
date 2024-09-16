@@ -2,13 +2,14 @@ package com.luispintodesa.bartender.controllers;
 
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.utils.DeserializerUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.luispintodesa.bartender.models.Constants.DETAILS;
@@ -22,6 +23,7 @@ import static com.luispintodesa.bartender.models.Constants.TITLE;
 
 @Controller
 @RequestMapping(DRINKS)
+@AllArgsConstructor
 public class DrinksController extends UserController {
 
   @GetMapping(value = "{idDrink}")

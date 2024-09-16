@@ -10,18 +10,24 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.luispintodesa.bartender.models.Drink;
 import com.luispintodesa.bartender.models.Ingredient;
 import com.luispintodesa.bartender.models.IngredientInList;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.luispintodesa.bartender.models.Constants.EMPTY_STRING;
+import static com.luispintodesa.bartender.models.utils.ArrayAndStringUtils.replaceWhitespaceWithUnderscore;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeserializerUtils {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -37,8 +43,6 @@ public class DeserializerUtils {
   private static final String URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS = "/filter.php?i=";
   private static final String URL_SEGMENT_SEARCH_DRINK_BY_ID = "/lookup.php?i=";
   private static final String API_KEY_FILE = "API_Key.txt";
-
-  private DeserializerUtils() {}
 
   public static Object getAPIFile() {
 
@@ -65,9 +69,9 @@ public class DeserializerUtils {
     List<IngredientInList> allIngredients = new ArrayList<>();
 
     try {
-      URL ingredientList = new URL(URL_FIRST_HALF + getKey() + URL_SEGMENT_LIST);
+      URL ingredientList = new URI(URL_FIRST_HALF + getKey() + URL_SEGMENT_LIST).toURL();
       allIngredients = INGREDIENT_IN_LIST_READER.readValue(ingredientList);
-    } catch (IOException e) {
+    } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
     return allIngredients;
@@ -76,7 +80,7 @@ public class DeserializerUtils {
   public static Drink searchDrinkById(Integer id) {
 
     try {
-      URL drinkSearchURL = new URL(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_ID + id);
+      URL drinkSearchURL = new URI(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_ID + id).toURL();
 
       try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL)) {
         JsonToken jsonToken;
@@ -88,17 +92,15 @@ public class DeserializerUtils {
 
         return MAPPER.readValue(parser, Drink.class);
       }
-    } catch (IOException e) {
+    } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
-
-    return Drink.NOT_FOUND;
+      return Drink.NOT_FOUND;
   }
 
   public static List<Drink> searchDrinkByMultipleIngredients(String ingredientNames) {
 
-    return searchDrinks(
-        URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS + ingredientNames);
+    return searchDrinks(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS + ingredientNames);
   }
 
   public static List<Drink> searchDrinkByName(String name) {
@@ -111,12 +113,7 @@ public class DeserializerUtils {
     List<Integer> list = new ArrayList<>();
 
     try {
-      URL drinkSearchURL =
-          new URL(
-              URL_FIRST_HALF
-                  + getKey()
-                  + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS
-                  + ArrayAndStringUtils.replaceWhitespaceWithUnderscore(ingredient.getName()));
+      URL drinkSearchURL = new URI(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_DRINK_BY_INGREDIENTS + replaceWhitespaceWithUnderscore(ingredient.getName())).toURL();
 
       try (JsonParser parser = JSON_FACTORY.createParser(drinkSearchURL)) {
 
@@ -124,7 +121,7 @@ public class DeserializerUtils {
           JsonToken jsonToken = parser.nextToken();
 
           if (JsonToken.FIELD_NAME.equals(jsonToken)) {
-            String fieldName = parser.getCurrentName();
+            String fieldName = parser.currentName();
             parser.nextToken();
             if ("idDrink".equals(fieldName)) {
               list.add(parser.getValueAsInt());
@@ -144,26 +141,21 @@ public class DeserializerUtils {
     List<Drink> drinks = new ArrayList<>();
 
     try {
-      URL drinkSearchURL = new URL(url);
+      URL drinkSearchURL = new URI(url).toURL();
       drinks = DRINK_READER.readValue(drinkSearchURL);
 
     } catch (MismatchedInputException e) {
       return drinks;
-    } catch (IOException e) {
+    } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
-    return drinks;
+      return drinks;
   }
 
   public static Ingredient searchIngredientByName(String name) {
 
     try {
-      URL ingredientList =
-          new URL(
-              URL_FIRST_HALF
-                  + getKey()
-                  + URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME
-                  + ArrayAndStringUtils.replaceWhitespaceWithUnderscore((name)));
+      URL ingredientList = new URI(URL_FIRST_HALF + getKey() + URL_SEGMENT_SEARCH_INGREDIENT_BY_NAME + replaceWhitespaceWithUnderscore((name))).toURL();
 
       try (JsonParser parser = JSON_FACTORY.createParser(ingredientList)) {
         JsonToken jsonToken;
@@ -175,9 +167,9 @@ public class DeserializerUtils {
 
         return MAPPER.readValue(parser, Ingredient.class);
       }
-    } catch (IOException e) {
+    } catch (IOException | URISyntaxException e) {
       e.printStackTrace();
     }
-    return new Ingredient();
+      return new Ingredient();
   }
 }

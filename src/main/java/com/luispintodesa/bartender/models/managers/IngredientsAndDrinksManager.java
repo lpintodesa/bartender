@@ -6,83 +6,73 @@ import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.dao.DrinkDao;
 import com.luispintodesa.bartender.models.dao.IngredientDao;
 import com.luispintodesa.bartender.models.utils.DeserializerUtils;
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static com.luispintodesa.bartender.models.utils.DeserializerUtils.searchDrinkById;
+import static com.luispintodesa.bartender.models.utils.DeserializerUtils.searchDrinkIdsBySingleIngredient;
+import static java.util.stream.Collectors.groupingBy;
+import static org.apache.commons.collections4.ListUtils.removeAll;
+import static org.apache.commons.collections4.ListUtils.union;
 
 @Service
+@RequiredArgsConstructor
 public class IngredientsAndDrinksManager {
 
-  @Autowired protected IngredientDao ingredientDao;
-  @Autowired protected DrinkDao drinkDao;
+  private final IngredientDao ingredientDao;
+  private final DrinkDao drinkDao;
 
   public Map<Integer, List<Drink>> matchUserIngredientsToDrinks(User theUser) {
 
-    List<Drink> allDrinks =
-        theUser.getIngredients().stream()
-            .map(Ingredient::getDrinks)
-            .flatMap(Collection::stream)
-            .distinct()
-            .collect(Collectors.toList());
+    List<Drink> allDrinks = theUser.getIngredients().stream()
+                              .map(Ingredient::getDrinks)
+                              .flatMap(Collection::stream)
+                              .distinct()
+                              .toList();
 
     for (Drink drink : allDrinks) {
-      drink.setMissingIngredients(
-          removeMatchedIngredients(
-              drink.getTitleCaseIngredientNames(), theUser.getLowerCaseIngredientNames()));
+      var missingIngredients = removeAll(drink.getTitleCaseIngredientNames(), theUser.getLowerCaseIngredientNames());
+      drink.setMissingIngredients(missingIngredients);
     }
 
-    return allDrinks.stream()
-        .collect(Collectors.groupingBy(drink -> drink.getMissingIngredients().size()));
-  }
-
-  public List<String> removeMatchedIngredients(
-      List<String> drinkIngredientNames, List<String> userIngredientsNames) {
-
-    drinkIngredientNames.removeAll(userIngredientsNames);
-
-    return drinkIngredientNames;
+    return allDrinks
+            .stream()
+            .collect(groupingBy(drink -> drink.getMissingIngredients().size()));
   }
 
   public void updateDrinksForAllIngredients(User theUser) {
     for (Ingredient ingredient : theUser.getIngredients()) {
-      List<Integer> drinkIds = DeserializerUtils.searchDrinkIdsBySingleIngredient(ingredient);
-      List<Integer> newIds =
-          (List<Integer>) CollectionUtils.removeAll(drinkIds, ingredient.getDrinkIds());
+      List<Integer> drinkIds = searchDrinkIdsBySingleIngredient(ingredient);
 
-      for (Drink drink : ingredient.getDrinks()) {
-        if (!drinkIds.contains(drink.getId())) {
-          ingredient.removeDrink(drink);
-        }
-      }
+      var oldDrinks = ingredient.getDrinks()
+                        .stream()
+                        .filter(drink -> drinkIds.contains(drink.getId()))
+                        .toList();
 
-      for (Integer id : drinkIds) {
-        if (newIds.contains(id)) {
-          Drink newDrink = DeserializerUtils.searchDrinkById(id);
-          drinkDao.save(newDrink);
-          ingredient.addDrink(newDrink);
-        }
-      }
+     var newDrinks = removeAll(drinkIds, ingredient.getDrinkIds())
+                      .stream()
+                      .map(DeserializerUtils::searchDrinkById)
+                      .toList();
+
+      drinkDao.saveAll(newDrinks);
+
+      ingredient.setDrinks(union(oldDrinks, newDrinks));
       ingredientDao.save(ingredient);
     }
   }
 
   public void addNewDrinksForNewIngredient(Ingredient newIngredient) {
-    List<Drink> drinks =
-        DeserializerUtils.searchDrinkIdsBySingleIngredient(newIngredient).stream()
-            .map(
-                id ->
-                    (drinkDao.existsById(id)
-                        ? (drinkDao.findById((int) id))
-                        : DeserializerUtils.searchDrinkById(id)))
-            .collect(Collectors.toList());
+    List<Drink> drinks = searchDrinkIdsBySingleIngredient(newIngredient).stream()
+                          .map(id -> drinkDao.existsById(id)
+                                      ? (drinkDao.findById((int) id))
+                                      : searchDrinkById(id))
+                          .toList();
 
     drinkDao.saveAll(drinks);
-
     newIngredient.setDrinks(drinks);
     ingredientDao.save(newIngredient);
   }

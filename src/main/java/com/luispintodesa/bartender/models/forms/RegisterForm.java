@@ -1,7 +1,9 @@
 package com.luispintodesa.bartender.models.forms;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 
+@Getter
 public class RegisterForm extends LoginForm {
 
   @NotNull(message = "Passwords do not match")
@@ -13,11 +15,7 @@ public class RegisterForm extends LoginForm {
     checkPasswordForRegistration();
   }
 
-  public String getVerifyPassword() {
-    return verifyPassword;
-  }
-
-  public void setVerifyPassword(String verifyPassword) {
+    public void setVerifyPassword(String verifyPassword) {
     this.verifyPassword = verifyPassword;
     checkPasswordForRegistration();
   }

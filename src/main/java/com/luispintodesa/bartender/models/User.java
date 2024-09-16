@@ -1,18 +1,22 @@
 package com.luispintodesa.bartender.models;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@NoArgsConstructor
+@Data
 public class User {
 
   private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -27,8 +31,6 @@ public class User {
 
   @ManyToMany private List<Ingredient> ingredients;
 
-  public User() {}
-
   public User(String username, String password) {
     this.username = username;
     this.pwHash = hashPassword(password);
@@ -42,25 +44,14 @@ public class User {
     ingredients.add(ingredient);
   }
 
-  public String getUsername() {
-    return username;
-  }
-
   public boolean isMatchingPassword(String password) {
     return encoder.matches(password, pwHash);
   }
 
-  public List<Ingredient> getIngredients() {
-    return ingredients;
-  }
-
   public List<String> getLowerCaseIngredientNames() {
     return ingredients.stream()
-        .map(ingredient -> WordUtils.capitalizeFully(ingredient.getName()))
-        .collect(Collectors.toList());
-  }
-
-  public int getId() {
-    return this.id;
+            .map(Ingredient::getName)
+            .map(WordUtils::capitalizeFully)
+            .collect(Collectors.toList());
   }
 }

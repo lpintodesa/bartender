@@ -3,6 +3,7 @@ package com.luispintodesa.bartender.controllers;
 import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.LoginForm;
 import com.luispintodesa.bartender.models.forms.RegisterForm;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import static com.luispintodesa.bartender.models.Constants.EMPTY_STRING;
 import static com.luispintodesa.bartender.models.Constants.INDEX;
@@ -28,6 +29,7 @@ import static com.luispintodesa.bartender.models.Constants.TITLE;
 import static com.luispintodesa.bartender.models.Constants.USERNAME;
 
 @Controller
+@AllArgsConstructor
 public class AuthenticationController extends UserController {
 
   @GetMapping(value = EMPTY_STRING)
@@ -54,8 +56,7 @@ public class AuthenticationController extends UserController {
     User existingUser = userManager.findUserByUsername(form.getUsername());
 
     if (existingUser != null) {
-      errors.rejectValue(
-          USERNAME, "username.alreadyexists", "A user with that username already exists");
+      errors.rejectValue(USERNAME, "username.alreadyexists", "A user with that username already exists");
       return REGISTER;
     }
 

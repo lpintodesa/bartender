@@ -1,8 +1,10 @@
 package com.luispintodesa.bartender.models.forms;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
 
+@Data
 public class LoginForm {
 
   @NotNull
@@ -15,20 +17,4 @@ public class LoginForm {
   @NotNull
   @Pattern(regexp = "(\\S){4,20}", message = "Password must have 4-20 non-whitespace characters")
   private String password;
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
 }
