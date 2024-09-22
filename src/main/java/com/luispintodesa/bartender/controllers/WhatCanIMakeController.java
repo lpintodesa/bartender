@@ -5,7 +5,7 @@ import com.luispintodesa.bartender.models.User;
 import com.luispintodesa.bartender.models.forms.WhatCanIMakeForm;
 import com.luispintodesa.bartender.models.utils.DeserializerUtils;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.luispintodesa.bartender.models.Constants.INGREDIENTS;
 import static com.luispintodesa.bartender.models.Constants.NO_RESULTS;
@@ -78,21 +77,11 @@ public class WhatCanIMakeController extends UserController {
       return NO_RESULTS_TEMPLATE;
     }
 
-    Map<Integer, List<Drink>> drinksWithPerfectMatch = null;
-    Map<Integer, List<Drink>> drinksWithOneMissingIngredient = null;
-    Map<Integer, List<Drink>> drinksWithTwoMissingIngredients = null;
+    var drinksWithPerfectMatch = nonNull(drinks.get(0)) ? divideInThree(drinks.get(0)) : null;
 
-    if (nonNull(drinks.get(0))) {
-      drinksWithPerfectMatch = divideInThree(drinks.get(0));
-    }
+    var drinksWithOneMissingIngredient = nonNull(drinks.get(1)) ? divideInThree(drinks.get(1)) : null;
 
-    if (nonNull(drinks.get(1))) {
-      drinksWithOneMissingIngredient = divideInThree(drinks.get(1));
-    }
-
-    if (nonNull(drinks.get(2))) {
-      drinksWithTwoMissingIngredients = divideInThree(drinks.get(2));
-    }
+    var drinksWithTwoMissingIngredients = nonNull(drinks.get(2)) ? divideInThree(drinks.get(2)) : null;
 
     model.addAttribute("perfectMatch", drinksWithPerfectMatch);
     model.addAttribute("oneMissing", drinksWithOneMissingIngredient);
